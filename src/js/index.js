@@ -6,4 +6,4 @@ import App from "./App";
 
 import "./index.scss";
 
-ReactDOM.render(<App />, document.getElementById("node-version"));
+ReactDOM.render(<App />, document.getElementById("root"));
