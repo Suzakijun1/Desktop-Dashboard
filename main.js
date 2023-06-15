@@ -44,6 +44,16 @@ ipcMain.on("openChrome", () => {
   shell.openExternal("https://www.google.com");
 });
 
+ipcMain.on("openApp", (_, route) => { 
+
+  const { spawn } = require("child_process");
+  const child = spawn(route, [], { detached: true });
+  
+  child.on("error", (error) => {
+    console.error(`Error executing League of Legends: ${error.message}`);
+  });
+});
+
 //opens league of legends
 ipcMain.handle("openLeagueOfLegends", () => {
   const lolPath = "C:\\Riot Games\\League of Legends\\LeagueClient.exe";
