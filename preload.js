@@ -14,6 +14,9 @@ contextBridge.exposeInMainWorld("electron", {
   openLeagueOfLegends() {
     ipcRenderer.invoke("openLeagueOfLegends");
   },
+  openApp(route){
+    ipcRenderer.send("openApp" , route);
+  },
   batteryApi: {},
   filesApi: {},
 });

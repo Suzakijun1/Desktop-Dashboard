@@ -8,6 +8,9 @@ import React from "react";
 // const store = new Store();
 
 export default function App({ electron }) {
+
+  const appsToOpen = ["C:\\Program Files\\Mozilla Firefox\\firefox.exe", "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"]
+
   const openExplorer = () => {
     // const { shell } = window.require("electron");
     electron.shell.openPath("C:/");
@@ -51,6 +54,15 @@ export default function App({ electron }) {
           }}
         >
           Open League of Legends
+        </button>
+        <button
+          onClick={() => {
+            appsToOpen.forEach((app) => {
+              electron.openApp(app);
+            });
+          }}
+        >
+          Open FireFox
         </button>
       </div>
     </>
