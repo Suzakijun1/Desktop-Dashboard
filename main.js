@@ -1,6 +1,15 @@
-const { app, BrowserWindow, ipcMain, Notification } = require("electron");
+const {
+  app,
+  BrowserWindow,
+  ipcMain,
+  Notification,
+  shell,
+} = require("electron");
 const path = require("path");
+
 const isDev = !app.isPackaged;
+
+const Store = require("electron-store");
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -19,15 +28,34 @@ function createWindow() {
 
   win.loadFile("index.html");
 }
+//if the application is running in development mode('isDev' is 'true'), this code sets up 'electron-reload'. (auto reload of electron app when changes are made)
 if (isDev) {
   require("electron-reload")(__dirname, {
     electron: path.join(__dirname, "node_modules", ".bin", "electron"),
   });
 }
+//this code listens for an IPC(Inter-Process Communication) event called 'notify' and creates a new notification with the message that was passed in.
 ipcMain.on("notify", (_, message) => {
   new Notification({ title: "Notification", body: message }).show();
 });
 
+//opens chrome
+ipcMain.on("openChrome", () => {
+  shell.openExternal("https://www.google.com");
+});
+
+//opens league of legends
+ipcMain.handle("openLeagueOfLegends", () => {
+  const lolPath = "C:\\Riot Games\\League of Legends\\LeagueClient.exe";
+
+  const { spawn } = require("child_process");
+  const child = spawn(lolPath, [], { detached: true });
+
+  child.on("error", (error) => {
+    console.error(`Error executing League of Legends: ${error.message}`);
+  });
+});
+//this code starts up the Electron application.
 app.whenReady().then(() => {
   createWindow();
 
@@ -37,7 +65,7 @@ app.whenReady().then(() => {
     }
   });
 });
-
+//this code quits the application when all windows are closed, except on macOS. There, it's common for applications and their menu bar to stay active until the user quits explicitly with Cmd + Q.
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
     app.quit();

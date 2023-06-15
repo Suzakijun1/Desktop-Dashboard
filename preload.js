@@ -1,10 +1,18 @@
 const { ipcRenderer, contextBridge } = require("electron");
 
 contextBridge.exposeInMainWorld("electron", {
+  shell: require("electron").shell,
+  // store: new (require("electron-store"))(),
   notificationApi: {
     sendNotification(message) {
       ipcRenderer.send("notify", message);
     },
+  },
+  openChrome() {
+    ipcRenderer.send("openChrome");
+  },
+  openLeagueOfLegends() {
+    ipcRenderer.invoke("openLeagueOfLegends");
   },
   batteryApi: {},
   filesApi: {},
