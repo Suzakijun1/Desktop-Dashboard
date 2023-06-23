@@ -1,4 +1,5 @@
 import React from "react";
+import DragAndDrop from "./components/DragAndDrop";
 
 // const Store = require("electron-store");
 
@@ -26,7 +27,6 @@ export default function App({ electron }) {
   };
 
   return (
-    <>
       <div className="container">
         <h1>Welcome to my Macro Dashboard!</h1>
 
@@ -64,7 +64,7 @@ export default function App({ electron }) {
         >
           Open FireFox
         </button>
+        <DragAndDrop/>
       </div>
-    </>
   );
 }
