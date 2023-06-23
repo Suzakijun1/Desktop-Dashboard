@@ -14,13 +14,22 @@ export default function App({ electron }) {
     {
       id: '1',
       name: 'Chrome',
-      route : "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+      route : "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      arguments : ['https://www.google.com']
     },
     {
       id: '2',
       name: 'Mozilla Firefox',
-      route: "C:\\Program Files\\Mozilla Firefox\\firefox.exe"
+      route: "C:\\Program Files\\Mozilla Firefox\\firefox.exe",
+      arguments : ['https://www.google.com']
     },
+    {
+      id: '3',
+      name: 'Notepad',
+      route: "C:\\Windows\\notepad.exe",
+      arguments : []
+    },
+
   ])
 
   const openExplorer = () => {
@@ -69,7 +78,7 @@ export default function App({ electron }) {
       <button
         onClick={() => {
           macro.forEach((app) => {
-            electron.openApp(app.route);
+            electron.openApp(app.route, app.arguments);
           });
         }}
       >

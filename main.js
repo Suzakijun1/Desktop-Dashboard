@@ -44,10 +44,10 @@ ipcMain.on("openChrome", () => {
   shell.openExternal("https://www.google.com");
 });
 
-ipcMain.on("openApp", (_, route) => { 
+ipcMain.on("openApp", (_, route, args) => { 
 
   const { spawn } = require("child_process");
-  const child = spawn(route, [], { detached: true });
+  const child = spawn(route, args, { detached: true });
   
   child.on("error", (error) => {
     console.error(`Error executing League of Legends: ${error.message}`);
