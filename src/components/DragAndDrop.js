@@ -6,52 +6,36 @@ import { useEffect } from 'react';
 
 
 
-export default function DragAndDrop() {
-    const [characters, updateCharacters] = useState([
-        {
-            id: '1',
-            name: 'Luke Skywalker',
-        },
-        {
-            id: '2',
-            name: 'Yoda',
-        },
-        {
-            id: '3',
-            name: 'Obi-Wan Kenobi',
-        },
-        {
-            id: '4',
-            name: 'Darth Vader',
-        },
-    ])
+export default function DragAndDrop({macro, updateMacro}) {
+    
 
     function handleOnDragEnd(result) {
         if (!result.destination) return;
-        const items = Array.from(characters);
+        const items = Array.from(macro);
         const [reorderedItem] = items.splice(result.source.index, 1);
         items.splice(result.destination.index, 0, reorderedItem);
 
-        updateCharacters(items);
+        updateMacro(items);
 
     }
 
     useEffect(() => {
-        console.log(characters)
-    }, [characters]);
+        console.log(macro)
+    }, [macro]);
 
 
 
     return (
         <DragDropContext onDragEnd={handleOnDragEnd}>
-            <Droppable droppableId="characters" direction='horizontal'>
+            <h2 className='macro-header'>Current Macro</h2>
+            <Droppable droppableId="macro" direction='horizontal'>
                 {(provided) => (
                     <ul
-                        className="characters"
+                        className="macro"
                         {...provided.droppableProps}
                         ref={provided.innerRef}
                     >
-                        {characters.map(({ id, name }, index) => {
+                        {macro.map(({ id, name }, index) => {
                             return (
                                 <Draggable key={id} draggableId={id} index={index}>
                                     {(provided) => (
@@ -60,7 +44,7 @@ export default function DragAndDrop() {
                                             {...provided.dragHandleProps}
                                             ref={provided.innerRef}
                                         >
-                                            {name}
+                                            {index+1 + ". " + name}
                                         </li>
                                     )}
                                 </Draggable>

@@ -1,4 +1,4 @@
-.characters {
+.macro {
     display: flex;
     flex-direction: row;
     list-style: none;
@@ -11,7 +11,7 @@
     gap: 1rem;
   }
   
-  .characters li {
+  .macro li {
     display: flex;
     align-items: center;
     color: black;
@@ -21,13 +21,26 @@
     margin-bottom: 1em;
   }
   
-  .characters p {
+  .macro p {
     max-width: none;
     font-weight: bold;
     margin: 0;
   }
+
+  .macro-header{
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+    padding-left: 0;
+    background-color: white;
+    align-items: center;
+    justify-content: center;
+    padding: grid;
+    overflow: auto;
+    gap: 1rem;
+  }
   
-  .characters-thumb {
+  .macro-thumb {
     overflow: hidden;
     flex-shrink: 0;
     width: 2em;
@@ -37,7 +50,7 @@
     margin-right: .5em;
   }
   
-  .characters-thumb img {
+  .macro-thumb img {
     display: block;
     width: 100%;
     height: auto;
