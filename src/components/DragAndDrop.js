@@ -2,6 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import './DragAndDrop.css'
+import { useEffect } from 'react';
 
 
 
@@ -34,6 +35,10 @@ export default function DragAndDrop() {
         updateCharacters(items);
 
     }
+
+    useEffect(() => {
+        console.log(characters)
+    }, [characters]);
 
 
 
