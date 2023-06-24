@@ -10,7 +10,7 @@ html, body{
 }
 
 /* APP BASE */
-.mainApp{
+.mainApp {
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
@@ -18,7 +18,7 @@ html, body{
     height: 100%;
     overflow: hidden;
     border: 1px solid #343B48;
-    -webkit-box-sizing: border-box
+    box-sizing: border-box;
 }
 
 .mainApp > .topBar {
@@ -35,14 +35,10 @@ html, body{
     display: flex;
     flex-direction: row;
     align-items: center;
-}
-.topBar > .titleBar {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
     width: 100%;
 }
-.titleBar > .toggleButton{
+
+.titleBar > .toggleButton {
     width: 45px;
     height: 40px;
     flex-grow: 0;
@@ -56,15 +52,19 @@ html, body{
     transition: 0.2s;
     cursor: pointer;
 }
-.titleBar > .toggleButton:hover{
+
+.titleBar > .toggleButton:hover {
     background-color: #272C36;
 }
-.titleBar > .toggleButton:active{
+
+.titleBar > .toggleButton:active {
     background-color: #4F9FEE;
 }
-.titleBar > img{
+
+.titleBar > img {
     margin-left: 10px;
 }
+
 .titleBar > .title {
     margin-left: 10px;
     width: 100%;
@@ -74,7 +74,7 @@ html, body{
     -webkit-app-region: drag;
 }
 
-.topBar > .titleBarBtns{
+.topBar > .titleBarBtns {
     display: flex;
     flex-direction: row;
     width: 120px;
@@ -82,7 +82,8 @@ html, body{
     flex-grow: 0;
     flex-shrink: 0;
 }
-.titleBarBtns > .topBtn{
+
+.titleBarBtns > .topBtn {
     width: 40px;
     height: 40px;
     border: none;
@@ -93,22 +94,28 @@ html, body{
     transition: 0.2s;
     cursor: pointer;
 }
-.titleBarBtns > .topBtn:hover{
+
+.titleBarBtns > .topBtn:hover {
     background-color: #272C36;
 }
-.titleBarBtns > .topBtn:active{
+
+.titleBarBtns > .topBtn:active {
     background-color: #4F9FEE;
 }
-.titleBarBtns > .minimizeBtn{
+
+.titleBarBtns > .minimizeBtn {
     background-image: url('../icons/icon_minimize.png');
 }
-.titleBarBtns > .maximizeBtn{
+
+.titleBarBtns > .maximizeBtn {
     background-image: url('../icons/icon_maximize.png');
 }
-.titleBarBtns > .restoreBtn{
+
+.titleBarBtns > .restoreBtn {
     background-image: url('../icons/icon_restore.png');
 }
-.titleBarBtns > .closeBtn{
+
+.titleBarBtns > .closeBtn {
     background-image: url('../icons/icon_close.png');
 }
 
@@ -118,7 +125,8 @@ html, body{
     width: 100%;
     height: 100%;
 }
-.contentArea > .leftMenu{
+
+.contentArea > .leftMenu {
     width: 240px;
     height: 100%;
     flex-grow: 0;
@@ -126,10 +134,15 @@ html, body{
     background-color: #272C36;
     transition: 0.4s;
 }
-.contentArea > .contentPages{
+
+.contentArea > .contentPages {
     width: 100%;
     height: 100%;
-    -webkit-box-align:center;
-    -webkit-box-pack:center;
-    display:-webkit-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar-closed .button {
+    display: none;
 }

@@ -16,6 +16,8 @@ function createWindow() {
   const win = new BrowserWindow({
     width: 800,
     height: 600,
+    //uncomment frame in order to remove the default frame
+    // frame: false,
     webPreferences: {
       //disables the ability to access Node.js modules directly from the renderer process. This is a security measure that prevents potential vulnerabilities that could arise from unrestricted access to Node.js functionality in the renderer process
       nodeIntegration: false,

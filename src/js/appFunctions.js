@@ -1,5 +1,6 @@
 const maxResBtn = document.getElementById("maxResBtn");
 const mySidebar = document.getElementById("mySidebar");
+const showHideMenusButton = document.getElementById("showHideMenus");
 
 var isLeftMenuActive = true;
 
@@ -44,4 +45,7 @@ showHideMenus.addEventListener("click", () => {
     mySidebar.style.width = "280px";
     isLeftMenuActive = true;
   }
+});
+showHideMenusButton.addEventListener("click", function () {
+  mySidebar.classList.toggle("sidebar-closed");
 });
