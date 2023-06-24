@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import DragAndDrop from "./components/DragAndDrop";
+import FileOpenButton from "./components/FileOpenButton";
 
 // const Store = require("electron-store");
 
@@ -12,25 +13,24 @@ import DragAndDrop from "./components/DragAndDrop";
 export default function App({ electron }) {
   const [macro, updateMacro] = useState([
     {
-      id: '1',
-      name: 'Chrome',
-      route : "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
-      arguments : ['https://www.google.com']
+      id: "1",
+      name: "Chrome",
+      route: "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      arguments: ["https://www.google.com"],
     },
     {
-      id: '2',
-      name: 'Mozilla Firefox',
+      id: "2",
+      name: "Mozilla Firefox",
       route: "C:\\Program Files\\Mozilla Firefox\\firefox.exe",
-      arguments : ['https://www.google.com']
+      arguments: ["https://www.google.com"],
     },
     {
-      id: '3',
-      name: 'Notepad',
+      id: "3",
+      name: "Notepad",
       route: "C:\\Windows\\notepad.exe",
-      arguments : []
+      arguments: [],
     },
-
-  ])
+  ]);
 
   const openExplorer = () => {
     // const { shell } = window.require("electron");
@@ -61,9 +61,7 @@ export default function App({ electron }) {
       <button onClick={openExplorer}>Open File Explorer</button>
       <button
         onClick={() => {
-          electron.notificationApi.sendNotification(
-            "My custom notification!!"
-          );
+          electron.notificationApi.sendNotification("My custom notification!!");
         }}
       >
         Notify
@@ -75,6 +73,7 @@ export default function App({ electron }) {
       >
         Open League of Legends
       </button>
+      <FileOpenButton />
       <button
         onClick={() => {
           macro.forEach((app) => {
@@ -84,10 +83,7 @@ export default function App({ electron }) {
       >
         Open Apps in Macro
       </button>
-      <DragAndDrop
-        macro={macro}
-        updateMacro={updateMacro}
-      />
+      <DragAndDrop macro={macro} updateMacro={updateMacro} />
     </div>
   );
 }

@@ -4,9 +4,10 @@ const {
   ipcMain,
   Notification,
   shell,
+  dialog,
 } = require("electron");
 const path = require("path");
-
+const fs = require("fs");
 const isDev = !app.isPackaged;
 
 const Store = require("electron-store");
@@ -27,7 +28,39 @@ function createWindow() {
   });
 
   win.loadFile("index.html");
+
+  //// CLOSE APP
+  ipcMain.on("minimizeApp", () => {
+    console.log("Clicked on Minimize Btn");
+    win.minimize();
+  });
+
+  //// MAXIMIZE RESTORE APP
+  ipcMain.on("maximizeRestoreApp", () => {
+    if (win.isMaximized()) {
+      console.log("Clicked on Restore");
+      win.restore();
+    } else {
+      console.log("Clicked on Maximize");
+      win.maximize();
+    }
+  });
+  // Check if is Maximized
+  win.on("maximize", () => {
+    win.webContents.send("isMaximized");
+  });
+  // Check if is Restored
+  win.on("unmaximize", () => {
+    win.webContents.send("isRestored");
+  });
+
+  //// CLOSE APP
+  ipcMain.on("closeApp", () => {
+    console.log("Clicked on Close Btn");
+    win.close();
+  });
 }
+
 //if the application is running in development mode('isDev' is 'true'), this code sets up 'electron-reload'. (auto reload of electron app when changes are made)
 if (isDev) {
   require("electron-reload")(__dirname, {
@@ -44,11 +77,10 @@ ipcMain.on("openChrome", () => {
   shell.openExternal("https://www.google.com");
 });
 
-ipcMain.on("openApp", (_, route, args) => { 
-
+ipcMain.on("openApp", (_, route, args) => {
   const { spawn } = require("child_process");
   const child = spawn(route, args, { detached: true });
-  
+
   child.on("error", (error) => {
     console.error(`Error executing League of Legends: ${error.message}`);
   });
@@ -81,3 +113,32 @@ app.on("window-all-closed", () => {
     app.quit();
   }
 });
+
+// shell.showItemInFolder(
+//   "C:\\Users\\james\\Desktop\\MacroDashboard\\src\\main.js"
+// );
+
+ipcMain.on("open-file-dialog", (event) => {
+  const window = BrowserWindow.fromWebContents(event.sender);
+  getFileFromUser(window);
+});
+
+const getFileFromUser = (window) => {
+  const files = dialog.showOpenDialogSync(window, {
+    properties: ["openFile"],
+    filters: [
+      {
+        name: "Text Files",
+        extensions: ["txt"],
+      },
+    ],
+  });
+
+  if (!files) return;
+
+  const file = files[0];
+  const content = fs.readFileSync(file).toString();
+
+  // Do something with the file content here
+  console.log(content);
+};
