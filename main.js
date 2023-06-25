@@ -120,13 +120,17 @@ app.on("window-all-closed", () => {
 //   "C:\\Users\\james\\Desktop\\MacroDashboard\\src\\main.js"
 // );
 
-ipcMain.on("open-file-dialog", (event) => {
+ipcMain.handle("open-file-dialog", async (event) => {
   const window = BrowserWindow.fromWebContents(event.sender);
-  getFileFromUser(window);
+  const route = await getFileFromUser(window);
+
+  console.log(`${route} is of type ${typeof route}`);
+  
+  return route;
 });
 
-const getFileFromUser = (window) => {
-  const files = dialog.showOpenDialogSync(window, {
+const getFileFromUser = async (window) => {
+  const files = await dialog.showOpenDialogSync(window, {
     properties: ["openFile"],
     filters: [
       {
@@ -138,9 +142,5 @@ const getFileFromUser = (window) => {
 
   if (!files) return;
 
-  const file = files[0];
-  const content = fs.readFileSync(file).toString();
-
-  // Do something with the file content here
-  console.log(content);
+  return files[0];
 };

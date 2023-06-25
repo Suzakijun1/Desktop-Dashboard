@@ -2,8 +2,9 @@ const { ipcRenderer, contextBridge } = require("electron");
 
 contextBridge.exposeInMainWorld("electron", {
   shell: require("electron").shell,
-  openFileDialog: () => {
-    ipcRenderer.send("open-file-dialog");
+  openFileDialog: async () => {
+      const result = await ipcRenderer.invoke("open-file-dialog");
+      return result;
   },
   // store: new (require("electron-store"))(),
   notificationApi: {
@@ -37,6 +38,7 @@ contextBridge.exposeInMainWorld("electron", {
   onRestored: (callback) => {
     ipcRenderer.on("isRestored", callback);
   },
+
 });
 
 // window.addEventListener("DOMContentLoaded", () => {

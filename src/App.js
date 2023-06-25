@@ -32,25 +32,25 @@ export default function App({ electron }) {
     },
   ]);
 
-  const openExplorer = () => {
-    // const { shell } = window.require("electron");
-    electron.shell.openPath("C:/");
-  };
+  // const openExplorer = () => {
+  //   // const { shell } = window.require("electron");
+  //   electron.shell.openPath("C:/");
+  // };
 
-  const registerFunctions = () => {
-    const functions = {
-      openChrome,
-      openExplorer,
-    };
+  // const registerFunctions = () => {
+  //   const functions = {
+  //     openChrome,
+  //     openExplorer,
+  //   };
 
-    electron.store.set("functions", functions);
-  };
+  //   electron.store.set("functions", functions);
+  // };
 
   return (
     <div className="container">
       <h1>Welcome to my Macro Dashboard!</h1>
 
-      <button onClick={registerFunctions}>Register Functions</button>
+      {/* <button onClick={registerFunctions}>Register Functions</button> */}
       <button
         onClick={() => {
           electron.openChrome();
@@ -58,7 +58,7 @@ export default function App({ electron }) {
       >
         Open Chrome
       </button>
-      <button onClick={openExplorer}>Open File Explorer</button>
+      {/* <button onClick={openExplorer}>Open File Explorer</button> */}
       <button
         onClick={() => {
           electron.notificationApi.sendNotification("My custom notification!!");

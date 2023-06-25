@@ -4,11 +4,12 @@ import React from "react";
 //   const handleFileOpen = () => {
 //     window.electron.send("open-file-dialog");
 //   };
-export default function FileOpenButton({}) {
+export default function FileOpenButton({ }) {
   return (
     <button
-      onClick={() => {
-        electron.openFileDialog();
+      onClick={async () => {
+        const result = await electron.openFileDialog();
+        console.log(result);
       }}
     >
       Open File
