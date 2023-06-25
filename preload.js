@@ -12,12 +12,6 @@ contextBridge.exposeInMainWorld("electron", {
       ipcRenderer.send("notify", message);
     },
   },
-  openChrome() {
-    ipcRenderer.send("openChrome");
-  },
-  openLeagueOfLegends() {
-    ipcRenderer.invoke("openLeagueOfLegends");
-  },
   openApp(route, args) {
     ipcRenderer.send("openApp", route, args);
   },

@@ -74,11 +74,6 @@ ipcMain.on("notify", (_, message) => {
   new Notification({ title: "Notification", body: message }).show();
 });
 
-//opens chrome
-ipcMain.on("openChrome", () => {
-  shell.openExternal("https://www.google.com");
-});
-
 ipcMain.on("openApp", (_, route, args) => {
   const { spawn } = require("child_process");
   const child = spawn(route, args, { detached: true });
@@ -88,17 +83,7 @@ ipcMain.on("openApp", (_, route, args) => {
   });
 });
 
-//opens league of legends
-ipcMain.handle("openLeagueOfLegends", () => {
-  const lolPath = "C:\\Riot Games\\League of Legends\\LeagueClient.exe";
 
-  const { spawn } = require("child_process");
-  const child = spawn(lolPath, [], { detached: true });
-
-  child.on("error", (error) => {
-    console.error(`Error executing League of Legends: ${error.message}`);
-  });
-});
 //this code starts up the Electron application.
 app.whenReady().then(() => {
   createWindow();
