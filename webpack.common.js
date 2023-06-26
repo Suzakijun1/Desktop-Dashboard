@@ -1,4 +1,5 @@
 const path = require("path");
+// const { ProvidePlugin } = require("webpack");
 
 module.exports = {
   mode: "development",
@@ -27,6 +28,7 @@ module.exports = {
           },
         },
       },
+
       {
         test: [/\.s[ac]ss$/i, /\.css$/i],
         use: [
@@ -40,6 +42,12 @@ module.exports = {
       },
     ],
   },
+  // plugins: [
+  //   new ProvidePlugin({
+  //     process: "process/browser",
+  //   }),
+  // ],
+
   resolve: {
     extensions: [".js"],
   },

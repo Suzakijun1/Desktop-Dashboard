@@ -1,7 +1,7 @@
 {
   "name": "Desktop-Dashboard",
   "version": "1.0.0",
-  "main": "main.js",
+  "main": "electron/main.js",
   "scripts": {
     "start": "electron .",
     "watch": "webpack --config webpack.common.js --watch",
