@@ -7,48 +7,14 @@
     <meta http-equiv="Content-Security-Policy" content="script-src 'self'" />
     <title>Hello World!</title>
     <link rel="stylesheet" href="./src/styles/styles.css">
-    <script defer src="./src/js/appFunctions.js"></script>
+    <!-- <script defer src="./src/js/appFunctions.js"></script> -->
 
 </head>
 
 <body>
-
-    <div class="mainApp">
-        <div class="topBar">
-            <div class="titleBar">
-                <button id="showHideMenus" class="toggleButton"></button>
-                <img src="./src/icons/icon_top_bar.png" alt="">
-                <div class="title">
-                    My App Top Bar
-                </div>
-            </div>
-            <div class="titleBarBtns">
-                <button id="minimizeBtn" class="topBtn minimizeBtn" title="Minimize"></button>
-                <button id="maxResBtn" class="topBtn maximizeBtn" title="Maximize"></button>
-                <button id="closeBtn" class="topBtn closeBtn" title="Close"></button>
-            </div>
-        </div>
-
-        <div class="contentArea">
-            <div id="mySidebar" class="leftMenu">
-                <button class="button">testing</button>
-            </div>
-
-            <div class="contentPages">
-                <div id="root">
-                </div>
-                <!-- <img class="colorPalette" src="images/color-palette.png" width="500" /> -->
-            </div>
-        </div>
+    <div id="root">
     </div>
-
-    <!-- <h1>Hello World!</h1>
-    We are using Node.js <span id="node-version"></span>,
-    Chromium <span id="chrome-version"></span>,
-    and Electron <span id="electron-version"></span>. -->
-
     <!-- You can also require other files to run in this process -->
-
     <script src="./build/js/app.js"></script>
     <!-- <script src="./main.js"></script> -->
 </body>
