@@ -93,7 +93,7 @@ ipcMain.on("openApp", (_, route, args) => {
   const child = spawn(route, args, { detached: true });
 
   child.on("error", (error) => {
-    console.error(`Error executing League of Legends: ${error.message}`);
+    console.error(`Error executing App: ${error.message}`);
   });
 });
 
@@ -132,8 +132,8 @@ const getFileFromUser = async (window) => {
     properties: ["openFile"],
     filters: [
       {
-        name: "Text Files",
-        extensions: ["txt"],
+        name: "Executable",
+        extensions: ["exe"],
       },
     ],
   });

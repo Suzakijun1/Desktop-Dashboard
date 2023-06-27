@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import DragAndDrop from "../components/DragAndDrop";
 import FileOpenButton from "../components/FileOpenButton";
+import RunMacroButton from "../components/RunMacroButton";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import AddToMacroButton from "../components/AddToMacroButton";
 
 // const Store = require("electron-store");
 
@@ -158,10 +160,14 @@ export default function Home({ electron }) {
             >
               Notify
             </button>
+            <RunMacroButton 
+              macro={macro}
+            />
+            <AddToMacroButton 
+              macro={macro}
+              updateMacro={updateMacro}
+            />
             <FileOpenButton />
-            <button onClick={() => electron.openApp(app.route, app.arguments)}>
-              Open Apps in Macro
-            </button>
             <DragAndDrop macro={macro} updateMacro={updateMacro} />
           </div>
         </div>

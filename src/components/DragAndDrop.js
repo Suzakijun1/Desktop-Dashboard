@@ -45,6 +45,11 @@ export default function DragAndDrop({macro, updateMacro}) {
                                             ref={provided.innerRef}
                                         >
                                             {index+1 + ". " + name}
+                                            <button className='delete-button' onClick={() => {
+                                                const items = Array.from(macro);
+                                                items.splice(index, 1);
+                                                updateMacro(items);
+                                            }}>X</button>
                                         </li>
                                     )}
                                 </Draggable>
