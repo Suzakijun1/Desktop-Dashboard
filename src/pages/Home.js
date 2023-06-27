@@ -32,7 +32,8 @@ export default function Home({ electron }) {
       arguments: [],
     },
   ]);
-  const [isLeftMenuActive, setIsLeftMenuActive] = useState(true);
+  
+  const [isLeftMenuActive, setIsLeftMenuActive] = useState(true); 
   const [isMaximizedApp, setIsMaximizedApp] = useState(false);
 
   const toggleLeftMenu = () => {
