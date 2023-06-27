@@ -4,6 +4,7 @@ import FileOpenButton from "../components/FileOpenButton";
 import RunMacroButton from "../components/RunMacroButton";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import AddToMacroButton from "../components/AddToMacroButton";
+import Navbar from "../components/Navbar";
 // const Store = require("electron-store");
 
 // const path = require("path");
@@ -32,51 +33,13 @@ export default function Home({ electron }) {
       arguments: [],
     },
   ]);
-  
-  const [isLeftMenuActive, setIsLeftMenuActive] = useState(true); 
-  const [isMaximizedApp, setIsMaximizedApp] = useState(false);
+
+  const [isLeftMenuActive, setIsLeftMenuActive] = useState(true);
 
   const toggleLeftMenu = () => {
     setIsLeftMenuActive((prevIsLeftMenuActive) => !prevIsLeftMenuActive);
   };
 
-  const handleCloseApp = () => {
-    electron.closeApp();
-  };
-
-  const handleMinimizeApp = () => {
-    electron.minimizeApp();
-  };
-
-  const handleMaximizeRestoreApp = () => {
-    electron.maximizeRestoreApp();
-  };
-
-  const changeMaxResBtn = (isMaximizedApp) => {
-    const maxResBtn = document.getElementById("maxResBtn");
-
-    if (isMaximizedApp) {
-      maxResBtn.title = "Restore";
-      maxResBtn.classList.remove("maximizeBtn");
-      maxResBtn.classList.add("restoreBtn");
-    } else {
-      maxResBtn.title = "Maximize";
-      maxResBtn.classList.remove("restoreBtn");
-      maxResBtn.classList.add("maximizeBtn");
-    }
-  };
-
-  useEffect(() => {
-    electron.onMaximized(() => {
-      changeMaxResBtn(true);
-      setIsMaximizedApp(true);
-    });
-
-    electron.onRestored(() => {
-      changeMaxResBtn(false);
-      setIsMaximizedApp(false);
-    });
-  }, []);
   useEffect(() => {
     const showHideMenus = document.getElementById("showHideMenus");
     const mySidebar = document.getElementById("mySidebar");
@@ -92,58 +55,20 @@ export default function Home({ electron }) {
       }
     });
   }, []);
-  const maxResBtnClass = isMaximizedApp ? "restoreBtn" : "maximizeBtn";
-  const maxResBtnTitle = isMaximizedApp ? "Restore" : "Maximize";
 
   return (
     <div className="mainApp">
-      <div className="topBar">
-        <div className="titleBar">
-          <button
-            id="showHideMenus"
-            className="toggleButton"
-            onClick={toggleLeftMenu}
-          ></button>
-          <img src="./src/icons/icon_top_bar.png" alt="" />
-          <div className="title">My App Top Bar</div>
-        </div>
-
-        <div className="titleBarBtns">
-          <button
-            id="minimizeBtn"
-            className="topBtn minimizeBtn"
-            title="Minimize"
-            onClick={handleMinimizeApp}
-          ></button>
-          <button
-            id="maxResBtn"
-            className={`topBtn ${maxResBtnClass}`}
-            title={maxResBtnTitle}
-            onClick={handleMaximizeRestoreApp}
-          ></button>
-          <button
-            id="closeBtn"
-            className="topBtn closeBtn"
-            title="Close"
-            onClick={handleCloseApp}
-          ></button>
-        </div>
-      </div>
-
-      <div className="newNavBar">
-        <button id="testing">testing</button>
-      </div>
+      <Navbar electron={electron} toggleLeftMenu={toggleLeftMenu} />
 
       <div
         className={`contentArea ${isLeftMenuActive ? "" : "sidebar-closed"}`}
       >
         <div id="mySidebar" className="leftMenu">
-            <>
-              <div className="leftMenuHeader">Saved Macros</div>
-              <Link to="/playtest">
-                <button className="button">PlayTest Button</button>
-              </Link>
-            </>
+          <>
+            <div className="leftMenuHeader">Saved Macros</div>
+
+            <button className="button">a macro button</button>
+          </>
         </div>
 
         <div className="contentPages">
@@ -158,13 +83,8 @@ export default function Home({ electron }) {
             >
               Notify
             </button>
-            <RunMacroButton 
-              macro={macro}
-            />
-            <AddToMacroButton 
-              macro={macro}
-              updateMacro={updateMacro}
-            />
+            <RunMacroButton macro={macro} />
+            <AddToMacroButton macro={macro} updateMacro={updateMacro} />
             <FileOpenButton />
             <DragAndDrop macro={macro} updateMacro={updateMacro} />
           </div>

@@ -155,6 +155,9 @@ html, body{
     border-bottom: 3px solid #343B48;
     background-color: #1B1D23;
     -webkit-user-select: none;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 }
 
 .leftMenuHeader {
@@ -169,3 +172,15 @@ html, body{
     -webkit-user-select: none;
     font-size: large;
 }
+
+/* Uncomment this to make the whole screen move when opening the saved macros */
+.contentArea.sidebar-closed {
+    margin-left: -240px;
+  }
+  .contentArea {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+    transition: 0.4s ease-in-out;
+  }
