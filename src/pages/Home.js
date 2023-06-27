@@ -4,7 +4,6 @@ import FileOpenButton from "../components/FileOpenButton";
 import RunMacroButton from "../components/RunMacroButton";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import AddToMacroButton from "../components/AddToMacroButton";
-
 // const Store = require("electron-store");
 
 // const path = require("path");
@@ -84,10 +83,10 @@ export default function Home({ electron }) {
 
     showHideMenus.addEventListener("click", () => {
       if (isLeftMenuActive) {
-        mySidebar.style.width = "0px";
+        mySidebar.style.left = "-240px";
         isLeftMenuActive = false;
       } else {
-        mySidebar.style.width = "280px";
+        mySidebar.style.left = "0px";
         isLeftMenuActive = true;
       }
     });
@@ -138,14 +137,12 @@ export default function Home({ electron }) {
         className={`contentArea ${isLeftMenuActive ? "" : "sidebar-closed"}`}
       >
         <div id="mySidebar" className="leftMenu">
-          {isLeftMenuActive && (
             <>
               <div className="leftMenuHeader">Saved Macros</div>
               <Link to="/playtest">
                 <button className="button">PlayTest Button</button>
               </Link>
             </>
-          )}
         </div>
 
         <div className="contentPages">

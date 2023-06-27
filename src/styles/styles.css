@@ -127,12 +127,14 @@ html, body{
 }
 
 .contentArea > .leftMenu {
+    position: relative;
     width: 240px;
+    left: 0;
     /* height: 100%; */
     flex-grow: 0;
     flex-shrink: 0;
     background-color: #272C36;
-    transition: 0.4s;
+    transition: 0.4s ease-in-out;
 }
 
 .contentArea > .contentPages {
