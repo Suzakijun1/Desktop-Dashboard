@@ -92,6 +92,9 @@ export default function Navbar({ electron }) {
         <Link to="/playtest">
           <button id="testing">PlayTest Button</button>
         </Link>
+        <Link to="/todolist">
+          <button id="toDoList">To Do List</button>
+        </Link>
       </div>
     </>
   );

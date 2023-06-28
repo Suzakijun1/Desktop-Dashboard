@@ -123,7 +123,7 @@ html, body{
     display: flex;
     flex-direction: row;
     width: 100%;
-    height: 100%;
+    height: 500px;
 }
 
 .contentArea > .leftMenu {
@@ -173,8 +173,9 @@ html, body{
     font-size: large;
 }
 
+
 /* Uncomment this to make the whole screen move when opening the saved macros */
-.contentArea.sidebar-closed {
+/* .contentArea.sidebar-closed {
     margin-left: -240px;
   }
   .contentArea {
@@ -183,4 +184,4 @@ html, body{
     width: 100%;
     height: 100%;
     transition: 0.4s ease-in-out;
-  }
+  } */
