@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Weather from "../components/Weather";
 import Navbar from "../components/Navbar";
-
+import Button from "../todolistComponents/Button";
 export default function Playtest() {
   const [isLeftMenuActive, setIsLeftMenuActive] = useState(true);
 
@@ -35,7 +35,7 @@ export default function Playtest() {
           <>
             <div className="leftMenuHeader">Saved Macros</div>
 
-            <button className="button">a macro button</button>
+            <Button variant="primary"> a macro button</Button>
           </>
         </div>
 

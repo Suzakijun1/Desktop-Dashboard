@@ -5,6 +5,7 @@ import RunMacroButton from "../components/RunMacroButton";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import AddToMacroButton from "../components/AddToMacroButton";
 import Navbar from "../components/Navbar";
+import Button from "../todolistComponents/Button";
 // const Store = require("electron-store");
 
 // const path = require("path");
@@ -67,7 +68,8 @@ export default function Home({ electron }) {
           <>
             <div className="leftMenuHeader">Saved Macros</div>
 
-            <button className="button">a macro button</button>
+            {/* <button className="button">a macro button</button> */}
+            <Button variant="primary"> a macro button</Button>
           </>
         </div>
 

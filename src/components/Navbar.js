@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import Button from "../todolistComponents/Button";
 
 export default function Navbar({ electron }) {
   const [isLeftMenuActive, setIsLeftMenuActive] = useState(true);
@@ -87,13 +88,20 @@ export default function Navbar({ electron }) {
 
       <div className="newNavBar">
         <Link to="/">
-          <button id="home"> Home </button>
+          <Button variant="primary" id="home">
+            {" "}
+            Home{" "}
+          </Button>
         </Link>
         <Link to="/playtest">
-          <button id="testing">PlayTest Button</button>
+          <Button variant="primary" id="testing">
+            PlayTest Button
+          </Button>
         </Link>
         <Link to="/todolist">
-          <button id="toDoList">To Do List</button>
+          <Button variant="primary" id="toDoList">
+            To Do List
+          </Button>
         </Link>
       </div>
     </>

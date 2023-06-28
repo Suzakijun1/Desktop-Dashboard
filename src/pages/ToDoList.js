@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
-
+import Button from "../todolistComponents/Button";
 import { Toaster } from "react-hot-toast";
 import AppContent from "../../src/todolistComponents/AppContent";
 import AppHeader from "../../src/todolistComponents/AppHeader";
@@ -39,7 +39,7 @@ const ToDoList = () => {
           <>
             <div className="leftMenuHeader">Saved Macros</div>
 
-            <button className="button">a macro button</button>
+            <Button variant="primary"> a macro button</Button>
           </>
         </div>
         <div className="contentPages">
