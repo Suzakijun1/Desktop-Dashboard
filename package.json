@@ -8,6 +8,7 @@
     "build": "webpack --config webpack.config.js"
   },
   "dependencies": {
+    "@fontsource/poppins": "^5.0.3",
     "@reduxjs/toolkit": "^1.9.5",
     "chokidar": "^3.5.3",
     "concurrently": "^8.2.0",
