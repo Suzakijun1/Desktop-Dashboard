@@ -17,6 +17,7 @@ const {
 } = require("./setting");
 const Store = require("electron-store");
 const storage = new Store();
+const { google } = require("googleapis");
 
 function createWindow() {
   const bounds = getWindowSettings();
@@ -45,6 +46,27 @@ function createWindow() {
 
   win.loadFile(path.join(__dirname, "..", "index.html"));
 
+  //here is the email code
+  win.webContents.on("dom-ready", async () => {
+    try {
+      const auth = await authenticate();
+      const gmail = google.gmail({ version: "v1", auth });
+
+      const response = await gmail.users.messages.list({
+        userId: "me",
+        labelIds: ["INBOX"],
+        maxResults: 10, // Adjust the number of emails to fetch as per your requirement
+      });
+
+      const messages = response.data.messages || [];
+      const emails = await Promise.all(messages.map(fetchEmailData));
+
+      win.webContents.send("emails", emails);
+    } catch (error) {
+      console.error("Error fetching emails:", error);
+    }
+  });
+  //here
   //// CLOSE APP
   ipcMain.on("minimizeApp", () => {
     console.log("Clicked on Minimize Btn");
@@ -176,3 +198,110 @@ ipcMain.handle("save-file-dialog", async (event) => {
 //   });
 // }
 // };
+
+// Fetch and display emails when the window loads
+
+async function authenticate() {
+  // Load credentials from a file or environment variables
+  const credentialsPath = path.join(__dirname, "credentials.json");
+  const credentials = JSON.parse(fs.readFileSync(credentialsPath, "utf8"));
+
+  // Create OAuth2 client
+  const { client_secret, client_id, redirect_uris } = credentials.installed;
+  const oAuth2Client = new google.auth.OAuth2(
+    client_id,
+    client_secret,
+    redirect_uris[0]
+  );
+
+  // Check if credentials are already stored
+  let token = storage.get("token");
+  if (!token) {
+    // Authorize the client
+    const authUrl = oAuth2Client.generateAuthUrl({
+      access_type: "offline",
+      scope: ["https://www.googleapis.com/auth/gmail.readonly"],
+    });
+    const code = await getCodeFromUser(authUrl);
+    token = await getTokenFromCode(oAuth2Client, code);
+    storage.set("token", token);
+  }
+
+  // Set token to the client
+  oAuth2Client.setCredentials(token);
+
+  return oAuth2Client;
+}
+
+async function getCodeFromUser(authUrl) {
+  // Display the authorization URL to the user
+  const authWindow = new BrowserWindow({
+    width: 800,
+    height: 600,
+    show: false,
+    webPreferences: {
+      nodeIntegration: false,
+    },
+  });
+  authWindow.loadURL(authUrl);
+  authWindow.show();
+
+  // Wait for the user to authorize the application
+  return new Promise((resolve, reject) => {
+    authWindow.webContents.on("will-redirect", (event, url) => {
+      console.log("Redirect URL:", url);
+      const match = url.match(/code=([^&]+)/);
+      if (match && match[1]) {
+        const code = match[1];
+        authWindow.destroy();
+        resolve(code);
+      } else {
+        reject(new Error("Authorization code not found in the redirect URL."));
+      }
+    });
+
+    authWindow.on("close", () => {
+      reject(new Error("Authorization window was closed by the user."));
+    });
+  });
+}
+
+async function exchangeCodeForTokens(authorizationCode) {
+  const credentials = require("./credentials.json"); // Path to your credentials file
+  const { client_secret, client_id, redirect_uris } = credentials.installed;
+  const oAuth2Client = new google.auth.OAuth2(
+    client_id,
+    client_secret,
+    redirect_uris[0]
+  );
+
+  const { tokens } = await oAuth2Client.getToken(authorizationCode);
+  oAuth2Client.setCredentials(tokens);
+
+  // You can now use the access token and refresh token for authorized API requests
+  console.log("Access token:", tokens.access_token);
+  console.log("Refresh token:", tokens.refresh_token);
+}
+
+// Call the function with the authorization code
+exchangeCodeForTokens(
+  "4/1AZEOvhXtZDg2SjZ3ELbFr9Hkrmfzaro18Fdrfk7yKGjjF32iXIDDdE_Tktk"
+);
+
+async function fetchEmailData(message) {
+  try {
+    const auth = await authenticate();
+    const gmail = google.gmail({ version: "v1", auth });
+
+    const response = await gmail.users.messages.get({
+      userId: "me",
+      id: message.id,
+      format: "full",
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching email:", error);
+    return null;
+  }
+}
