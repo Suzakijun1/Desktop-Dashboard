@@ -65,7 +65,7 @@ function MacroModal({ type, modalOpen, setModalOpen, macro, updateMacro }) {
             time: new Date().toLocaleString(),
           })
         );
-        updateMacro((prevMacro) => [...prevMacro, newMacro]);
+        // updateMacro((prevMacro) => [...prevMacro, newMacro]);
         toast.success("Macro added successfully");
       }
       if (type === "update") {
@@ -133,16 +133,14 @@ function MacroModal({ type, modalOpen, setModalOpen, macro, updateMacro }) {
               </label>
               <label htmlFor="route">
                 Route
-                <div className={styles.fileDialog}>
-                  <input
-                    type="text"
-                    id="route"
-                    value={route}
-                    onChange={(e) => setRoute(e.target.value)}
-                    disabled
-                  />
-                  <Button onClick={handleOpenFileDialog}>Browse</Button>
-                </div>
+                <input
+                  type="text"
+                  id="route"
+                  value={route}
+                  onChange={(e) => setRoute(e.target.value)}
+                  disabled
+                />
+                <Button onClick={handleOpenFileDialog}>Browse</Button>
               </label>
               <div className={styles.buttonContainer}>
                 <Button type="submit" variant="primary">
