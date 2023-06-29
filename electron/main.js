@@ -8,6 +8,7 @@ const {
 } = require("electron");
 const path = require("path");
 const fs = require("fs");
+const prompt = require("electron-prompt");
 const isDev = !app.isPackaged;
 const {
   getWindowSettings,
@@ -50,7 +51,7 @@ function createWindow() {
   win.webContents.on("dom-ready", async () => {
     try {
       const auth = await authenticate();
-      const gmail = google.gmail({ version: "v1", auth });
+      const gmail = await google.gmail({ version: "v1", auth });
 
       const response = await gmail.users.messages.list({
         userId: "me",
@@ -205,7 +206,7 @@ async function authenticate() {
   // Load credentials from a file or environment variables
   const credentialsPath = path.join(__dirname, "credentials.json");
   const credentials = JSON.parse(fs.readFileSync(credentialsPath, "utf8"));
-
+  console.log("CREDENTIALS: ",credentials);
   // Create OAuth2 client
   const { client_secret, client_id, redirect_uris } = credentials.installed;
   const oAuth2Client = new google.auth.OAuth2(
@@ -222,13 +223,12 @@ async function authenticate() {
       access_type: "offline",
       scope: ["https://www.googleapis.com/auth/gmail.readonly"],
     });
-    const code = await getCodeFromUser(authUrl);
-    token = await getTokenFromCode(oAuth2Client, code);
-    storage.set("token", token);
+    await getCodeFromUser(authUrl);
+    token = storage.get("token");
   }
 
   // Set token to the client
-  oAuth2Client.setCredentials(token);
+  oAuth2Client.setCredentials({ access_token: token });
 
   return oAuth2Client;
 }
@@ -248,11 +248,11 @@ async function getCodeFromUser(authUrl) {
 
   // Wait for the user to authorize the application
   return new Promise((resolve, reject) => {
-    authWindow.webContents.on("will-redirect", (event, url) => {
+    authWindow.webContents.on("will-redirect", async (event, url) => {
       console.log("Redirect URL:", url);
-      const match = url.match(/code=([^&]+)/);
+      const match = url.match(/code([^&]+)/);
       if (match && match[1]) {
-        const code = match[1];
+        await exchangeCodeForTokens();
         authWindow.destroy();
         resolve(code);
       } else {
@@ -266,7 +266,13 @@ async function getCodeFromUser(authUrl) {
   });
 }
 
-async function exchangeCodeForTokens(authorizationCode) {
+async function exchangeCodeForTokens() {
+  const authorizationCode = await prompt({
+    title: 'Authorization code',
+    label: 'Enter the authorization code',
+    value: '',
+    type: 'input'
+});
   const credentials = require("./credentials.json"); // Path to your credentials file
   const { client_secret, client_id, redirect_uris } = credentials.installed;
   const oAuth2Client = new google.auth.OAuth2(
@@ -279,26 +285,21 @@ async function exchangeCodeForTokens(authorizationCode) {
   oAuth2Client.setCredentials(tokens);
 
   // You can now use the access token and refresh token for authorized API requests
-  console.log("Access token:", tokens.access_token);
-  console.log("Refresh token:", tokens.refresh_token);
+  storage.set("token", tokens.access_token);
 }
 
 // Call the function with the authorization code
-exchangeCodeForTokens(
-  "4/1AZEOvhXtZDg2SjZ3ELbFr9Hkrmfzaro18Fdrfk7yKGjjF32iXIDDdE_Tktk"
-);
 
 async function fetchEmailData(message) {
   try {
     const auth = await authenticate();
-    const gmail = google.gmail({ version: "v1", auth });
+    const gmail = await google.gmail({ version: "v1", auth });
 
     const response = await gmail.users.messages.get({
       userId: "me",
       id: message.id,
       format: "full",
     });
-
     return response.data;
   } catch (error) {
     console.error("Error fetching email:", error);
