@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import TestingMacroModal from "./testingmacrobutton";
 import Button from "../todolistComponents/Button";
 
 export default function Navbar({ electron }) {
   const [isLeftMenuActive, setIsLeftMenuActive] = useState(true);
   const [isMaximizedApp, setIsMaximizedApp] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const toggleLeftMenu = () => {
     setIsLeftMenuActive((prevIsLeftMenuActive) => !prevIsLeftMenuActive);
@@ -103,6 +105,15 @@ export default function Navbar({ electron }) {
             To Do List
           </Button>
         </Link>
+        <Button variant="primary" id="macro" onClick={() => setModalOpen(true)}>
+          MacroModal
+        </Button>
+        <TestingMacroModal
+          type="add"
+          modalOpen={modalOpen}
+          setModalOpen={setModalOpen}
+          // updateMacro={updateMacro}
+        />
       </div>
     </>
   );
