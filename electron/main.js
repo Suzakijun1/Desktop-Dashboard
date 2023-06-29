@@ -282,7 +282,6 @@ async function exchangeCodeForTokens() {
   );
 
   const { tokens } = await oAuth2Client.getToken(authorizationCode);
-  oAuth2Client.setCredentials(tokens);
 
   // You can now use the access token and refresh token for authorized API requests
   storage.set("token", tokens.access_token);
