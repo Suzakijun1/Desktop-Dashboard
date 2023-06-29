@@ -230,7 +230,7 @@ async function authenticate() {
   // Load credentials from a file or environment variables
   const credentialsPath = path.join(__dirname, "credentials.json");
   const credentials = JSON.parse(fs.readFileSync(credentialsPath, "utf8"));
-  console.log("CREDENTIALS: ",credentials);
+  console.log("CREDENTIALS: ", credentials);
   // Create OAuth2 client
   const { client_secret, client_id, redirect_uris } = credentials.installed;
   const oAuth2Client = new google.auth.OAuth2(
@@ -292,11 +292,11 @@ async function getCodeFromUser(authUrl) {
 
 async function exchangeCodeForTokens() {
   const authorizationCode = await prompt({
-    title: 'Authorization code',
-    label: 'Enter the authorization code',
-    value: '',
-    type: 'input'
-});
+    title: "Authorization code",
+    label: "Enter the authorization code",
+    value: "",
+    type: "input",
+  });
   const credentials = require("./credentials.json"); // Path to your credentials file
   const { client_secret, client_id, redirect_uris } = credentials.installed;
   const oAuth2Client = new google.auth.OAuth2(
