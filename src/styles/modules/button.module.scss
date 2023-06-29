@@ -20,6 +20,9 @@
 		width: 150px;
 		cursor: pointer;
 	}
+	&:hover {
+		filter: brightness(85%);
+	}
 }
 .button--primary {
 	background-color: var(--primaryPurple);
