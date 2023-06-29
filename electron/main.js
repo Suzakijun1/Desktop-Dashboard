@@ -65,6 +65,30 @@ function createWindow() {
       win.webContents.send("emails", emails);
     } catch (error) {
       console.error("Error fetching emails:", error);
+      if(error.code === 401) {
+        storage.delete("token");
+        win.webContents.send("login");
+      }
+    }
+  });
+
+  win.webContents.on("login", async () => {
+    try {
+      const auth = await authenticate();
+      const gmail = await google.gmail({ version: "v1", auth });
+
+      const response = await gmail.users.messages.list({
+        userId: "me",
+        labelIds: ["INBOX"],
+        maxResults: 10, // Adjust the number of emails to fetch as per your requirement
+      });
+
+      const messages = response.data.messages || [];
+      const emails = await Promise.all(messages.map(fetchEmailData));
+
+      win.webContents.send("emails", emails);
+    } catch (error) {
+      console.error("Error fetching emails:", error);
     }
   });
   //here
