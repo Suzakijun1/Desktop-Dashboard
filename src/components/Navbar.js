@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import TestingMacroModal from "./testingmacrobutton";
 import Button from "../todolistComponents/Button";
 
-export default function Navbar({ electron }) {
+export default function Navbar({ electron, macro, updateMacro}) {
   const [isLeftMenuActive, setIsLeftMenuActive] = useState(true);
   const [isMaximizedApp, setIsMaximizedApp] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
@@ -90,14 +90,13 @@ export default function Navbar({ electron }) {
 
       <div className="newNavBar">
         <Link to="/">
-          <Button variant="primary" id="home">
-            {" "}
-            Home{" "}
+          <Button variant="primary" id="testing">
+            Dashboard
           </Button>
         </Link>
-        <Link to="/playtest">
-          <Button variant="primary" id="testing">
-            PlayTest Button
+        <Link to="/macro">
+          <Button variant="primary" id="home">
+            Flow
           </Button>
         </Link>
         <Link to="/todolist">
@@ -105,15 +104,6 @@ export default function Navbar({ electron }) {
             To Do List
           </Button>
         </Link>
-        <Button variant="primary" id="macro" onClick={() => setModalOpen(true)}>
-          MacroModal
-        </Button>
-        <TestingMacroModal
-          type="add"
-          modalOpen={modalOpen}
-          setModalOpen={setModalOpen}
-          // updateMacro={updateMacro}
-        />
       </div>
     </>
   );

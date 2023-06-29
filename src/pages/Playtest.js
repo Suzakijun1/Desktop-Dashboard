@@ -32,11 +32,14 @@ export default function Playtest() {
         className={`contentArea ${isLeftMenuActive ? "" : "sidebar-closed"}`}
       >
         <div id="mySidebar" className="leftMenu">
-          <>
+        <div style={{display : "flex", flexDirection: "column"}}>
             <div className="leftMenuHeader">Saved Macros</div>
 
-            <Button variant="primary"> a macro button</Button>
-          </>
+            {/* <button className="button">a macro button</button> */}
+            <Button variant="primary">Work</Button>
+            <Button variant="primary">Gaming</Button>
+            <Button variant="primary">Other</Button>
+          </div>
         </div>
 
         <div className="contentPages">

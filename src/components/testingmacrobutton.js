@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { v4 as uuid } from "uuid";
 import { MdOutlineClose } from "react-icons/md";
-import { useDispatch } from "react-redux";
 import { AnimatePresence, motion } from "framer-motion";
 import toast from "react-hot-toast";
-import { addMacro, updateMacro } from "./macroSlice";
 import styles from "../styles/modules/modal.module.scss";
 import Button from "../todolistComponents/Button";
-import AddToMacroButton from "./AddToMacroButton";
 
 const dropIn = {
   hidden: {
@@ -30,23 +26,23 @@ const dropIn = {
   },
 };
 
-function MacroModal({ type, modalOpen, setModalOpen, macro, updateMacro }) {
-  const dispatch = useDispatch();
+function MacroModal({modalOpen, setModalOpen, macro, updateMacro }) {
   const [name, setName] = useState("");
   const [route, setRoute] = useState("");
+  const [args, setArgs] = useState("");
 
   useEffect(() => {
-    if (type === "update" && macro) {
-      setName(macro.name);
-      setRoute(macro.route);
-    } else {
-      setName("");
-      setRoute("");
-    }
-  }, [type, macro, modalOpen]);
 
+  }, [ macro, modalOpen]);
+
+  useEffect(() => {
+    console.log(name)
+    console.log(route)
+  }, [name, route])
+  
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log("submitting")
     if (name === "") {
       toast.error("Please enter a name for the macro");
       return;
@@ -56,30 +52,16 @@ function MacroModal({ type, modalOpen, setModalOpen, macro, updateMacro }) {
       return;
     }
     if (name && route) {
-      if (type === "add") {
-        dispatch(
-          addMacro({
-            id: uuid(),
-            name,
-            route,
-            time: new Date().toLocaleString(),
-          })
-        );
-        // updateMacro((prevMacro) => [...prevMacro, newMacro]);
-        toast.success("Macro added successfully");
-      }
-      if (type === "update") {
-        if (macro.name !== name || macro.route !== route) {
-          dispatch(updateMacro({ ...macro, name, route }));
-          toast.success("Macro updated successfully");
-        } else {
-          toast.error("No changes made");
-          return;
-        }
-      }
-      setModalOpen(false);
+      updateMacro((oldMacro) => [...oldMacro, {
+        id: String(macro.length + 1),
+        name: name,
+        route: route,
+        arguments: args ? args.split(" ") : []
+      }]);
     }
-  };
+    setModalOpen(false);
+  }
+
 
   const handleOpenFileDialog = async () => {
     try {
@@ -120,7 +102,7 @@ function MacroModal({ type, modalOpen, setModalOpen, macro, updateMacro }) {
             </motion.div>
             <form className={styles.form} onSubmit={(e) => handleSubmit(e)}>
               <h1 className={styles.formTitle}>
-                {type === "add" ? "Add" : "Update"} Macro
+                Add Macro
               </h1>
               <label htmlFor="name">
                 Name
@@ -142,9 +124,18 @@ function MacroModal({ type, modalOpen, setModalOpen, macro, updateMacro }) {
                 />
                 <Button onClick={handleOpenFileDialog}>Browse</Button>
               </label>
+              <label htmlFor="args">
+                Arguments
+                <input
+                  type="text"
+                  id="args"
+                  value={args}
+                  onChange={(e) => setArgs(e.target.value)}
+                />
+              </label>
               <div className={styles.buttonContainer}>
-                <Button type="submit" variant="primary">
-                  {type === "add" ? "Add Macro" : "Update Macro"}
+                <Button type="submit" onSubmit={handleSubmit} variant="primary">
+                  Add Macro
                 </Button>
                 <Button variant="secondary" onClick={() => setModalOpen(false)}>
                   Cancel

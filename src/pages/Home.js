@@ -13,7 +13,9 @@ import Button from "../todolistComponents/Button";
 
 // const store = new Store();
 
+
 export default function Home({ electron }) {
+  const [modalOpen, setModalOpen] = useState(false);
   const [macro, updateMacro] = useState([
     {
       id: "1",
@@ -59,18 +61,23 @@ export default function Home({ electron }) {
 
   return (
     <div className="mainApp">
-      <Navbar electron={electron} toggleLeftMenu={toggleLeftMenu} />
+      <Navbar macro={macro}
+        updateMacro={updateMacro}
+        electron={electron}
+        toggleLeftMenu={toggleLeftMenu} />
 
       <div
         className={`contentArea ${isLeftMenuActive ? "" : "sidebar-closed"}`}
       >
         <div id="mySidebar" className="leftMenu">
-          <>
-            <div className="leftMenuHeader">Saved Macros</div>
+        <div style={{display : "flex", flexDirection: "column"}}>
+            <div className="leftMenuHeader">Saved Workflow</div>
 
             {/* <button className="button">a macro button</button> */}
-            <Button variant="primary"> a macro button</Button>
-          </>
+            <div><Button variant="primary">Work</Button><Button>Run Macro</Button></div>
+            <Button variant="primary">Gaming</Button>
+            <Button variant="primary">Other</Button>
+          </div>
         </div>
 
         <div className="contentPages">
@@ -86,7 +93,10 @@ export default function Home({ electron }) {
               Notify
             </button>
             <RunMacroButton macro={macro} />
-            <AddToMacroButton macro={macro} updateMacro={updateMacro} />
+            <Button variant="primary" id="macro" onClick={() => setModalOpen(true)}>
+              Add to Macro
+            </Button>
+            <AddToMacroButton modalOpen={modalOpen} setModalOpen={setModalOpen} macro={macro} updateMacro={updateMacro} />
             <FileOpenButton />
             <DragAndDrop macro={macro} updateMacro={updateMacro} />
           </div>
