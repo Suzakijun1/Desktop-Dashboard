@@ -13,7 +13,6 @@ import Button from "../todolistComponents/Button";
 
 // const store = new Store();
 
-
 export default function Home({ electron }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [macro, updateMacro] = useState([
@@ -61,20 +60,27 @@ export default function Home({ electron }) {
 
   return (
     <div className="mainApp">
-      <Navbar macro={macro}
+      <Navbar
+        macro={macro}
         updateMacro={updateMacro}
         electron={electron}
-        toggleLeftMenu={toggleLeftMenu} />
+        toggleLeftMenu={toggleLeftMenu}
+      />
 
       <div
         className={`contentArea ${isLeftMenuActive ? "" : "sidebar-closed"}`}
       >
         <div id="mySidebar" className="leftMenu">
-        <div style={{display : "flex", flexDirection: "column"}}>
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "15px" }}
+          >
             <div className="leftMenuHeader">Saved Workflow</div>
 
             {/* <button className="button">a macro button</button> */}
-            <div><Button variant="primary">Work</Button><Button>Run Macro</Button></div>
+            <div>
+              <Button variant="primary">Work</Button>
+              <Button>Run Macro</Button>
+            </div>
             <Button variant="primary">Gaming</Button>
             <Button variant="primary">Other</Button>
           </div>
@@ -93,10 +99,19 @@ export default function Home({ electron }) {
               Notify
             </button>
             <RunMacroButton macro={macro} />
-            <Button variant="primary" id="macro" onClick={() => setModalOpen(true)}>
+            <Button
+              variant="primary"
+              id="macro"
+              onClick={() => setModalOpen(true)}
+            >
               Add to Macro
             </Button>
-            <AddToMacroButton modalOpen={modalOpen} setModalOpen={setModalOpen} macro={macro} updateMacro={updateMacro} />
+            <AddToMacroButton
+              modalOpen={modalOpen}
+              setModalOpen={setModalOpen}
+              macro={macro}
+              updateMacro={updateMacro}
+            />
             <FileOpenButton />
             <DragAndDrop macro={macro} updateMacro={updateMacro} />
           </div>

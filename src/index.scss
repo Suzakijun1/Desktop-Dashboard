@@ -1,5 +1,7 @@
 h1 {
-    color: var(--primaryPurple)
+    color: var(--primaryPurple);
+	display: flex;
+	justify-content: center;
 }
 
 *,

@@ -1,44 +1,88 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ReactWeather, { useWeatherBit } from "react-open-weather";
+import cities from "./cities.json";
 
 const Weather = () => {
-  // const [lat, setLat] = useState(null);
-  // const [lng, setLng] = useState(null);
-  // const [status, setStatus] = useState(null);
+  const [city, setCity] = useState("");
+  const [searchedCity, setSearchedCity] = useState(""); // Separate state for the searched city
+  const [latitude, setLatitude] = useState("");
+  const [longitude, setLongitude] = useState("");
+  const [query, setQuery] = useState("");
 
-  // const getLocation = () => {
-  //   if (!navigator.geolocation) {
-  //     setStatus('Geolocation is not supported by your browser');
-  //   } else {
-  //     setStatus('Locating...');
-  //     navigator.geolocation.getCurrentPosition((position) => {
-  //       setStatus(null);
-  //       setLat(position.coords.latitude);
-  //       setLng(position.coords.longitude);
-  //     }, () => {
-  //       setStatus('Unable to retrieve your location');
-  //     });
-  //   }
-  // }
   const { data, isLoading, errorMessage } = useWeatherBit({
     key: "e865491682014a589731e8dfce8a4683",
-    lat: "48.137154",
-    lon: "11.576124",
+    lat: latitude,
+    lon: longitude,
     lang: "en",
-    unit: "M", // values are (M,S,I)
+    unit: "M",
   });
+
+  useEffect(() => {
+    const savedCity = localStorage.getItem("weatherAppCity");
+    if (savedCity) {
+      setCity(savedCity);
+      setSearchedCity(savedCity); // Update the searched city state
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!latitude && !longitude) {
+      const selectedCity = cities.find(
+        (c) => c.name.toLowerCase() === city.toLowerCase()
+      );
+      if (selectedCity) {
+        setLatitude(selectedCity.lat);
+        setLongitude(selectedCity.lng);
+      }
+    } else {
+      setQuery({
+        lat: latitude,
+        lon: longitude,
+        city: "",
+      });
+      localStorage.setItem("weatherAppCity", city);
+    }
+  }, [latitude, longitude, setQuery, city]);
+
+  const handleCitySearch = () => {
+    const selectedCity = cities.find(
+      (c) => c.name.toLowerCase() === city.toLowerCase()
+    );
+    if (selectedCity) {
+      setLatitude(selectedCity.lat);
+      setLongitude(selectedCity.lng);
+      setSearchedCity(selectedCity.name); // Update the searched city state
+    }
+  };
 
   return (
     <div style={{ width: "50%" }}>
+      <h1>Weather</h1>
+      {/* <div>
+        <input
+          type="text"
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
+          placeholder="Enter city name"
+        />
+        <button onClick={handleCitySearch}>Search</button>
+      </div> */}
       <ReactWeather
         isLoading={isLoading}
         errorMessage={errorMessage}
         data={data}
         lang="en"
-        locationLabel="Munich"
+        locationLabel={searchedCity} // Use searchedCity as the locationLabel
         unitsLabels={{ temperature: "C", windSpeed: "Km/h" }}
         showForecast
       />
+      <input
+        type="text"
+        value={city}
+        onChange={(e) => setCity(e.target.value)}
+        placeholder="Enter city name"
+      />
+      <button onClick={handleCitySearch}>Search</button>
     </div>
   );
 };
