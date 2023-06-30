@@ -207,24 +207,7 @@ ipcMain.handle("save-file-dialog", async (event) => {
   return items; // Return the item
 });
 
-// const openAllItems = () => {
-//   const result = storage.get("result");
-//   console.log(result);
-// if (result && Array.isArray(result)) {
-//   result.forEach((item) => {
-//     shell
-//       .openPath(item)
-//       .then(() => {
-//         console.log(`Successfully opened: ${item}`);
-//       })
-//       .catch((error) => {
-//         console.error(`Error opening: ${item}`, error);
-//       });
-//   });
-// }
-// };
 
-// Fetch and display emails when the window loads
 
 async function authenticate() {
   // Load credentials from a file or environment variables

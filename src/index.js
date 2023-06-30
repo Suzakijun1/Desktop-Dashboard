@@ -15,9 +15,6 @@ const root = createRoot(rootElement);
 
 const electron = window.electron;
 
-// const mySidebarElement = document.getElementById("mySidebar");
-// const mySidebar = createRoot(mySidebarElement);
-// mySidebar.render(<Sidebar />);
 root.render(
   <Provider store={store}>
     <App electron={electron} />
