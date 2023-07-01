@@ -12,7 +12,7 @@ html, body{
 /* APP BASE */
 .mainApp {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     flex-wrap: nowrap;
     width: 100%;
     height: 100%;
@@ -21,7 +21,7 @@ html, body{
     box-sizing: border-box;
 }
 
-.mainApp > .topBar {
+.topBar {
     display: flex;
     flex-direction: row;
     width: 100%;
@@ -30,6 +30,7 @@ html, body{
     background-color: #1B1D23;
     -webkit-user-select: none;
 }
+
 
 .topBar > .titleBar {
     display: flex;
@@ -123,10 +124,10 @@ html, body{
     display: flex;
     flex-direction: row;
     width: 100%;
-    height: 600px;
+    height: 100%;
 }
 
-.contentArea > .leftMenu {
+.leftMenu {
     position: relative;
     width: 240px;
     left: 0;
@@ -175,7 +176,7 @@ html, body{
 
 
 /* Uncomment this to make the whole screen move when opening the saved macros */
-/* .contentArea.sidebar-closed {
+.contentArea.sidebar-closed {
     margin-left: -240px;
   }
   .contentArea {
@@ -184,4 +185,4 @@ html, body{
     width: 100%;
     height: 100%;
     transition: 0.4s ease-in-out;
-  } */
+  }

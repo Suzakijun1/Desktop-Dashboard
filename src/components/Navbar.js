@@ -3,14 +3,9 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import TestingMacroModal from "./testingmacrobutton";
 import Button from "../todolistComponents/Button";
 
-export default function Navbar({ electron, macro, updateMacro}) {
-  const [isLeftMenuActive, setIsLeftMenuActive] = useState(true);
+export default function Navbar({ electron, macro, updateMacro, toggleLeftMenu, isLeftMenuActive }) {
   const [isMaximizedApp, setIsMaximizedApp] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
 
-  const toggleLeftMenu = () => {
-    setIsLeftMenuActive((prevIsLeftMenuActive) => !prevIsLeftMenuActive);
-  };
 
   const handleCloseApp = () => {
     electron.closeApp();
