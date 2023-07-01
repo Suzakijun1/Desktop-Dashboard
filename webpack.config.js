@@ -6,6 +6,10 @@ module.exports = {
   entry: "./src/index.js",
   devtool: "inline-source-map",
   target: "electron-renderer",
+  node: {
+    __filename: true,
+    __dirname: true,
+  },
   module: {
     rules: [
       {

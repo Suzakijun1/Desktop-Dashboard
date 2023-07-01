@@ -20,21 +20,40 @@ const Store = require("electron-store");
 const storage = new Store();
 const { google } = require("googleapis");
 const schedule = require("node-schedule");
-const CronParser = require("cron-parser");
+const notifier = require("node-notifier");
 
 function setupSchedule(data) {
   const { notificationTime, title } = data;
+  // Cancel the existing job if it exists
 
   const job = schedule.scheduleJob(notificationTime, function () {
+    // if (notificationCount === 0) {
     const notification = new Notification({
       title: "To-Do-List notification!!",
       body: title,
     });
-
+    console.log(job);
     notification.show();
     job.cancel();
   });
 }
+//   const currentDate = new Date();
+//   const scheduledTime = new Date(notificationTime);
+
+//   const timeDiff = scheduledTime.getTime() - currentDate.getTime();
+
+//   if (timeDiff <= 0) {
+//     // The notification time has already passed, do not schedule the notification
+//     return;
+//   }
+
+//   setTimeout(function () {
+//     notifier.notify({
+//       title: "To-Do-List notification!!",
+//       message: title,
+//     });
+//   }, timeDiff);
+// }
 ipcMain.on("scheduler", (event, notificationTime) => {
   setupSchedule(notificationTime);
   event.sender.send("scheduler", notificationTime);

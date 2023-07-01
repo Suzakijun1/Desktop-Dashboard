@@ -143,6 +143,7 @@ function TodoModal({ type, modalOpen, setModalOpen, todo }) {
                   onChange={(e) => {
                     setNotificationTime(e.target.value),
                       electron.toDoNotification(data);
+                    console.log(data);
                   }} // send notification time to main process
                 />
               </label>
