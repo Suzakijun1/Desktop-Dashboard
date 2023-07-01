@@ -20,42 +20,33 @@ const Store = require("electron-store");
 const storage = new Store();
 const { google } = require("googleapis");
 const schedule = require("node-schedule");
-const notifier = require("node-notifier");
 
-function setupSchedule(data) {
+//TO-DO-LIST NOTIFICATION CODE
+ipcMain.on("scheduler", (event, data) => {
   const { notificationTime, title } = data;
-  // Cancel the existing job if it exists
+  console.log(data);
 
-  const job = schedule.scheduleJob(notificationTime, function () {
-    // if (notificationCount === 0) {
+  const currentDate = new Date();
+  console.log("the current date is " + currentDate);
+
+  const scheduledTime = new Date(notificationTime);
+  console.log("the selected schedule time is " + scheduledTime);
+  const timeDiff = scheduledTime.getTime() - currentDate.getTime();
+  console.log("the notification will play in " + timeDiff + " milliseconds");
+  if (timeDiff <= 0) {
+    // The notification time has already passed, do not schedule the notification
+    return;
+  }
+
+  setTimeout(() => {
     const notification = new Notification({
       title: "To-Do-List notification!!",
       body: title,
     });
-    console.log(job);
+
     notification.show();
-    job.cancel();
-  });
-}
-//   const currentDate = new Date();
-//   const scheduledTime = new Date(notificationTime);
+  }, timeDiff);
 
-//   const timeDiff = scheduledTime.getTime() - currentDate.getTime();
-
-//   if (timeDiff <= 0) {
-//     // The notification time has already passed, do not schedule the notification
-//     return;
-//   }
-
-//   setTimeout(function () {
-//     notifier.notify({
-//       title: "To-Do-List notification!!",
-//       message: title,
-//     });
-//   }, timeDiff);
-// }
-ipcMain.on("scheduler", (event, notificationTime) => {
-  setupSchedule(notificationTime);
   event.sender.send("scheduler", notificationTime);
 });
 

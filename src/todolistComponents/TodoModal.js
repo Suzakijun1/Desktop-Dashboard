@@ -47,6 +47,8 @@ function TodoModal({ type, modalOpen, setModalOpen, todo }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    electron.toDoNotification(data);
+    console.log(data);
 
     if (title === "") {
       toast.error("Please enter a title");
@@ -141,10 +143,8 @@ function TodoModal({ type, modalOpen, setModalOpen, todo }) {
                   id="time"
                   value={notificationTime}
                   onChange={(e) => {
-                    setNotificationTime(e.target.value),
-                      electron.toDoNotification(data);
-                    console.log(data);
-                  }} // send notification time to main process
+                    setNotificationTime(e.target.value);
+                  }}
                 />
               </label>
               <div className={styles.buttonContainer}>
