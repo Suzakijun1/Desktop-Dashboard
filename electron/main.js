@@ -20,17 +20,19 @@ const Store = require("electron-store");
 const storage = new Store();
 const { google } = require("googleapis");
 const schedule = require("node-schedule");
+const CronParser = require("cron-parser");
 
 function setupSchedule(data) {
   const { notificationTime, title } = data;
 
-  schedule.scheduleJob(notificationTime, function () {
+  const job = schedule.scheduleJob(notificationTime, function () {
     const notification = new Notification({
       title: "To-Do-List notification!!",
       body: title,
     });
 
     notification.show();
+    job.cancel();
   });
 }
 ipcMain.on("scheduler", (event, notificationTime) => {
@@ -224,8 +226,6 @@ ipcMain.handle("save-file-dialog", async (event) => {
 
   return items; // Return the item
 });
-
-
 
 async function authenticate() {
   // Load credentials from a file or environment variables
