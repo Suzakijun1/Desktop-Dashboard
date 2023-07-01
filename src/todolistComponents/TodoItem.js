@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 import React, { useEffect, useState } from "react";
@@ -47,6 +47,15 @@ function TodoItem({ todo }) {
     setUpdateModalOpen(true);
   };
 
+  console.log("this is todo notificationtime: " + todo.notificationTime);
+
+  const formattedNotificationTime = `${todo.notificationTime}:00.000`;
+
+  // Parse the formatted notificationTime value
+  const parsedNotificationTime = parseISO(formattedNotificationTime);
+
+  console.log("this is parsed " + parsedNotificationTime);
+
   return (
     <>
       <motion.div className={styles.item} variants={child}>
@@ -66,6 +75,15 @@ function TodoItem({ todo }) {
             </p>
           </div>
         </div>
+
+        <p className={styles.time}>
+          {todo.notificationTime === ""
+            ? "Notification was not provided"
+            : `Notification Time: ${format(
+                new Date(parsedNotificationTime),
+                "p, MM/dd/yyyy"
+              )}`}
+        </p>
         <div className={styles.todoActions}>
           <div
             className={styles.icon}

@@ -25,6 +25,10 @@ const schedule = require("node-schedule");
 ipcMain.on("scheduler", (event, data) => {
   const { notificationTime, title } = data;
   console.log(data);
+  if (!notificationTime) {
+    // Empty notificationTime, do not schedule the notification
+    return;
+  }
 
   const currentDate = new Date();
   console.log("the current date is " + currentDate);

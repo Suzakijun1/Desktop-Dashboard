@@ -48,7 +48,9 @@ function TodoModal({ type, modalOpen, setModalOpen, todo }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     electron.toDoNotification(data);
+    console.log("this is notificationTime" + notificationTime);
     console.log(data);
+    console.log("this is time" + time);
 
     if (title === "") {
       toast.error("Please enter a title");
@@ -62,6 +64,7 @@ function TodoModal({ type, modalOpen, setModalOpen, todo }) {
             title,
             status,
             time: new Date().toLocaleString(),
+            notificationTime: notificationTime,
           })
         );
         toast.success("Task added successfully");
