@@ -19,6 +19,10 @@ contextBridge.exposeInMainWorld("electron", {
       ipcRenderer.send("notify", message);
     },
   },
+  toDoNotification: (notificationTime) => {
+    ipcRenderer.send("scheduler", notificationTime);
+    console.log("notification scheduled");
+  },
   openApp(route, args) {
     ipcRenderer.send("openApp", route, args);
   },

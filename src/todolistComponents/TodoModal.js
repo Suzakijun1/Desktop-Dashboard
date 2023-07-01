@@ -33,6 +33,7 @@ function TodoModal({ type, modalOpen, setModalOpen, todo }) {
   const dispatch = useDispatch();
   const [title, setTitle] = useState("");
   const [status, setStatus] = useState("incomplete");
+  const [notificationTime, setNotificationTime] = useState("");
 
   useEffect(() => {
     if (type === "update" && todo) {
@@ -46,6 +47,7 @@ function TodoModal({ type, modalOpen, setModalOpen, todo }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     if (title === "") {
       toast.error("Please enter a title");
       return;
@@ -74,7 +76,10 @@ function TodoModal({ type, modalOpen, setModalOpen, todo }) {
       setModalOpen(false);
     }
   };
-
+  const data = {
+    notificationTime,
+    title,
+  };
   return (
     <AnimatePresence>
       {modalOpen && (
@@ -128,6 +133,18 @@ function TodoModal({ type, modalOpen, setModalOpen, todo }) {
                   <option value="incomplete">Incomplete</option>
                   <option value="complete">Completed</option>
                 </select>
+              </label>
+              <label htmlFor="time">
+                Notification Time
+                <input
+                  type="datetime-local"
+                  id="time"
+                  value={notificationTime}
+                  onChange={(e) => {
+                    setNotificationTime(e.target.value),
+                      electron.toDoNotification(data);
+                  }} // send notification time to main process
+                />
               </label>
               <div className={styles.buttonContainer}>
                 <Button type="submit" variant="primary">

@@ -15,17 +15,20 @@ import "./styles/styles.css";
 // import Home from "./pages/Home";
 
 export default function App({ electron }) {
-  useEffect(() => { 
-    console.log(window.location.href)
+  useEffect(() => {
+    console.log(window.location.href);
   }, []);
 
   return (
     <HashRouter>
       <Routes>
-        
         <Route exact path="/" element={<Playtest />} />
         <Route exact path="/macro" element={<Home electron={electron} />} />
-        <Route exact path="/todolist" element={<ToDoList />} />
+        <Route
+          exact
+          path="/todolist"
+          element={<ToDoList electron={electron} />}
+        />
       </Routes>
     </HashRouter>
   );

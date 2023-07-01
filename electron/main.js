@@ -19,6 +19,24 @@ const {
 const Store = require("electron-store");
 const storage = new Store();
 const { google } = require("googleapis");
+const schedule = require("node-schedule");
+
+function setupSchedule(data) {
+  const { notificationTime, title } = data;
+
+  schedule.scheduleJob(notificationTime, function () {
+    const notification = new Notification({
+      title: "To-Do-List notification!!",
+      body: title,
+    });
+
+    notification.show();
+  });
+}
+ipcMain.on("scheduler", (event, notificationTime) => {
+  setupSchedule(notificationTime);
+  event.sender.send("scheduler", notificationTime);
+});
 
 function createWindow() {
   const bounds = getWindowSettings();
@@ -65,7 +83,7 @@ function createWindow() {
       win.webContents.send("emails", emails);
     } catch (error) {
       console.error("Error fetching emails:", error);
-      if(error.code === 401) {
+      if (error.code === 401) {
         storage.delete("token");
         win.webContents.send("login");
       }
