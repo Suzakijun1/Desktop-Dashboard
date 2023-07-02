@@ -73,9 +73,12 @@ function createWindow() {
       worldSafeExecuteJavaScript: true,
       //each renderer process operates within its own separate JavaScript context, preventing scripts injected into web content from accessing Electron-specific APIs directly and adds and extra layer of security
       contextIsolation: true,
+      contentSecurityPolicy:
+        "default-src 'self'; script-src 'self' 'unsafe-inline';",
       preload: path.join(__dirname, "preload.js"),
     },
   });
+
   win.on("resize", () => saveBounds(win.getSize()));
   win.on("moved", () => savePosition(win.getPosition()));
 

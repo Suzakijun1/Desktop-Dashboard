@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Button from "../todolistComponents/Button";
-import { Link, useHistory } from "react-router-dom";
+import TestFlow from "../pages/TestFlow";
 
-export default function Sidebar({ isLeftMenuActive }) {
+export default function Sidebar({ isLeftMenuActive, updateMainWindow }) {
   const [workflows, setWorkflows] = useState(["Work", "Gaming", "Other"]);
   const [newWorkflowName, setNewWorkflowName] = useState("");
-  //   const history = useHistory();
+  const [selectedWorkflow, setSelectedWorkflow] = useState("");
+
+  const [showTestFlow, setShowTestFlow] = useState(false);
+
   useEffect(() => {
     const showHideMenus = document.getElementById("showHideMenus");
     const mySidebar = document.getElementById("mySidebar");
@@ -26,11 +29,16 @@ export default function Sidebar({ isLeftMenuActive }) {
     if (newWorkflowName.trim() !== "") {
       setWorkflows([...workflows, newWorkflowName]);
       setNewWorkflowName("");
-      handleWorkflowSelect(newWorkflowName);
-      //   history.push(`/workflow/${newWorkflowName}`);
+      setSelectedWorkflow(newWorkflowName);
     }
   };
 
+  const performActionBasedOnSelectedWorkflow = (workflow) => {
+    setSelectedWorkflow(workflow);
+    setShowTestFlow(true);
+    updateMainWindow(`New content for ${workflow}`);
+    console.log("updated main window content" + updateMainWindow);
+  };
   return (
     <div id="mySidebar" className="leftMenu" style={{ minHeight: "90vh" }}>
       <div className="leftMenuHeader">Saved Workflows</div>
@@ -43,12 +51,20 @@ export default function Sidebar({ isLeftMenuActive }) {
         }}
       >
         {workflows.map((workflow, index) => (
-          <Link key={index} to={`/workflow/${workflow}`}>
-            <Button key={index} variant="primary">
-              {workflow}
-            </Button>
-          </Link>
+          <Button
+            key={index}
+            variant="primary"
+            onClick={() => {
+              setSelectedWorkflow(workflow);
+              console.log("button clicked");
+              console.log(workflow);
+              performActionBasedOnSelectedWorkflow(workflow);
+            }}
+          >
+            {workflow}
+          </Button>
         ))}
+        {showTestFlow && <TestFlow workflow={selectedWorkflow} />}
         <div
           className="addWorkflow-button"
           style={{ marginTop: "auto", display: "flex" }}
