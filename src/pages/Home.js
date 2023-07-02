@@ -16,16 +16,20 @@ import Button from "../todolistComponents/Button";
 export default function Home({ electron, macro, updateMacro }) {
   const [modalOpen, setModalOpen] = useState(false);
 
-
   return (
-
-      <div className="container">
-        <h1>Welcome to my Macro Dashboard!</h1>
-        <Button variant="primary" id="macro" onClick={() => setModalOpen(true)}>
-          Add to Macro
-        </Button>
-        <AddToMacroButton modalOpen={modalOpen} setModalOpen={setModalOpen} macro={macro} updateMacro={updateMacro} />
-        <DragAndDrop macro={macro} updateMacro={updateMacro} />
-      </div>
+    <div className="container">
+      <h1>Macro Flow</h1>
+      <Button variant="primary" id="macro" onClick={() => setModalOpen(true)}>
+        Add to Macro
+      </Button>
+      <AddToMacroButton
+        modalOpen={modalOpen}
+        setModalOpen={setModalOpen}
+        macro={macro}
+        updateMacro={updateMacro}
+      />
+      <RunMacroButton macro={macro} />
+      <DragAndDrop macro={macro} updateMacro={updateMacro} />
+    </div>
   );
 }

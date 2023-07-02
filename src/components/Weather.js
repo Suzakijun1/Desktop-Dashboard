@@ -56,7 +56,7 @@ const Weather = () => {
   };
 
   return (
-    <div style={{ width: "50%" }}>
+    <div style={{ width: "75%" }}>
       <h1>Weather</h1>
       {/* <div>
         <input

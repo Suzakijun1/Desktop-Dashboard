@@ -13,10 +13,17 @@ import Playtest from "./pages/Playtest.js";
 import ToDoList from "./pages/ToDoList.js";
 import Sidebar from "./components/Sidebar";
 import "./styles/styles.css";
+import TestFlow from "./pages/TestFlow";
 
 // import Home from "./pages/Home";
 
 export default function App({ electron }) {
+  const [selectedWorkflow, setSelectedWorkflow] = useState("");
+
+  const handleWorkflowSelect = (workflow) => {
+    setSelectedWorkflow(workflow);
+  };
+  console.log("selectedWorkflow", selectedWorkflow);
   const [isLeftMenuActive, setIsLeftMenuActive] = useState(true);
   const [macro, updateMacro] = useState([
     {
@@ -78,6 +85,11 @@ export default function App({ electron }) {
                   }
                 />
                 <Route exact path="/todolist" element={<ToDoList />} />
+                <Route
+                  exact
+                  // path="/workflow/:workflowName"
+                  element={<TestFlow />}
+                />
               </Routes>
             </div>
           </div>
