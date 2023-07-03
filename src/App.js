@@ -14,68 +14,25 @@ import ToDoList from "./pages/ToDoList.js";
 import Sidebar from "./components/Sidebar";
 import "./styles/styles.css";
 import TestFlow from "./pages/TestFlow";
-import { set } from "date-fns";
-// import {useHistory} from "react-router"
-// import Home from "./pages/Home";
+import wf from "./config/workflows.json";
+import deepEqual from "deep-equal";
 
 
 
 export default function App({ electron }) {
-  const workflows = [
-    {
-      name: "Work",
-      macro: [{
-        id: "1",
-        name: "Chrome",
-        route: "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
-        arguments: ["https://www.google.com"],
-      },
-      {
-        id: "2",
-        name: "Mozilla Firefox",
-        route: "C:\\Program Files\\Mozilla Firefox\\firefox.exe",
-        arguments: ["https://www.google.com"],
-      },
-      {
-        id: "3",
-        name: "Notepad",
-        route: "C:\\Windows\\notepad.exe",
-        arguments: [],
-      }]
-    },
-    {
-      name: "Gaming",
-      macro: [{
-        id: "2",
-        name: "Reddit",
-        route: "C:\\Program Files\\Mozilla Firefox\\firefox.exe",
-        arguments: ["https://www.reddit.com"],
-      },
-      {
-        id: "3",
-        name: "Notepad",
-        route: "C:\\Windows\\notepad.exe",
-        arguments: [],
-      }]
-    },
-    {
-      name: "Other",
-      macro: [
-      {
-        id: "3",
-        name: "Notepad",
-        route: "C:\\Windows\\notepad.exe",
-        arguments: [],
-      }]
-    },
-  ]
+  const [workflowList, setWorkflowList] = useState(wf);
   const [isLeftMenuActive, setIsLeftMenuActive] = useState(true);
-  const [workflow, setWorkflow] = useState(workflows[0]);
+  const [workflow, setWorkflow] = useState(workflowList[0]);
 
   const toggleLeftMenu = () => {
     setIsLeftMenuActive((prevIsLeftMenuActive) => !prevIsLeftMenuActive);
   };
 
+  useEffect(() => {
+      if(deepEqual(workflowList[workflow.id - 1], workflow)) return;
+      workflowList[workflow.id - 1] = workflow;
+      electron.writeFile("./src/config/workflows.json", JSON.stringify(workflowList))
+  }, [workflow]);
 
   return (
     <div>
@@ -87,7 +44,7 @@ export default function App({ electron }) {
         <div className="mainApp">
           <Sidebar
             isLeftMenuActive={isLeftMenuActive}
-            workflows={workflows}
+            workflowList={workflowList}
             toggleLeftMenu={toggleLeftMenu}
             setWorkflow={setWorkflow}
           />
@@ -110,11 +67,6 @@ export default function App({ electron }) {
                   }
                 />
                 <Route exact path="/todolist" element={<ToDoList />} />
-                <Route
-                  exact
-                  // path="/workflow/:workflowName"
-                  element={<TestFlow />}
-                />
               </Routes>
             </div>
           </div>

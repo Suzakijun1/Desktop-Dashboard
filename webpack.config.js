@@ -47,13 +47,13 @@ module.exports = {
     ],
   },
   // plugins: [
-  //   new ProvidePlugin({
-  //     process: "process/browser",
-  //   }),
-  // ],
-
-  resolve: {
-    extensions: [".js"],
+    //   new ProvidePlugin({
+      //     process: "process/browser",
+      //   }),
+      // ],
+      
+      resolve: {
+        extensions: [".js"],
   },
   output: {
     filename: "app.js",

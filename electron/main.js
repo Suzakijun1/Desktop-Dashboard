@@ -163,10 +163,12 @@ function createWindow() {
 
 //if the application is running in development mode('isDev' is 'true'), this code sets up 'electron-reload'. (auto reload of electron app when changes are made)
 if (isDev) {
-  require("electron-reload")(path.join(__dirname, ".."), {
-    electron: path.join(__dirname, "..", "node_modules", ".bin", "electron"),
-  });
+  // require("electron-reload")(path.join(__dirname, ".."), {
+  //   electron: path.join(__dirname, "..", "node_modules", ".bin", "electron"),
+  // });
+  require('electron-reload')(__dirname, {ignored: /\.\.src\/config|[\/\\]\./});
 }
+
 //this code listens for an IPC(Inter-Process Communication) event called 'notify' and creates a new notification with the message that was passed in.
 ipcMain.on("notify", (_, message) => {
   new Notification({ title: "Notification", body: message }).show();
@@ -180,6 +182,14 @@ ipcMain.on("openApp", (_, route, args) => {
     console.error(`Error executing App: ${error.message}`);
   });
 });
+
+ipcMain.on("writeFile", (_, path, data) => {
+  fs.writeFileSync(path, data, (err) => {
+    if (err) throw err;
+    console.log("The file has been saved!");
+  });
+})
+  
 
 //this code starts up the Electron application.
 app.whenReady().then(() => {

@@ -29,7 +29,10 @@ export default function Home({ electron, workflow, setWorkflow }) {
         workflow={workflow}
         setWorkflow={setWorkflow}
       />
-      <RunMacroButton workflow={workflow} />
+      <RunMacroButton 
+      workflow={workflow} 
+      electron={electron}
+      />
       <DragAndDrop workflow={workflow} setWorkflow={setWorkflow} />
     </div>
   );

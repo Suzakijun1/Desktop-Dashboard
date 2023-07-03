@@ -26,6 +26,9 @@ contextBridge.exposeInMainWorld("electron", {
   openApp(route, args) {
     ipcRenderer.send("openApp", route, args);
   },
+  writeFile(path, data) {
+    ipcRenderer.send("writeFile", path, data);
+  },
   batteryApi: {},
   filesApi: {},
   minimizeApp: () => {
