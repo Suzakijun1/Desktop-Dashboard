@@ -28,15 +28,12 @@ const dropIn = {
     },
   };
 
-export default function AddToMacroButton({ modalOpen, setModalOpen, macro, updateMacro }) {
+export default function AddToMacroButton({ modalOpen, setModalOpen, workflow, setWorkflow }) {
     
     const [name, setName] = useState("");
     const [route, setRoute] = useState("");
     const [args, setArgs] = useState("");
 
-    useEffect(() => {
-
-    }, [macro, modalOpen]);
 
     useEffect(() => {
         console.log(name)
@@ -55,12 +52,17 @@ export default function AddToMacroButton({ modalOpen, setModalOpen, macro, updat
             return;
         }
         if (name && route) {
-            updateMacro((oldMacro) => [...oldMacro, {
-                id: String(macro.length + 1),
-                name: name,
-                route: route,
-                arguments: args ? args.split(" ") : []
-            }]);
+            setWorkflow((oldWorkflow) =>  {
+                return {   
+                    ...oldWorkflow,
+                    macro : [...oldWorkflow.macro, {
+                    id: String(oldWorkflow.macro.length + 1),
+                    name: name,
+                    route: route,
+                    arguments: args ? args.split(" ") : []
+                    }]
+                }
+            })
         }
         setModalOpen(false);
     }

@@ -6,22 +6,27 @@ import { useEffect } from 'react';
 
 
 
-export default function DragAndDrop({macro, updateMacro}) {
+export default function DragAndDrop({workflow, setWorkflow}) {
     
 
     function handleOnDragEnd(result) {
         if (!result.destination) return;
-        const items = Array.from(macro);
+        const items = Array.from(workflow.macro);
         const [reorderedItem] = items.splice(result.source.index, 1);
         items.splice(result.destination.index, 0, reorderedItem);
 
-        updateMacro(items);
+        setWorkflow((oldWorkflow) => {
+            return {
+                ...oldWorkflow,
+                macro: items
+            }
+        });
 
     }
 
     useEffect(() => {
-        console.log(macro)
-    }, [macro]);
+        console.log(workflow)
+    }, [workflow.macro]);
 
 
 
@@ -35,7 +40,7 @@ export default function DragAndDrop({macro, updateMacro}) {
                         {...provided.droppableProps}
                         ref={provided.innerRef}
                     >
-                        {macro.map(({ id, name }, index) => {
+                        {workflow.macro.map(({ id, name }, index) => {
                             return (
                                 <Draggable key={id} draggableId={id} index={index}>
                                     {(provided) => (
@@ -46,9 +51,14 @@ export default function DragAndDrop({macro, updateMacro}) {
                                         >
                                             {index+1 + ". " + name}
                                             <button className='delete-button' onClick={() => {
-                                                const items = Array.from(macro);
+                                                const items = Array.from(workflow.macro);
                                                 items.splice(index, 1);
-                                                updateMacro(items);
+                                                setWorkflow((oldWorkflow) => {
+                                                    return {
+                                                        ...oldWorkflow,
+                                                        macro: items
+                                                    }
+                                                });
                                             }}>X</button>
                                         </li>
                                     )}

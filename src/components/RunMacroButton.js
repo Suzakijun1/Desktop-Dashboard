@@ -1,12 +1,12 @@
 import React from "react";
 
-export default function RunMacroButton({macro}){
+export default function RunMacroButton({workflow, electron}){
 
 
     return(
         <div>
             <button onClick={() => {
-                macro.forEach((app) => {
+                workflow.macro.forEach((app) => {
                     electron.openApp(app.route, app.arguments);
                 }
                 )

@@ -4,6 +4,7 @@ import FileOpenButton from "../components/FileOpenButton";
 import RunMacroButton from "../components/RunMacroButton";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import AddToMacroButton from "../components/AddToMacroButton";
+
 import Navbar from "../components/Navbar";
 import Button from "../todolistComponents/Button";
 // const Store = require("electron-store");
@@ -13,7 +14,7 @@ import Button from "../todolistComponents/Button";
 
 // const store = new Store();
 
-export default function Home({ electron, macro, updateMacro }) {
+export default function Home({ electron, workflow, setWorkflow }) {
   const [modalOpen, setModalOpen] = useState(false);
 
   return (
@@ -25,11 +26,11 @@ export default function Home({ electron, macro, updateMacro }) {
       <AddToMacroButton
         modalOpen={modalOpen}
         setModalOpen={setModalOpen}
-        macro={macro}
-        updateMacro={updateMacro}
+        workflow={workflow}
+        setWorkflow={setWorkflow}
       />
-      <RunMacroButton macro={macro} />
-      <DragAndDrop macro={macro} updateMacro={updateMacro} />
+      <RunMacroButton workflow={workflow} />
+      <DragAndDrop workflow={workflow} setWorkflow={setWorkflow} />
     </div>
   );
 }
