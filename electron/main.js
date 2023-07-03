@@ -165,8 +165,9 @@ function createWindow() {
 if (isDev) {
   // require("electron-reload")(path.join(__dirname, ".."), {
   //   electron: path.join(__dirname, "..", "node_modules", ".bin", "electron"),
-  // });
-  require('electron-reload')(__dirname, {ignored: /\.\.src\/config|[\/\\]\./});
+  require("electron-reload")(__dirname, {
+    ignored: /\.\.src\/config|[\/\\]\./,
+  });
 }
 
 //this code listens for an IPC(Inter-Process Communication) event called 'notify' and creates a new notification with the message that was passed in.
@@ -188,8 +189,7 @@ ipcMain.on("writeFile", (_, path, data) => {
     if (err) throw err;
     console.log("The file has been saved!");
   });
-})
-  
+});
 
 //this code starts up the Electron application.
 app.whenReady().then(() => {

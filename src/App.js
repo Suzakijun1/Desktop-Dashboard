@@ -17,8 +17,6 @@ import TestFlow from "./pages/TestFlow";
 import wf from "./config/workflows.json";
 import deepEqual from "deep-equal";
 
-
-
 export default function App({ electron }) {
   const [workflowList, setWorkflowList] = useState(wf);
   const [isLeftMenuActive, setIsLeftMenuActive] = useState(true);
@@ -29,28 +27,30 @@ export default function App({ electron }) {
   };
 
   useEffect(() => {
-      if(deepEqual(workflowList[workflow.id - 1], workflow)) return;
-      workflowList[workflow.id - 1] = workflow;
-      electron.writeFile("./src/config/workflows.json", JSON.stringify(workflowList))
+    if (deepEqual(workflowList[workflow.id - 1], workflow)) return;
+    workflowList[workflow.id - 1] = workflow;
+    electron.writeFile(
+      "./src/config/workflows.json",
+      JSON.stringify(workflowList)
+    );
   }, [workflow]);
 
   return (
     <div>
       <MemoryRouter>
-        <Navbar
-          electron={electron}
-          toggleLeftMenu={toggleLeftMenu}
-        />
+        <Navbar electron={electron} toggleLeftMenu={toggleLeftMenu} />
         <div className="mainApp">
           <Sidebar
             isLeftMenuActive={isLeftMenuActive}
             workflowList={workflowList}
             toggleLeftMenu={toggleLeftMenu}
             setWorkflow={setWorkflow}
+            setWorkflowList={setWorkflowList}
           />
           <div
-            className={`contentArea ${isLeftMenuActive ? "" : "sidebar-closed"
-              }`}
+            className={`contentArea ${
+              isLeftMenuActive ? "" : "sidebar-closed"
+            }`}
           >
             <div className="contentPages">
               <Routes>
