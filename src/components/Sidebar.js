@@ -8,7 +8,6 @@ export default function Sidebar({
   setWorkflow,
   setWorkflowList,
 }) {
-  // const [newItemName, setNewItemName] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   useEffect(() => {
     //Identifiers for the side bar
@@ -69,12 +68,7 @@ export default function Sidebar({
           </Button>
         ))}
       </div>
-      {/* <input
-          type="text"
-          value={newItemName}
-          onChange={(e) => setNewItemName(e.target.value)}
-          placeholder="Enter item name"
-        /> */}
+
       <div style={{ display: "flex", flexDirection: "column" }}>
         <Button variant="primary" onClick={openModal}>
           Add Item
