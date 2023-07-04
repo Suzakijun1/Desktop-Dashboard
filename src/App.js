@@ -18,16 +18,23 @@ import wf from "./config/workflows.json";
 import deepEqual from "deep-equal";
 
 export default function App({ electron }) {
+  //Workflow List is the list of all workflows
+  //It is initially set to the workflows in workflows.json
   const [workflowList, setWorkflowList] = useState(wf);
+
+  //Tracks if the sidebar is active
   const [isLeftMenuActive, setIsLeftMenuActive] = useState(true);
+
+  //Workflow is keeping track of the current workflow, it is initially set to the first workflow in the list
   const [workflow, setWorkflow] = useState(workflowList[0]);
 
+  //Toggles the sidebar
   const toggleLeftMenu = () => {
     setIsLeftMenuActive((prevIsLeftMenuActive) => !prevIsLeftMenuActive);
   };
 
   useEffect(() => {
-    if (deepEqual(workflowList[workflow.id - 1], workflow)) return;
+    // if (deepEqual(workflowList[workflow.id - 1], workflow)) return;
     workflowList[workflow.id - 1] = workflow;
     electron.writeFile(
       "./src/config/workflows.json",

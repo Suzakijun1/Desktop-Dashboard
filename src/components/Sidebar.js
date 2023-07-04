@@ -37,7 +37,7 @@ export default function Sidebar({
 
     // Update the workflowList state by creating a new array with the new item appended
     setWorkflowList([...workflowList, newItem]);
-
+    setWorkflow(newItem);
     // Reset the newItemName state variable to clear the input field
     // setNewItemName("");
   };
