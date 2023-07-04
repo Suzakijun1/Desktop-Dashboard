@@ -70,7 +70,7 @@ export default function Sidebar({
       </div>
 
       <div style={{ display: "flex", flexDirection: "column" }}>
-        <Button variant="primary" onClick={openModal}>
+        <Button variant="success" onClick={openModal}>
           Add Item
         </Button>
       </div>

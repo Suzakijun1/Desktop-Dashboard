@@ -35,7 +35,7 @@ export default function Home({
   };
 
   return (
-    <div className="container">
+    <div className="container" style={{ position: "relative" }}>
       <h1>Macro Flow</h1>
       <Button variant="primary" id="macro" onClick={() => setModalOpen(true)}>
         Add to Macro
@@ -47,10 +47,19 @@ export default function Home({
         setWorkflow={setWorkflow}
       />
       <RunMacroButton workflow={workflow} electron={electron} />
-      <Button variant="danger" onClick={handleDeleteWorkflow}>
-        Delete Workflow
-      </Button>
+
       <DragAndDrop workflow={workflow} setWorkflow={setWorkflow} />
+      <div
+        style={{
+          position: "absolute",
+          bottom: "10px",
+          right: "10px",
+        }}
+      >
+        <Button variant="danger" onClick={handleDeleteWorkflow}>
+          Delete Workflow
+        </Button>
+      </div>
     </div>
   );
 }
