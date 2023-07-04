@@ -13,7 +13,6 @@ import Playtest from "./pages/Playtest.js";
 import ToDoList from "./pages/ToDoList.js";
 import Sidebar from "./components/Sidebar";
 import "./styles/styles.css";
-import TestFlow from "./pages/TestFlow";
 import wf from "./config/workflows.json";
 import deepEqual from "deep-equal";
 
@@ -70,6 +69,8 @@ export default function App({ electron }) {
                       electron={electron}
                       workflow={workflow}
                       setWorkflow={setWorkflow}
+                      workflowList={workflowList}
+                      setWorkflowList={setWorkflowList}
                     />
                   }
                 />

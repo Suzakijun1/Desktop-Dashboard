@@ -14,8 +14,25 @@ import Button from "../todolistComponents/Button";
 
 // const store = new Store();
 
-export default function Home({ electron, workflow, setWorkflow }) {
+export default function Home({
+  electron,
+  workflow,
+  setWorkflow,
+  workflowList,
+  setWorkflowList,
+}) {
   const [modalOpen, setModalOpen] = useState(false);
+
+  const handleDeleteWorkflow = () => {
+    const updatedWorkflowList = workflowList.filter(
+      (item) => item.id !== workflow.id
+    );
+
+    setWorkflowList(updatedWorkflowList);
+
+    // Set the current workflow to the first workflow in the updated list
+    setWorkflow(updatedWorkflowList[0]);
+  };
 
   return (
     <div className="container">
@@ -29,10 +46,10 @@ export default function Home({ electron, workflow, setWorkflow }) {
         workflow={workflow}
         setWorkflow={setWorkflow}
       />
-      <RunMacroButton 
-      workflow={workflow} 
-      electron={electron}
-      />
+      <RunMacroButton workflow={workflow} electron={electron} />
+      <Button variant="danger" onClick={handleDeleteWorkflow}>
+        Delete Workflow
+      </Button>
       <DragAndDrop workflow={workflow} setWorkflow={setWorkflow} />
     </div>
   );
