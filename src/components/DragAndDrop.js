@@ -44,13 +44,23 @@ export default function DragAndDrop({ workflow, setWorkflow }) {
   return (
     <AnimatePresence>
       <DragDropContext onDragEnd={handleOnDragEnd}>
-        <h2 className="macro-header">{workflow.name}'s Current Macro</h2>
+        {/* <h2 className="macro-header">{workflow.name}'s Current Macro</h2> */}
         <motion.div
           className={styles.content__wrapper}
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.3 }}
         >
+          <h2
+            className="macro-header"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            {workflow.name}'s Current Macro
+          </h2>
           <Droppable droppableId="macro" className={styles.texts}>
             {(provided) => (
               <ul
