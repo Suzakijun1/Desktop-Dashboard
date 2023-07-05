@@ -15,6 +15,7 @@ import Sidebar from "./components/Sidebar";
 import "./styles/styles.css";
 import wf from "./config/workflows.json";
 import deepEqual from "deep-equal";
+import WidgetManager from "./pages/WidgetManager";
 
 export default function App({ electron }) {
   //Workflow List is the list of all workflows
@@ -75,6 +76,19 @@ export default function App({ electron }) {
                   }
                 />
                 <Route exact path="/todolist" element={<ToDoList />} />
+                <Route
+                  exact
+                  path="/widgets"
+                  element={
+                    <WidgetManager
+                      electron={electron}
+                      workflow={workflow}
+                      setWorkflow={setWorkflow}
+                      workflowList={workflowList}
+                      setWorkflowList={setWorkflowList}
+                    />
+                  }
+                />
               </Routes>
             </div>
           </div>
