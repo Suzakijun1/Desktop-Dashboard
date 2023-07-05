@@ -37,17 +37,26 @@ export default function Home({
   return (
     <div className="container" style={{ position: "relative" }}>
       <h1>Macro Flow</h1>
-      <Button variant="primary" id="macro" onClick={() => setModalOpen(true)}>
-        Add to Macro
-      </Button>
-      <AddToMacroButton
-        modalOpen={modalOpen}
-        setModalOpen={setModalOpen}
-        workflow={workflow}
-        setWorkflow={setWorkflow}
-      />
-      <RunMacroButton workflow={workflow} electron={electron} />
-
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div>
+          <Button
+            variant="primary"
+            id="macro"
+            onClick={() => setModalOpen(true)}
+          >
+            Add to Macro
+          </Button>
+          <AddToMacroButton
+            modalOpen={modalOpen}
+            setModalOpen={setModalOpen}
+            workflow={workflow}
+            setWorkflow={setWorkflow}
+          />
+        </div>
+        <div>
+          <RunMacroButton workflow={workflow} electron={electron} />
+        </div>
+      </div>
       <DragAndDrop workflow={workflow} setWorkflow={setWorkflow} />
       <div
         style={{

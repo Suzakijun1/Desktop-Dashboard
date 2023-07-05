@@ -1,6 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import "./DragAndDrop.css";
+import { MdDelete, MdEdit } from "react-icons/md";
+import styles from "../styles/modules/todoItem.module.scss";
+import { AnimatePresence, motion } from "framer-motion";
+import UpdateMacroButton from "./UpdateMacroButton";
 
 export default function DragAndDrop({ workflow, setWorkflow }) {
   function handleOnDragEnd(result) {
@@ -16,55 +20,83 @@ export default function DragAndDrop({ workflow, setWorkflow }) {
       };
     });
   }
-  //Delete Function for Macro
-  function handleDeleteItem(index) {
-    const updatedItems = [...workflow.macro];
-    updatedItems.splice(index, 1);
 
-    setWorkflow((oldWorkflow) => ({
-      ...oldWorkflow,
-      macro: updatedItems,
-    }));
-  }
   useEffect(() => {
     console.log(workflow);
   }, [workflow.macro]);
+  const deleteMacro = (index) => {
+    setWorkflow((oldWorkflow) => {
+      const updatedMacro = [...oldWorkflow.macro];
+      updatedMacro.splice(index, 1);
 
+      // Update the IDs by incrementing them
+      const updatedMacroWithIds = updatedMacro.map((item, idx) => ({
+        ...item,
+        id: (idx + 1).toString(),
+      }));
+
+      return {
+        ...oldWorkflow,
+        macro: updatedMacroWithIds,
+      };
+    });
+  };
   return (
-    <DragDropContext onDragEnd={handleOnDragEnd}>
-      <h2 className="macro-header">Current Macro</h2>
-      <Droppable droppableId="macro" direction="horizontal">
-        {(provided) => (
-          <ul
-            className="macro"
-            {...provided.droppableProps}
-            ref={provided.innerRef}
-          >
-            {workflow.macro.map(({ id, name }, index) => {
-              return (
-                <Draggable key={id} draggableId={id} index={index}>
-                  {(provided) => (
-                    <li
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      ref={provided.innerRef}
-                    >
-                      {index + 1 + ". " + name}
-                      <button
-                        className="delete-button"
-                        onClick={() => handleDeleteItem(index)}
-                      >
-                        X
-                      </button>
-                    </li>
-                  )}
-                </Draggable>
-              );
-            })}
-            {provided.placeholder}
-          </ul>
-        )}
-      </Droppable>
-    </DragDropContext>
+    <AnimatePresence>
+      <DragDropContext onDragEnd={handleOnDragEnd}>
+        <h2 className="macro-header">{workflow.name}'s Current Macro</h2>
+        <motion.div
+          className={styles.content__wrapper}
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.3 }}
+        >
+          <Droppable droppableId="macro" className={styles.texts}>
+            {(provided) => (
+              <ul
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+                style={{ listStyleType: "none" }}
+              >
+                {workflow.macro.map(({ id, name }, index) => (
+                  <Draggable key={id} draggableId={id} index={index}>
+                    {(provided) => {
+                      return (
+                        <motion.li
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          ref={provided.innerRef}
+                          className={styles.item}
+                          key={id}
+                        >
+                          {index + 1 + ". " + name}
+
+                          <div className={styles.todoActions}>
+                            <div className={styles.icon}>
+                              <MdEdit />
+                            </div>
+
+                            <div
+                              className={styles.icon}
+                              onClick={() => {
+                                deleteMacro(index);
+                              }}
+                            >
+                              <MdDelete />
+                            </div>
+                          </div>
+                        </motion.li>
+                      );
+                    }}
+                  </Draggable>
+                ))}
+
+                {provided.placeholder}
+              </ul>
+            )}
+          </Droppable>
+        </motion.div>
+      </DragDropContext>
+    </AnimatePresence>
   );
 }
