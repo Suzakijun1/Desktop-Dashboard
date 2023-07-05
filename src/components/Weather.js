@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import ReactWeather, { useWeatherBit } from "react-open-weather";
 import cities from "./cities.json";
 import Autosuggest from "react-autosuggest";
+import { is } from "date-fns/locale";
 
 const Weather = () => {
   const [city, setCity] = useState("");
@@ -104,14 +105,30 @@ const Weather = () => {
     setCity(newValue);
   };
 
-  const renderSuggestion = (suggestion) => <span>{suggestion.name}</span>;
+  const renderSuggestion = (suggestion) => (
+    <div
+      style={{
+        backgroundColor: "white",
+        color: "black",
+        width: "167px",
+        listStyleType: "none",
+      }}
+    >
+      {suggestion.name}
+    </div>
+  );
 
   const getSuggestionValue = (suggestion) => suggestion.name;
-
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleCitySearch();
+    }
+  };
   const inputProps = {
     placeholder: "Enter city name",
     value: city,
     onChange: handleChange,
+    onKeyPress: handleKeyPress,
   };
 
   return (
@@ -130,8 +147,9 @@ const Weather = () => {
         />
       ) : null}
 
-      <div style={{ display: "flex" }}>
+      <div>
         <Autosuggest
+          style={{ backgroundColor: "white" }}
           suggestions={suggestions}
           onSuggestionsFetchRequested={handleSuggestionsFetchRequested}
           onSuggestionsClearRequested={handleSuggestionsClearRequested}
@@ -139,7 +157,8 @@ const Weather = () => {
           renderSuggestion={renderSuggestion}
           inputProps={inputProps}
         />
-
+      </div>
+      <div style={{ width: "10px" }}>
         <button onClick={handleCitySearch}>Search</button>
       </div>
     </div>

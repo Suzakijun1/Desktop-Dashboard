@@ -187,4 +187,6 @@ html, body{
     transition: 0.4s ease-in-out;
   }
 
-  
+  ul.react-autosuggest__suggestions-list {
+    list-style-type: none;
+  }
