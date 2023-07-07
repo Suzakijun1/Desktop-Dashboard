@@ -17,6 +17,7 @@ const initialState = {
     },
     // Add more widgets as needed
   ],
+  selectedWidget: [],
 };
 
 const widgetSlice = createSlice({
@@ -26,16 +27,11 @@ const widgetSlice = createSlice({
     addWidget: (state, action) => {
       state.widgets.push(action.payload);
     },
-    updateWidget: (state, action) => {
-      const { id, name, selectedWidgets } = action.payload;
-      const widget = state.widgets.find((widget) => widget.id === id);
-      if (widget) {
-        widget.name = name;
-        widget.selectedWidgets = selectedWidgets;
-      }
+    setSelectedWidget: (state, action) => {
+      state.selectedWidget = action.payload;
     },
   },
 });
 
-export const { addWidget, updateWidget } = widgetSlice.actions;
+export const { addWidget, setSelectedWidget } = widgetSlice.actions;
 export default widgetSlice.reducer;

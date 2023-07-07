@@ -3,10 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { MdOutlineClose } from "react-icons/md";
 import { AnimatePresence, motion } from "framer-motion";
 import toast from "react-hot-toast";
-import { addWidget } from "./slices/widgetSlice";
+import { addWidget, setSelectedWidget } from "./slices/widgetSlice"; // Assuming you have a 'setSelectedWidget' action in your widgetSlice
 import styles from "../styles/modules/modal.module.scss";
 import Button from "../todolistComponents/Button";
 import Weather from "./Weather";
+
 const dropIn = {
   hidden: {
     opacity: 0,
@@ -28,7 +29,7 @@ const dropIn = {
   },
 };
 
-function WidgetModal({ modalOpen, setModalOpen, addWidget }) {
+function WidgetModal({ modalOpen, setModalOpen }) {
   const dispatch = useDispatch();
 
   const [selectedWidgets, setSelectedWidgets] = useState([]);
@@ -51,32 +52,22 @@ function WidgetModal({ modalOpen, setModalOpen, addWidget }) {
       toast.error("Please select at least one widget");
       return;
     }
-    const selectedWidgetNames = selectedWidgets.map((widgetId) => {
-      const widget = availableWidgets.find((widget) => widget.id === widgetId);
-      return widget;
-    });
-    // const newWidget = {
-    //   name: selectedWidgetNames.join(", "), // Concatenate the selected widget names
-    //   selectedWidgets,
-    // };
 
-    dispatch(addWidget(selectedWidgetNames));
-    // dispatch(selectedWidget(newWidget.id)); // Select the added widget
+    dispatch(setSelectedWidget(selectedWidgets)); // Pass the selected widgets to the Redux store
+
     toast.success("Widget added successfully");
-
-    // setSelectedWidgets([]);
     setModalOpen(false);
   };
 
-  //   const handleWidgetSelection = (widgetId) => {
-  //     setSelectedWidgets((prevSelectedWidgets) => {
-  //       if (prevSelectedWidgets.includes(widgetId)) {
-  //         return prevSelectedWidgets.filter((id) => id !== widgetId);
-  //       } else {
-  //         return [...prevSelectedWidgets, widgetId];
-  //       }
-  //     });
-  //   };
+  const handleWidgetSelection = (widgetId) => {
+    setSelectedWidgets((prevSelectedWidgets) => {
+      if (prevSelectedWidgets.includes(widgetId)) {
+        return prevSelectedWidgets.filter((id) => id !== widgetId);
+      } else {
+        return [...prevSelectedWidgets, widgetId];
+      }
+    });
+  };
 
   return (
     <AnimatePresence>
@@ -117,8 +108,8 @@ function WidgetModal({ modalOpen, setModalOpen, addWidget }) {
                     <label>
                       <input
                         type="checkbox"
-                        // checked={selectedWidgets.includes(widget.id)}
-                        // onChange={() => handleWidgetSelection(widget.id)}
+                        checked={selectedWidgets.includes(widget.id)}
+                        onChange={() => handleWidgetSelection(widget.id)}
                       />
                       {widget.name}
                     </label>
@@ -127,14 +118,7 @@ function WidgetModal({ modalOpen, setModalOpen, addWidget }) {
                 {/* {selectedWidgets.includes(2) && <Weather />} */}
               </div>
               <div className={styles.buttonContainer}>
-                <Button
-                  type="submit"
-                  variant="primary"
-                  onClick={() => {
-                    dispatch(addWidget(widget));
-                    console.log("widget added" + widget);
-                  }}
-                >
+                <Button type="submit" variant="primary">
                   Add Widget
                 </Button>
                 <Button variant="secondary" onClick={() => setModalOpen(false)}>

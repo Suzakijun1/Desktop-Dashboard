@@ -20,6 +20,7 @@ const Weather = () => {
     lang: "en",
     unit: "M",
   });
+
   // useEffect(() => {
   //   console.log("Location:", location);
   //   console.log("API Request URL:", isLoading);
@@ -132,34 +133,40 @@ const Weather = () => {
   };
 
   return (
-    <div style={{ width: "75%" }}>
+    <div
+      className="hello"
+      style={{ height: "100%", overflow: "hidden", display: "flex" }}
+    >
       <h1>Weather</h1>
-
-      {location.latitude !== null && location.longitude !== null ? (
-        <ReactWeather
-          isLoading={isLoading}
-          errorMessage={errorMessage}
-          data={data}
-          lang="en"
-          locationLabel={searchedCity}
-          unitsLabels={{ temperature: "C", windSpeed: "Km/h" }}
-          showForecast
-        />
-      ) : null}
-
-      <div>
-        <Autosuggest
-          style={{ backgroundColor: "white" }}
-          suggestions={suggestions}
-          onSuggestionsFetchRequested={handleSuggestionsFetchRequested}
-          onSuggestionsClearRequested={handleSuggestionsClearRequested}
-          getSuggestionValue={getSuggestionValue}
-          renderSuggestion={renderSuggestion}
-          inputProps={inputProps}
-        />
-      </div>
-      <div style={{ width: "10px" }}>
-        <button onClick={handleCitySearch}>Search</button>
+      <div style={{ height: "calc(100% - 50px)" }}>
+        {location.latitude !== null && location.longitude !== null ? (
+          <div style={{ flex: 1 }}>
+            <ReactWeather
+              style={{ height: "100%", width: "100%" }}
+              isLoading={isLoading}
+              errorMessage={errorMessage}
+              data={data}
+              lang="en"
+              locationLabel={searchedCity}
+              unitsLabels={{ temperature: "C", windSpeed: "Km/h" }}
+              showForecast
+            />
+          </div>
+        ) : null}
+        <div>
+          <Autosuggest
+            style={{ backgroundColor: "white" }}
+            suggestions={suggestions}
+            onSuggestionsFetchRequested={handleSuggestionsFetchRequested}
+            onSuggestionsClearRequested={handleSuggestionsClearRequested}
+            getSuggestionValue={getSuggestionValue}
+            renderSuggestion={renderSuggestion}
+            inputProps={inputProps}
+          />
+        </div>
+        <div style={{ width: "10px" }}>
+          <button onClick={handleCitySearch}>Search</button>
+        </div>
       </div>
     </div>
   );
