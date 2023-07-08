@@ -357,3 +357,38 @@ async function fetchEmailData(message) {
     return null;
   }
 }
+
+let appUsageData = {};
+function trackAppUsage() {
+  const focusedWindow = BrowserWindow.getFocusedWindow();
+  const appName = app.name;
+
+  if (focusedWindow) {
+    const windowTitle = focusedWindow.getTitle();
+    if (!appUsageData[appName]) {
+      appUsageData[appName] = {};
+    }
+    if (!appUsageData[appName][windowTitle]) {
+      appUsageData[appName][windowTitle] = 0;
+    }
+    appUsageData[appName][windowTitle] += 1;
+    console.log(`Tracking app usage - App: ${appName}, Window: ${windowTitle}`);
+  }
+}
+
+app.on("ready", () => {
+  setInterval(trackAppUsage, 1000); // Track usage every second
+  console.log("App usage tracking started.");
+  dialog.showMessageBox({
+    type: "info",
+    message: "App Usage Tracking",
+    detail: "Tracking started", // or "App usage data saved"
+  });
+});
+
+app.on("will-quit", () => {
+  // Save the app usage data to a JSON file
+  const jsonData = JSON.stringify(appUsageData);
+  fs.writeFileSync(path.join(__dirname, "appUsageData.json"), jsonData);
+  console.log("App usage data saved.");
+});

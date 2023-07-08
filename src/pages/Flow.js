@@ -14,7 +14,7 @@ import Button from "../todolistComponents/Button";
 
 // const store = new Store();
 
-export default function Home({
+export default function Flow({
   electron,
   workflow,
   setWorkflow,

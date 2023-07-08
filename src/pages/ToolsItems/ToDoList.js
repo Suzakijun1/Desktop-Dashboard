@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "../components/Navbar";
-import Button from "../todolistComponents/Button";
+import Navbar from "../../components/Navbar";
+import Button from "../../todolistComponents/Button";
 import { Toaster } from "react-hot-toast";
-import AppContent from "../../src/todolistComponents/AppContent";
-import AppHeader from "../../src/todolistComponents/AppHeader";
-import PageTitle from "../../src/todolistComponents/PageTitle";
-import styles from "../styles/modules/app.module.scss";
+import AppContent from "../../todolistComponents/AppContent";
+import AppHeader from "../../todolistComponents/AppHeader";
+import PageTitle from "../../todolistComponents/PageTitle";
+import styles from "../../styles/modules/app.module.scss";
 
 const ToDoList = () => {
   const [isLeftMenuActive, setIsLeftMenuActive] = useState(true);

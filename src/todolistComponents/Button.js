@@ -7,6 +7,7 @@ const buttonTypes = {
   secondary: "secondary",
   danger: "danger",
   success: "success",
+  tools: "tools",
 };
 
 function Button({ type, variant = "primary", children, ...rest }) {

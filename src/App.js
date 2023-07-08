@@ -7,11 +7,13 @@ import {
   Route,
   Link,
 } from "react-router-dom";
-import Home from "./pages/Home";
+import Flow from "./pages/Flow";
 import Navbar from "./components/Navbar";
-import Playtest from "./pages/Playtest.js";
-import ToDoList from "./pages/ToDoList.js";
+import WeatherPage from "./pages/WeatherPage.js";
+import Dashboard from "./pages/Dashboard.js";
+import ToDoList from "./pages/ToolsItems/ToDoList.js";
 import Sidebar from "./components/Sidebar";
+import Tools from "./pages/Tools.js";
 import "./styles/styles.css";
 import wf from "./config/workflows.json";
 import deepEqual from "deep-equal";
@@ -47,6 +49,7 @@ export default function App({ electron }) {
         <Navbar electron={electron} toggleLeftMenu={toggleLeftMenu} />
         <div className="mainApp">
           <Sidebar
+            electron={electron}
             isLeftMenuActive={isLeftMenuActive}
             workflowList={workflowList}
             toggleLeftMenu={toggleLeftMenu}
@@ -60,12 +63,13 @@ export default function App({ electron }) {
           >
             <div className="contentPages">
               <Routes>
-                <Route exact path="/" element={<Playtest />} />
+                <Route exact path="/" element={<Dashboard />} />
+                <Route exact path="/weather" element={<WeatherPage />} />
                 <Route
                   exact
-                  path="/macro"
+                  path="/flow"
                   element={
-                    <Home
+                    <Flow
                       electron={electron}
                       workflow={workflow}
                       setWorkflow={setWorkflow}
@@ -75,6 +79,7 @@ export default function App({ electron }) {
                   }
                 />
                 <Route exact path="/todolist" element={<ToDoList />} />
+                <Route exact path="/tools" element={<Tools />} />
               </Routes>
             </div>
           </div>

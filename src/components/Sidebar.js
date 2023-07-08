@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from "react";
 import Button from "../todolistComponents/Button";
 import SidebarAddModal from "./SidebarAddModal";
+import mc from "../config/macroData.json";
 
 export default function Sidebar({
+  electron,
   isLeftMenuActive,
   workflowList,
   setWorkflow,
   setWorkflowList,
 }) {
   const [modalOpen, setModalOpen] = useState(false);
+  // const [macroCountList, setMacroCountList] = useState();
+  // const [macroCount, setMacroCount] = useState();
   useEffect(() => {
     //Identifiers for the side bar
     const showHideMenus = document.getElementById("showHideMenus");
@@ -44,6 +48,21 @@ export default function Sidebar({
   const openModal = () => {
     setModalOpen(true);
   };
+
+  // const storeMacroData = (data) => {
+  //   const jsonData = JSON.stringify(data);
+  //   electron.writeFile("src/config/macroData.json", jsonData, (err) => {
+  //     if (err) {
+  //       console.error("Error writing macro data:", err);
+  //     } else {
+  //       console.log("Macro data stored successfully.");
+  //     }
+  //   });
+  // };
+
+  // useEffect(() => {
+  //   storeMacroData(macroCountList);
+  // }, [macroCount]);
   return (
     <div
       id="mySidebar"
@@ -61,7 +80,9 @@ export default function Sidebar({
           <Button
             variant="primary"
             key={index}
-            onClick={() => setWorkflow(workflow)}
+            onClick={() => {
+              setWorkflow(workflow);
+            }}
             style={{ marginTop: index === 0 ? "0" : "20px" }}
           >
             {workflow.name}

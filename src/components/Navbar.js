@@ -3,9 +3,8 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import TestingMacroModal from "./testingmacrobutton";
 import Button from "../todolistComponents/Button";
 
-export default function Navbar({ electron,  toggleLeftMenu }) {
+export default function Navbar({ electron, toggleLeftMenu }) {
   const [isMaximizedApp, setIsMaximizedApp] = useState(false);
-
 
   const handleCloseApp = () => {
     electron.closeApp();
@@ -89,14 +88,15 @@ export default function Navbar({ electron,  toggleLeftMenu }) {
             Dashboard
           </Button>
         </Link>
-        <Link to="/macro">
+        <Link to="/flow">
           <Button variant="primary" id="home">
             Flow
           </Button>
         </Link>
-        <Link to="/todolist">
-          <Button variant="primary" id="toDoList">
-            To Do List
+
+        <Link to="/tools">
+          <Button variant="primary" id="tools">
+            Tools
           </Button>
         </Link>
       </div>
