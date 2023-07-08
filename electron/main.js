@@ -377,7 +377,7 @@ function trackAppUsage() {
 }
 
 app.on("ready", () => {
-  setInterval(trackAppUsage, 1000); // Track usage every second
+  setInterval(trackAppUsage, 60000); // Track usage every minute
   console.log("App usage tracking started.");
   dialog.showMessageBox({
     type: "info",
