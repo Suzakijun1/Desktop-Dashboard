@@ -19,6 +19,7 @@ import wf from "./config/workflows.json";
 import deepEqual from "deep-equal";
 
 export default function App({ electron }) {
+  const [modalOpen, setModalOpen] = useState(false);
   //Workflow List is the list of all workflows
   //It is initially set to the workflows in workflows.json
   const [workflowList, setWorkflowList] = useState(wf);
@@ -74,6 +75,8 @@ export default function App({ electron }) {
                       setWorkflow={setWorkflow}
                       workflowList={workflowList}
                       setWorkflowList={setWorkflowList}
+                      modalOpen={modalOpen}
+                      setModalOpen={setModalOpen}
                     />
                   }
                 />

@@ -34,7 +34,11 @@ export default function Flow({
       <div className={styles.app__wrapper}>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <div>
-            <Button variant="primary" id="macro">
+            <Button
+              variant="primary"
+              id="macro"
+              onClick={() => setModalOpen(true)}
+            >
               Add to Macro
             </Button>
             <AddToMacroButton
@@ -48,7 +52,12 @@ export default function Flow({
             <RunMacroButton workflow={workflow} electron={electron} />
           </div>
         </div>
-        <DragAndDrop workflow={workflow} setWorkflow={setWorkflow} />
+        <DragAndDrop
+          // modalOpen={modalOpen}
+          // setModalOpen={setModalOpen}
+          workflow={workflow}
+          setWorkflow={setWorkflow}
+        />
         <div
           style={{
             display: "flex",
