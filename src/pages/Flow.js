@@ -4,15 +4,9 @@ import FileOpenButton from "../components/FileOpenButton";
 import RunMacroButton from "../components/RunMacroButton";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import AddToMacroButton from "../components/AddToMacroButton";
-
+import styles from "../styles/modules/app.module.scss";
 import Navbar from "../components/Navbar";
 import Button from "../todolistComponents/Button";
-// const Store = require("electron-store");
-
-// const path = require("path");
-// const fs = require("fs");
-
-// const store = new Store();
 
 export default function Flow({
   electron,
@@ -37,37 +31,35 @@ export default function Flow({
   return (
     <div className="container" style={{ position: "relative" }}>
       <h1>Macro Flow</h1>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <div>
-          <Button
-            variant="primary"
-            id="macro"
-            onClick={() => setModalOpen(true)}
-          >
-            Add to Macro
+      <div className={styles.app__wrapper}>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <div>
+            <Button variant="primary" id="macro">
+              Add to Macro
+            </Button>
+            <AddToMacroButton
+              modalOpen={modalOpen}
+              setModalOpen={setModalOpen}
+              workflow={workflow}
+              setWorkflow={setWorkflow}
+            />
+          </div>
+          <div>
+            <RunMacroButton workflow={workflow} electron={electron} />
+          </div>
+        </div>
+        <DragAndDrop workflow={workflow} setWorkflow={setWorkflow} />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            marginTop: "10px",
+          }}
+        >
+          <Button variant="danger" onClick={handleDeleteWorkflow}>
+            Delete Workflow
           </Button>
-          <AddToMacroButton
-            modalOpen={modalOpen}
-            setModalOpen={setModalOpen}
-            workflow={workflow}
-            setWorkflow={setWorkflow}
-          />
         </div>
-        <div>
-          <RunMacroButton workflow={workflow} electron={electron} />
-        </div>
-      </div>
-      <DragAndDrop workflow={workflow} setWorkflow={setWorkflow} />
-      <div
-        style={{
-          position: "absolute",
-          bottom: "10px",
-          right: "10px",
-        }}
-      >
-        <Button variant="danger" onClick={handleDeleteWorkflow}>
-          Delete Workflow
-        </Button>
       </div>
     </div>
   );
