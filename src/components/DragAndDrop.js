@@ -11,6 +11,7 @@ export default function DragAndDrop({ workflow, setWorkflow }) {
   const [editingMacroIndex, setEditingMacroIndex] = useState(null);
   const [editedName, setEditedName] = useState("");
   const [editedRoute, setEditedRoute] = useState("");
+  const [editedArgs, setEditedArgs] = useState("");
 
   function handleOnDragEnd(result) {
     if (!result.destination) return;
@@ -47,6 +48,7 @@ export default function DragAndDrop({ workflow, setWorkflow }) {
     console.log("Editing macro with id:", selectedMacro.id);
     setEditedName(selectedMacro.name);
     setEditedRoute(selectedMacro.route);
+    setEditedArgs(selectedMacro.arguments.join(" ")); // Set the initial value of editedArgs
     setModalOpen(true);
   };
 
@@ -56,6 +58,7 @@ export default function DragAndDrop({ workflow, setWorkflow }) {
       const updatedMacro = [...oldWorkflow.macro];
       updatedMacro[editingMacroIndex].name = editedName;
       updatedMacro[editingMacroIndex].route = editedRoute;
+      updatedMacro[editingMacroIndex].arguments = editedArgs.split(" "); // Update the arguments
 
       return {
         ...oldWorkflow,
@@ -148,6 +151,8 @@ export default function DragAndDrop({ workflow, setWorkflow }) {
           setEditedName={setEditedName}
           editedRoute={editedRoute}
           setEditedRoute={setEditedRoute}
+          editedArgs={editedArgs} // Pass editedArgs as prop
+          setEditedArgs={setEditedArgs} // Pass setEditedArgs as prop
           handleModalSave={handleModalSave}
         />
       )}
