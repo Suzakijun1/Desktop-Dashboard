@@ -10,7 +10,7 @@ import {
 import Flow from "./pages/Flow";
 import Navbar from "./components/Navbar";
 import WeatherPage from "./pages/WeatherPage.js";
-import Dashboard from "./pages/Dashboard.js";
+
 import ToDoList from "./pages/ToolsItems/ToDoList.js";
 import Sidebar from "./components/Sidebar";
 import Tools from "./pages/Tools.js";
@@ -63,11 +63,10 @@ export default function App({ electron }) {
           >
             <div className="contentPages">
               <Routes>
-                <Route exact path="/" element={<Dashboard />} />
                 <Route exact path="/weather" element={<WeatherPage />} />
                 <Route
                   exact
-                  path="/flow"
+                  path="/"
                   element={
                     <Flow
                       electron={electron}

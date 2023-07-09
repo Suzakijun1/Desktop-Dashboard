@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Button from "../todolistComponents/Button";
 import SidebarAddModal from "./SidebarAddModal";
-import mc from "../config/macroData.json";
 
 export default function Sidebar({
   electron,

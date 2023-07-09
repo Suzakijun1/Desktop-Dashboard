@@ -57,6 +57,7 @@ export default function DragAndDrop({ workflow, setWorkflow }) {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
+              color: "var(--black-2)",
             }}
           >
             {workflow.name}'s Current Macro
@@ -78,6 +79,7 @@ export default function DragAndDrop({ workflow, setWorkflow }) {
                           ref={provided.innerRef}
                           className={styles.item}
                           key={id}
+                          style={{ color: "var(--black-2)", fontWeight: "600" }}
                         >
                           {index + 1 + ". " + name}
 

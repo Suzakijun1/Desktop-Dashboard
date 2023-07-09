@@ -84,11 +84,6 @@ export default function Navbar({ electron, toggleLeftMenu }) {
 
       <div className="newNavBar">
         <Link to="/">
-          <Button variant="primary" id="testing">
-            Dashboard
-          </Button>
-        </Link>
-        <Link to="/flow">
           <Button variant="primary" id="home">
             Flow
           </Button>
