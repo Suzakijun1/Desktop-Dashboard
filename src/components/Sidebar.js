@@ -10,8 +10,7 @@ export default function Sidebar({
   setWorkflowList,
 }) {
   const [modalOpen, setModalOpen] = useState(false);
-  // const [macroCountList, setMacroCountList] = useState();
-  // const [macroCount, setMacroCount] = useState();
+
   useEffect(() => {
     //Identifiers for the side bar
     const showHideMenus = document.getElementById("showHideMenus");
@@ -62,6 +61,7 @@ export default function Sidebar({
   // useEffect(() => {
   //   storeMacroData(macroCountList);
   // }, [macroCount]);
+  let timer;
   return (
     <div
       id="mySidebar"
@@ -81,6 +81,21 @@ export default function Sidebar({
             key={index}
             onClick={() => {
               setWorkflow(workflow);
+              if (timer) {
+                clearTimeout(timer);
+                timer = null;
+                // Perform the action for double-click here
+                workflow.macro.forEach((app) => {
+                  electron.openApp(app.route, app.arguments);
+                });
+              } else {
+                timer = setTimeout(() => {
+                  timer = null;
+                  // Perform the action for single-click here
+                  // e.g., display a message
+                  console.log("Single click");
+                }, 250);
+              }
             }}
             style={{ marginTop: index === 0 ? "0" : "20px" }}
           >
