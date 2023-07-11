@@ -1,6 +1,17 @@
 const { ipcRenderer, contextBridge } = require("electron");
-// const Store = require("electron-store");
-// const store = new Store();
+
+// Expose select APIs and functionalities to the renderer process
+contextBridge.exposeInMainWorld("electronAPI", {
+  // Define the function to send an IPC message to the main process
+  sendIPCMessage: (channel, data) => {
+    ipcRenderer.send(channel, data);
+  },
+
+  // Listen for an IPC message from the main process
+  receiveIPCMessage: (channel, listener) => {
+    ipcRenderer.on(channel, (event, ...args) => listener(...args));
+  },
+});
 
 contextBridge.exposeInMainWorld("electron", {
   shell: require("electron").shell,
@@ -13,7 +24,7 @@ contextBridge.exposeInMainWorld("electron", {
     const result = await ipcRenderer.invoke("save-file-dialog");
     return result;
   },
-  // store: new (require("electron-store"))(),
+
   notificationApi: {
     sendNotification(message) {
       ipcRenderer.send("notify", message);
@@ -45,6 +56,35 @@ contextBridge.exposeInMainWorld("electron", {
   },
   onRestored: (callback) => {
     ipcRenderer.on("isRestored", callback);
+  },
+
+  fetchEmails: async () => {
+    try {
+      const emails = await ipcRenderer.invoke("fetchEmails");
+      return emails;
+    } catch (error) {
+      console.error("Error fetching emails:", error);
+      throw error;
+    }
+  },
+
+  authenticate: async () => {
+    try {
+      const auth = await ipcRenderer.invoke("authenticate");
+      return auth;
+    } catch (error) {
+      console.error('Error invoking remote method "authenticate":', error);
+      throw error;
+    }
+  },
+  // Define the function to send an IPC message to the main process
+  sendIPCMessage: (channel, data) => {
+    ipcRenderer.send(channel, data);
+  },
+
+  // Listen for an IPC message from the main process
+  receiveIPCMessage: (channel, listener) => {
+    ipcRenderer.on(channel, (event, ...args) => listener(...args));
   },
 });
 

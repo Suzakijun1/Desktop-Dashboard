@@ -190,3 +190,23 @@ html, body{
   ul.react-autosuggest__suggestions-list {
     list-style-type: none;
   }
+
+
+/* email css  */
+  .email-container::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .email-container::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+  }
+  
+  .email-container::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 4px;
+  }
+  
+  .email-container::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+  }
+  

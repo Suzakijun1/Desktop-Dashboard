@@ -5,6 +5,7 @@ const {
   Notification,
   shell,
   dialog,
+  contextBridge,
 } = require("electron");
 const path = require("path");
 const fs = require("fs");
@@ -20,6 +21,9 @@ const Store = require("electron-store");
 const storage = new Store();
 const { google } = require("googleapis");
 const schedule = require("node-schedule");
+
+let oAuth2Client;
+// const { authenticate } = require("./auth");
 
 //TO-DO-LIST NOTIFICATION CODE
 ipcMain.on("scheduler", (event, data) => {
@@ -128,7 +132,7 @@ function createWindow() {
       console.error("Error fetching emails:", error);
     }
   });
-  //here
+
   //// CLOSE APP
   ipcMain.on("minimizeApp", () => {
     console.log("Clicked on Minimize Btn");
@@ -357,6 +361,32 @@ async function fetchEmailData(message) {
     return null;
   }
 }
+
+// Register an IPC handler in the main process to receive email data from the renderer process
+ipcMain.on("request-emails", async (event) => {
+  try {
+    const auth = await authenticate();
+    const gmail = await google.gmail({ version: "v1", auth });
+
+    const response = await gmail.users.messages.list({
+      userId: "me",
+      labelIds: ["INBOX"],
+      maxResults: 20,
+    });
+
+    const messages = response.data.messages || [];
+    const emails = await Promise.all(messages.map(fetchEmailData));
+
+    // Send the emails back to the renderer process
+    event.sender.send("emails", emails);
+  } catch (error) {
+    console.error("Error fetching emails:", error);
+    if (error.code === 401) {
+      storage.delete("token");
+      event.sender.send("login");
+    }
+  }
+});
 
 // let appUsageData = {};
 // function trackAppUsage() {

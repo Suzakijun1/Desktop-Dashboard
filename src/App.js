@@ -10,7 +10,7 @@ import {
 import Flow from "./pages/Flow";
 import Navbar from "./components/Navbar";
 import WeatherPage from "./pages/WeatherPage.js";
-
+import Email from "./pages/Email.js";
 import ToDoList from "./pages/ToolsItems/ToDoList.js";
 import Sidebar from "./components/Sidebar";
 import Tools from "./pages/Tools.js";
@@ -18,7 +18,7 @@ import "./styles/styles.css";
 import wf from "./config/workflows.json";
 import deepEqual from "deep-equal";
 
-export default function App({ electron }) {
+export default function App({ electron, ipcRenderer }) {
   const [modalOpen, setModalOpen] = useState(false);
   //Workflow List is the list of all workflows
   //It is initially set to the workflows in workflows.json
@@ -82,6 +82,13 @@ export default function App({ electron }) {
                 />
                 <Route exact path="/todolist" element={<ToDoList />} />
                 <Route exact path="/tools" element={<Tools />} />
+                <Route
+                  exact
+                  path="email"
+                  element={
+                    <Email electron={electron} ipcRenderer={ipcRenderer} />
+                  }
+                />
               </Routes>
             </div>
           </div>
