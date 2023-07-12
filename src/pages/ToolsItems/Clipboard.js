@@ -82,11 +82,14 @@
 // export default Clipboard;
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { MdDelete, MdEdit } from "react-icons/md";
+import { MdDelete, MdEdit, MdGetApp } from "react-icons/md";
 import styles from "../../styles/modules/todoItem.module.scss";
+import styles1 from "../../styles/modules/app.module.scss";
 
 const Clipboard = ({ workflow, setWorkflow }) => {
   const [clipboards, setClipboards] = useState([]);
+  const [editableIndex, setEditableIndex] = useState(null);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     // Load saved clipboards from localStorage on component mount
@@ -115,6 +118,7 @@ const Clipboard = ({ workflow, setWorkflow }) => {
     navigator.clipboard
       .writeText(clipboard)
       .then(() => {
+        setCopied(true);
         console.log("Text copied to clipboard");
       })
       .catch((error) => {
@@ -122,43 +126,75 @@ const Clipboard = ({ workflow, setWorkflow }) => {
       });
   };
 
+  const handleEdit = (index) => {
+    setEditableIndex(index);
+  };
+
+  const handleSave = () => {
+    setEditableIndex(null);
+  };
+
+  const handleDelete = (index) => {
+    const updatedClipboards = [...clipboards];
+    updatedClipboards.splice(index, 1);
+    setClipboards(updatedClipboards);
+  };
+
   return (
-    <div className={styles.content__wrapper}>
-      <div className={styles.texts}>
-        {clipboards.map((clipboard, index) => (
-          <div className={styles.item} key={index}>
-            <span className={styles.itemText}>
-              {index + 1}. {clipboard}
-            </span>
-            <div className={styles.todoActions}>
-              <div
-                className={styles.icon}
-                onClick={() => {
-                  // Implement edit functionality
-                }}
-              >
-                <MdEdit />
-              </div>
-              <div
-                className={styles.icon}
-                onClick={() => {
-                  // Implement delete functionality
-                }}
-              >
-                <MdDelete />
+    <div className={styles1.app__wrapper}>
+      <h1>Clipboard</h1>
+      <div className={styles.content__wrapper}>
+        <div className={styles.texts}>
+          {clipboards.map((clipboard, index) => (
+            <div className={styles.item} key={index}>
+              {editableIndex === index ? (
+                <input
+                  type="text"
+                  value={clipboard}
+                  onChange={(event) => handleInputChange(event, index)}
+                  onBlur={handleSave}
+                  autoFocus
+                />
+              ) : (
+                <div
+                  className={styles.itemText}
+                  onClick={() => handleEdit(index)}
+                >
+                  {index + 1}. {clipboard}
+                </div>
+              )}
+              <div className={styles.todoActions}>
+                {editableIndex !== index && (
+                  <div
+                    className={`${styles.icon} ${
+                      copied && editableIndex === null ? styles.copied : ""
+                    }`}
+                    onClick={() => handleCopyToClipboard(clipboard)}
+                  >
+                    <MdGetApp />
+                  </div>
+                )}
+                {editableIndex !== index && (
+                  <div
+                    className={styles.icon}
+                    onClick={() => handleDelete(index)}
+                  >
+                    <MdDelete />
+                  </div>
+                )}
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
+        <motion.button
+          className={`${styles.addButton} ${styles.icon}`}
+          onClick={handleAddClipboard}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+        >
+          +
+        </motion.button>
       </div>
-      <motion.button
-        className={`${styles.addButton} ${styles.icon}`}
-        onClick={handleAddClipboard}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-      >
-        +
-      </motion.button>
     </div>
   );
 };
