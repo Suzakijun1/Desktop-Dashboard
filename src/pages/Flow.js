@@ -35,55 +35,57 @@ export default function Flow({
   };
 
   return (
-    <div className="container" style={{ position: "relative" }}>
-      <h1>Macro Flow</h1>
-      <div className={styles.app__wrapper}>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <div>
-            <Button
-              variant="primary"
-              id="macro"
-              onClick={() => setModalOpen(true)}
-            >
-              Add to Macro
+    <div className="container" style={{ position: "relative", display : "flex", flexDirection : "column", justifyContent: "center", alignItems : "center" }}>
+      <div style={{width : "100%"}}>
+        <div style={{height : "100%", width : "100%", maxWidth : "750px", margin: "0 auto", display : "flex", flexDirection: "column", gap: "2rem"}}>
+          <h1>Macro Flow</h1>
+          <div style={{display: "flex", justifyContent : "space-between"}}>
+            <div>
+              <Button
+                variant="primary"
+                id="macro"
+                onClick={() => setModalOpen(true)}
+              >
+                Add to Macro
+              </Button>
+              <AddToMacroButton
+                modalOpen={modalOpen}
+                setModalOpen={setModalOpen}
+                workflow={workflow}
+                setWorkflow={setWorkflow}
+              />
+            </div>
+            <div>
+              <RunMacroButton workflow={workflow} electron={electron} />
+            </div>
+          </div>
+          <DragAndDrop
+            // modalOpen={modalOpen}
+            // setModalOpen={setModalOpen}
+            workflow={workflow}
+            setWorkflow={setWorkflow}
+          />
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              marginTop: "10px",
+            }}
+          >
+            <Button variant="danger" onClick={handleDeleteWorkflow}>
+              Delete Workflow
             </Button>
-            <AddToMacroButton
-              modalOpen={modalOpen}
-              setModalOpen={setModalOpen}
-              workflow={workflow}
-              setWorkflow={setWorkflow}
-            />
-          </div>
-          <div>
-            <RunMacroButton workflow={workflow} electron={electron} />
           </div>
         </div>
-        <DragAndDrop
-          // modalOpen={modalOpen}
-          // setModalOpen={setModalOpen}
-          workflow={workflow}
-          setWorkflow={setWorkflow}
-        />
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            marginTop: "10px",
-          }}
-        >
-          <Button variant="danger" onClick={handleDeleteWorkflow}>
-            Delete Workflow
-          </Button>
-        </div>
+        {/* Delete Modal */}
+        {deleteModalOpen && (
+          <DeleteModal
+            deleteModalOpen={deleteModalOpen}
+            setDeleteModalOpen={setDeleteModalOpen}
+            handleConfirmDelete={handleConfirmDelete}
+          />
+        )}
       </div>
-      {/* Delete Modal */}
-      {deleteModalOpen && (
-        <DeleteModal
-          deleteModalOpen={deleteModalOpen}
-          setDeleteModalOpen={setDeleteModalOpen}
-          handleConfirmDelete={handleConfirmDelete}
-        />
-      )}
     </div>
   );
 }
