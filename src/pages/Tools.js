@@ -5,7 +5,7 @@ const ToolsPage = () => {
   // Define an array of tool names and corresponding routes
   const tools = [
     { name: "Todo List", route: "/todolist" },
-    { name: "Calculator", route: "/tools/calculator" },
+    { name: "Clipboard", route: "/clipboard" },
     { name: "Weather", route: "/weather" },
     // Add more tools as needed
   ];

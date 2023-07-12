@@ -13,6 +13,7 @@ import WeatherPage from "./pages/WeatherPage.js";
 import Email from "./pages/Email.js";
 import ToDoList from "./pages/ToolsItems/ToDoList.js";
 import Sidebar from "./components/Sidebar";
+import Clipboard from "./pages/ToolsItems/Clipboard";
 import Tools from "./pages/Tools.js";
 import "./styles/styles.css";
 import wf from "./config/workflows.json";
@@ -82,6 +83,7 @@ export default function App({ electron, ipcRenderer }) {
                 />
                 <Route exact path="/todolist" element={<ToDoList />} />
                 <Route exact path="/tools" element={<Tools />} />
+                <Route exact path="/clipboard" element={<Clipboard />} />
                 <Route
                   exact
                   path="email"

@@ -56,8 +56,17 @@ export default function Navbar({ electron, toggleLeftMenu }) {
             className="toggleButton"
             onClick={toggleLeftMenu}
           ></button>
-          <img src="./src/icons/icon_top_bar.png" alt="" />
-          <div className="title">My App Top Bar</div>
+          <img
+            src="./src/icons/crowbird.png"
+            alt=""
+            style={{ marginLeft: "16px", height: "20px" }}
+          />
+          <div
+            className="title"
+            style={{ fontWeight: "bold", fontSize: "16px" }}
+          >
+            CROW
+          </div>
         </div>
 
         <div className="titleBarBtns">

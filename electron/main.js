@@ -22,9 +22,6 @@ const storage = new Store();
 const { google } = require("googleapis");
 const schedule = require("node-schedule");
 
-let oAuth2Client;
-// const { authenticate } = require("./auth");
-
 //TO-DO-LIST NOTIFICATION CODE
 ipcMain.on("scheduler", (event, data) => {
   const { notificationTime, title } = data;
@@ -87,51 +84,6 @@ function createWindow() {
   win.on("moved", () => savePosition(win.getPosition()));
 
   win.loadFile(path.join(__dirname, "..", "index.html"));
-
-  //here is the email code
-  win.webContents.on("dom-ready", async () => {
-    try {
-      const auth = await authenticate();
-      const gmail = await google.gmail({ version: "v1", auth });
-
-      const response = await gmail.users.messages.list({
-        userId: "me",
-        labelIds: ["INBOX"],
-        maxResults: 10, // Adjust the number of emails to fetch as per your requirement
-      });
-
-      const messages = response.data.messages || [];
-      const emails = await Promise.all(messages.map(fetchEmailData));
-
-      win.webContents.send("emails", emails);
-    } catch (error) {
-      console.error("Error fetching emails:", error);
-      if (error.code === 401) {
-        storage.delete("token");
-        win.webContents.send("login");
-      }
-    }
-  });
-
-  win.webContents.on("login", async () => {
-    try {
-      const auth = await authenticate();
-      const gmail = await google.gmail({ version: "v1", auth });
-
-      const response = await gmail.users.messages.list({
-        userId: "me",
-        labelIds: ["INBOX"],
-        maxResults: 10, // Adjust the number of emails to fetch as per your requirement
-      });
-
-      const messages = response.data.messages || [];
-      const emails = await Promise.all(messages.map(fetchEmailData));
-
-      win.webContents.send("emails", emails);
-    } catch (error) {
-      console.error("Error fetching emails:", error);
-    }
-  });
 
   //// CLOSE APP
   ipcMain.on("minimizeApp", () => {
