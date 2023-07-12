@@ -7,6 +7,7 @@ import AddToMacroButton from "../components/AddToMacroButton";
 import styles from "../styles/modules/app.module.scss";
 import Navbar from "../components/Navbar";
 import Button from "../todolistComponents/Button";
+import DeleteModal from "../components/DeleteModal";
 
 export default function Flow({
   electron,
@@ -16,8 +17,12 @@ export default function Flow({
   setWorkflowList,
 }) {
   const [modalOpen, setModalOpen] = useState(false);
-
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false); // State for delete modal
   const handleDeleteWorkflow = () => {
+    setDeleteModalOpen(true); // Open delete modal
+  };
+
+  const handleConfirmDelete = () => {
     const updatedWorkflowList = workflowList.filter(
       (item) => item.id !== workflow.id
     );
@@ -26,6 +31,7 @@ export default function Flow({
 
     // Set the current workflow to the first workflow in the updated list
     setWorkflow(updatedWorkflowList[0]);
+    setDeleteModalOpen(false); // Close delete modal
   };
 
   return (
@@ -70,6 +76,14 @@ export default function Flow({
           </Button>
         </div>
       </div>
+      {/* Delete Modal */}
+      {deleteModalOpen && (
+        <DeleteModal
+          deleteModalOpen={deleteModalOpen}
+          setDeleteModalOpen={setDeleteModalOpen}
+          handleConfirmDelete={handleConfirmDelete}
+        />
+      )}
     </div>
   );
 }
