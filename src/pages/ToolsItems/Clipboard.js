@@ -152,6 +152,11 @@ const Clipboard = ({ workflow, setWorkflow }) => {
                   type="text"
                   value={clipboard}
                   onChange={(event) => handleInputChange(event, index)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                      handleSave();
+                    }
+                  }}
                   onBlur={handleSave}
                   autoFocus
                 />
@@ -160,7 +165,7 @@ const Clipboard = ({ workflow, setWorkflow }) => {
                   className={styles.itemText}
                   onClick={() => handleEdit(index)}
                 >
-                  {index + 1}. {clipboard}
+                  {index + 1}. {clipboard || "Click to edit"}
                 </div>
               )}
               <div className={styles.todoActions}>
