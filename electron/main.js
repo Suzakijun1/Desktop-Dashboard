@@ -74,6 +74,8 @@ function createWindow() {
       worldSafeExecuteJavaScript: true,
       //each renderer process operates within its own separate JavaScript context, preventing scripts injected into web content from accessing Electron-specific APIs directly and adds and extra layer of security
       contextIsolation: true,
+      //Put dev tools false when you are done with development
+      // devTools: false,
       contentSecurityPolicy:
         "default-src 'self'; script-src 'self' 'unsafe-inline';",
       preload: path.join(__dirname, "preload.js"),
