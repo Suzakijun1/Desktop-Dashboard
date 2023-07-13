@@ -1,11 +1,35 @@
 {
   "name": "Desktop-Dashboard",
+  "productName": "Crow",
   "version": "1.0.0",
+  "description": "A desktop dashboard for all your needs",
   "main": "electron/main.js",
   "scripts": {
     "start": "electron .",
     "watch": "webpack --config webpack.config.js --watch",
-    "build": "webpack --config webpack.config.js"
+    "build": "electron-builder"
+  },
+
+  "build": {
+    "appId": "Crow",
+    "win": {
+      "target": ["nsis"],
+      "icon": "crow-icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "installerIcon": "crow-icon.ico",
+      "uninstallerIcon": "crow-icon.ico",
+      "uninstallDisplayName": "Crow",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Crow",
+      "allowToChangeInstallationDirectory": true
+    }
+      },
+  "author": {
+    "name": "Dylan Yong / David Peguero",
+    "email": "dyong1997@gmail.com"
   },
   "dependencies": {
     "@fontsource/poppins": "^5.0.3",
