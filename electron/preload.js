@@ -1,4 +1,4 @@
-const { ipcRenderer, contextBridge } = require("electron");
+const { ipcRenderer, contextBridge, app } = require("electron");
 
 // Expose select APIs and functionalities to the renderer process
 contextBridge.exposeInMainWorld("electronAPI", {
@@ -39,6 +39,9 @@ contextBridge.exposeInMainWorld("electron", {
   },
   writeFile(path, data) {
     ipcRenderer.send("writeFile", path, data);
+  },
+  readFile(path) {
+    ipcRenderer.send("readFile", path);
   },
   batteryApi: {},
   filesApi: {},
@@ -85,6 +88,17 @@ contextBridge.exposeInMainWorld("electron", {
   // Listen for an IPC message from the main process
   receiveIPCMessage: (channel, listener) => {
     ipcRenderer.on(channel, (event, ...args) => listener(...args));
+  },
+  getAppPath: async () => {
+    const userDataPath = await ipcRenderer.invoke("getAppPath");
+    return userDataPath;
+  },
+  pathJoin: (path1, path2) => {
+    const joinedPath = ipcRenderer.invoke("pathJoin", path1, path2);
+    return joinedPath;
+  },
+  loadWorkflows: async () => {
+    return await ipcRenderer.send("loadWorkflows");
   },
 });
 

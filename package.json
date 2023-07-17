@@ -9,13 +9,17 @@
     "watch": "webpack --config webpack.config.js --watch",
     "build": "electron-builder"
   },
-
   "build": {
     "appId": "Crow",
     "win": {
-      "target": ["nsis"],
+      "target": [
+        "nsis"
+      ],
       "icon": "crow-icon.ico"
     },
+    "asarUnpack": [
+      "workflows.json"
+    ],
     "extends": null,
     "files": [
       "build/**/*",
@@ -24,7 +28,9 @@
       "electron/**/*",
       "src/**/*",
       "index.html",
-      "src/config/**/*"
+      "src/config/**/*",
+      "webpack.config.js",
+      "license.md"
     ],
     "nsis": {
       "oneClick": false,
@@ -36,13 +42,13 @@
       "shortcutName": "Crow",
       "allowToChangeInstallationDirectory": true
     }
-      },
+  },
   "author": {
     "name": "Dylan Yong / David Peguero",
     "email": "dyong1997@gmail.com"
   },
- 
   "dependencies": {
+    "@babel/runtime": "^7.22.6",
     "@fontsource/poppins": "^5.0.3",
     "@reduxjs/toolkit": "^1.9.5",
     "chokidar": "^3.5.3",

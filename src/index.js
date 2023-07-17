@@ -1,6 +1,6 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-
+// import { remote } from "electron";
 import App from "./App";
 import "./index.scss";
 // import Sidebar from "./components/Sidebar";
@@ -15,9 +15,9 @@ const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
 
 const electron = window.electron;
-
+const ipcRenderer = window.ipcRenderer;
 root.render(
   <Provider store={store}>
-    <App electron={electron} />
+    <App electron={electron} ipcRenderer={ipcRenderer} />
   </Provider>
 );
