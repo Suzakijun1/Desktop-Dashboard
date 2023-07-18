@@ -6,7 +6,11 @@ import styles from "../styles/modules/todoItem.module.scss";
 import { AnimatePresence, motion } from "framer-motion";
 import UpdateMacroButton from "./UpdateMacroButton";
 
-export default function DragAndDrop({ workflow, setWorkflow }) {
+export default function DragAndDrop({
+  workflow,
+  setWorkflow,
+  setWorkflowList,
+}) {
   const [modalOpen, setModalOpen] = useState(false);
   const [editingMacroIndex, setEditingMacroIndex] = useState(null);
   const [editedName, setEditedName] = useState("");
@@ -24,6 +28,14 @@ export default function DragAndDrop({ workflow, setWorkflow }) {
       ...oldWorkflow,
       macro: items,
     }));
+
+    // Update the workflowList state
+    setWorkflowList((oldWorkflowList) => {
+      const updatedWorkflowList = [...oldWorkflowList];
+      updatedWorkflowList[workflow.id - 1].macro = updatedMacro;
+
+      return updatedWorkflowList;
+    });
   }
 
   useEffect(() => {
@@ -35,6 +47,13 @@ export default function DragAndDrop({ workflow, setWorkflow }) {
       const updatedMacro = [...oldWorkflow.macro];
       updatedMacro.splice(index, 1);
 
+      //Update the workflowList state after deleting a macro
+      setWorkflowList((oldWorkflowList) => {
+        const updatedWorkflowList = [...oldWorkflowList];
+        updatedWorkflowList[workflow.id - 1].macro = updatedMacro;
+
+        return updatedWorkflowList;
+      });
       return {
         ...oldWorkflow,
         macro: updatedMacro,
@@ -65,7 +84,12 @@ export default function DragAndDrop({ workflow, setWorkflow }) {
         macro: updatedMacro,
       };
     });
+    setWorkflowList((oldWorkflowList) => {
+      const updatedWorkflowList = [...oldWorkflowList];
+      updatedWorkflowList[workflow.id - 1].macro = updatedMacro;
 
+      return updatedWorkflowList;
+    });
     // Close the modal
     setModalOpen(false);
   };

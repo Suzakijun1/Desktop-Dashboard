@@ -20,20 +20,44 @@ import wf from "../workflows.json";
 import deepEqual from "deep-equal";
 import { stringify } from "uuid";
 import { parse, set } from "date-fns";
+import { id } from "date-fns/locale";
 
 export default function App({ electron, ipcRenderer, appPath }) {
   const [modalOpen, setModalOpen] = useState(false);
   //Workflow List is the list of all workflows
   //It is initially set to the workflows in workflows.json
-  const [workflowList, setWorkflowList] = useState(wf);
-  // const [workflowList, setWorkflowList] = useState([]);
+
+  const [workflowList, setWorkflowList] = useState(
+    // Retrieve data from "workflowList" key in localStorage and parse it
+    JSON.parse(localStorage.getItem("workflowList")) || [
+      // Default value if no data found or parsing fails
+      {
+        name: "Work",
+        id: 1,
+        macro: [
+          {
+            id: "b765d3a1-c303-420d-b13b-9fec7f3b7de9",
+            name: "notepad2",
+            route: "C:\\Windows\\notepad.exe",
+            arguments: [""],
+          },
+        ],
+      },
+    ]
+  );
+  // Update localStorage whenever the workflowList changes
+  useEffect(() => {
+    localStorage.setItem("workflowList", JSON.stringify(workflowList));
+    console.log("newitem in workflowList", workflowList);
+    console.log("newitem in workflow", workflow);
+  }, [workflowList, workflow]);
+
   //Tracks if the sidebar is active
   const [isLeftMenuActive, setIsLeftMenuActive] = useState(true);
 
   //Workflow is keeping track of the current workflow, it is initially set to the first workflow in the list
   const [workflow, setWorkflow] = useState(workflowList[0]);
 
-  // const [workflow, setWorkflow] = useState(null);
   //Toggles the sidebar
   const toggleLeftMenu = () => {
     setIsLeftMenuActive((prevIsLeftMenuActive) => !prevIsLeftMenuActive);
@@ -43,54 +67,33 @@ export default function App({ electron, ipcRenderer, appPath }) {
     async function fetchData() {
       // if (deepEqual(workflowList[workflow.id - 1], workflow)) return;
 
-      workflowList[workflow.id - 1] = workflow;
+      // workflowList[workflow.id - 1] = workflow;
       const data = JSON.stringify(workflowList);
 
-      const configFilePath = "workflows.json";
-      electron.writeFile(configFilePath, data);
+      const configFilePath = "/workflows.json";
+      await electron.writeFile(configFilePath, data);
       console.log("data inside useEffect", data);
       console.log("writing to file", configFilePath);
-      electron.readFile(configFilePath, "utf-8", (err, data) => {
-        if (err) {
-          console.error("Error reading workflows:", err);
-        } else {
-          console.log("Workflows read successfully.");
-          setWorkflowList(JSON.parse(data));
-        }
-      });
     }
+
     fetchData();
   }, [workflow, workflowList]);
-
-  // useEffect(() => {
-  //   async function fetchDataa() {
-  //     const configFilePath = "workflows.json";
-  //     electron.readFile(configFilePath, "utf-8", (err, data) => {
-  //       if (err) {
-  //         console.error("Error reading workflows:", err);
-  //       } else {
-  //         console.log("Workflows read successfully.");
-  //         setWorkflowList(JSON.parse(data));
-  //       }
-  //     });
-  //   }
-
-  //   fetchDataa();
-  // }, []);
 
   return (
     <div>
       <MemoryRouter>
         <Navbar electron={electron} toggleLeftMenu={toggleLeftMenu} />
         <div className="mainApp">
-          <Sidebar
-            electron={electron}
-            isLeftMenuActive={isLeftMenuActive}
-            workflowList={workflowList}
-            toggleLeftMenu={toggleLeftMenu}
-            setWorkflow={setWorkflow}
-            setWorkflowList={setWorkflowList}
-          />
+          {workflow && (
+            <Sidebar
+              electron={electron}
+              isLeftMenuActive={isLeftMenuActive}
+              workflowList={workflowList}
+              toggleLeftMenu={toggleLeftMenu}
+              setWorkflow={setWorkflow}
+              setWorkflowList={setWorkflowList}
+            />
+          )}
           <div
             className={`contentArea ${
               isLeftMenuActive ? "" : "sidebar-closed"
@@ -103,15 +106,17 @@ export default function App({ electron, ipcRenderer, appPath }) {
                   exact
                   path="/"
                   element={
-                    <Flow
-                      electron={electron}
-                      workflow={workflow}
-                      setWorkflow={setWorkflow}
-                      workflowList={workflowList}
-                      setWorkflowList={setWorkflowList}
-                      modalOpen={modalOpen}
-                      setModalOpen={setModalOpen}
-                    />
+                    workflow && (
+                      <Flow
+                        electron={electron}
+                        workflow={workflow}
+                        setWorkflow={setWorkflow}
+                        workflowList={workflowList}
+                        setWorkflowList={setWorkflowList}
+                        modalOpen={modalOpen}
+                        setModalOpen={setModalOpen}
+                      />
+                    )
                   }
                 />
                 <Route exact path="/todolist" element={<ToDoList />} />

@@ -33,6 +33,7 @@ export default function AddToMacroButton({
   setModalOpen,
   workflow,
   setWorkflow,
+  setWorkflowList,
 }) {
   const [name, setName] = useState("");
   const [route, setRoute] = useState("");
@@ -55,22 +56,30 @@ export default function AddToMacroButton({
       return;
     }
     if (name && route) {
-      setWorkflow((oldWorkflow) => {
-        return {
-          ...oldWorkflow,
-          macro: [
-            ...oldWorkflow.macro,
-            {
-              id: uuidv4(),
-              name: name,
-              route: route,
-              arguments: args ? args.split(" ") : [],
-            },
-          ],
-        };
-      });
+      const newMacro = {
+        id: uuidv4(),
+        name: name,
+        route: route,
+        arguments: args ? args.split(" ") : [],
+      };
+      const updatedWorkflow = {
+        ...workflow,
+        macro: [...workflow.macro, newMacro],
+      };
+      updateWorkflow(updatedWorkflow);
+      console.log("thisisupdatedworkflow" + updatedWorkflow);
     }
     setModalOpen(false);
+  };
+
+  const updateWorkflow = (updatedWorkflow) => {
+    setWorkflow(updatedWorkflow);
+    setWorkflowList((prevWorkflowList) => {
+      const updatedWorkflowList = prevWorkflowList.map((wf) =>
+        wf.id === updatedWorkflow.id ? updatedWorkflow : wf
+      );
+      return updatedWorkflowList;
+    });
   };
 
   const handleOpenFileDialog = async () => {

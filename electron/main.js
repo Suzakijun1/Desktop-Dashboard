@@ -164,57 +164,38 @@ ipcMain.on("writeFile", async (_, filePath, data) => {
     console.error("Error saving file:", err);
   }
 });
-
-ipcMain.on("loadWorkflows", (event) => {
-  const filePath = path.join(app.getPath("userData"), "workflows.json");
-
-  try {
-    const fileContents = fs.readFileSync(filePath, "utf-8");
-    console.log("fileContents", fileContents);
-    event.reply("loadWorkflows", JSON.stringify(fileContents));
-  } catch (err) {
-    console.error("Error loading workflows:", err);
-    event.reply("loadWorkflows", err.message);
-  }
-});
+// ipcMain.on("writeFile", (_, filePath, data) => {
+//   const key = filePath.replace(/\//g, ".");
+//   storage.set(key, data);
+//   console.log("The file has been stored!" + data);
+// });
+// ipcMain.on("readFile", (_, filePath) => {
+//   const key = filePath.replace(/\//g, ".");
+//   const data = storage.get(key);
+//   if (data === undefined) {
+//     console.error("Error reading JSON file: File not found");
+//   } else {
+//     console.log("Loaded data:", data);
+//     // Use the loaded data as needed
+//   }
+// });
 
 ipcMain.on("readFile", async (event, filePath) => {
   const resolvedPath = app.getPath("userData");
   const fullPath = path.join(resolvedPath, filePath);
   console.log("fullPath", fullPath);
-  fs.readFile(fullPath, "utf-8", (err, fileData) => {
+  fs.readFileSync(fullPath, "utf-8", (err, fileData) => {
     if (err) {
       console.error("Error reading JSON file:", err);
     } else {
       // const loadedData = JSON.parse(fileData);
       console.log("Loaded data:", fileData);
       // Use the loadedData as needed
+      event.returnValue = fileData;
     }
   });
 });
 
-// ipcMain.on("readFile", async (_, filePath) => {
-//   const resolvedPath = app.getPath("userData");
-//   const fullPath = path.join(resolvedPath, filePath.replace(/"/g, ""));
-//   try {
-//     const data = await readFile(fullPath);
-//     if (data) {
-//       // Send the data back to the renderer process
-//       win.webContents.send("fileData", data);
-//     }
-//   } catch (err) {
-//     console.error("Error reading file:", err);
-//   }
-// });
-async function readFile(filePath) {
-  try {
-    const data = await fs.promises.readFile(filePath, "utf-8");
-    return data;
-  } catch (err) {
-    console.error("Error reading file:", err);
-    return null;
-  }
-}
 // ipcMain.on("writeFile", (_, filename, data) => {
 //   const filePath = path.join(app.getPath("userData"), filename);
 //   storage.set(filename, data);

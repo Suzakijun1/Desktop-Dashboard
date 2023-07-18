@@ -35,11 +35,30 @@ export default function Flow({
   };
 
   return (
-    <div className="container" style={{ position: "relative", display : "flex", flexDirection : "column", justifyContent: "center", alignItems : "center" }}>
-      <div style={{width : "100%"}}>
-        <div style={{height : "100%", width : "100%", maxWidth : "750px", margin: "0 auto", display : "flex", flexDirection: "column", gap: "2rem"}}>
+    <div
+      className="container"
+      style={{
+        position: "relative",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <div style={{ width: "100%" }}>
+        <div
+          style={{
+            height: "100%",
+            width: "100%",
+            maxWidth: "750px",
+            margin: "0 auto",
+            display: "flex",
+            flexDirection: "column",
+            gap: "2rem",
+          }}
+        >
           <h1>Macro Flow</h1>
-          <div style={{display: "flex", justifyContent : "space-between"}}>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
             <div>
               <Button
                 variant="primary"
@@ -53,6 +72,7 @@ export default function Flow({
                 setModalOpen={setModalOpen}
                 workflow={workflow}
                 setWorkflow={setWorkflow}
+                setWorkflowList={setWorkflowList}
               />
             </div>
             <div>
@@ -64,6 +84,7 @@ export default function Flow({
             // setModalOpen={setModalOpen}
             workflow={workflow}
             setWorkflow={setWorkflow}
+            setWorkflowList={setWorkflowList}
           />
           <div
             style={{
