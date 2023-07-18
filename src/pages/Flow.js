@@ -27,10 +27,18 @@ export default function Flow({
       (item) => item.id !== workflow.id
     );
 
-    setWorkflowList(updatedWorkflowList);
+    // Update the IDs of the remaining workflows in order
+    const updatedWorkflowListWithIDs = updatedWorkflowList.map(
+      (item, index) => ({
+        ...item,
+        id: index + 1,
+      })
+    );
+
+    setWorkflowList(updatedWorkflowListWithIDs);
 
     // Set the current workflow to the first workflow in the updated list
-    setWorkflow(updatedWorkflowList[0]);
+    setWorkflow(updatedWorkflowListWithIDs[0]);
     setDeleteModalOpen(false); // Close delete modal
   };
 
