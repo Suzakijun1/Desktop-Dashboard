@@ -32,7 +32,7 @@ export default function DragAndDrop({
     // Update the workflowList state
     setWorkflowList((oldWorkflowList) => {
       const updatedWorkflowList = [...oldWorkflowList];
-      updatedWorkflowList[workflow.id - 1].macro = updatedMacro;
+      updatedWorkflowList[workflow.id - 1].macro = items;
 
       return updatedWorkflowList;
     });
@@ -78,22 +78,25 @@ export default function DragAndDrop({
       updatedMacro[editingMacroIndex].name = editedName;
       updatedMacro[editingMacroIndex].route = editedRoute;
       updatedMacro[editingMacroIndex].arguments = editedArgs.split(" "); // Update the arguments
+      setWorkflowList((oldWorkflowList) => {
+        const updatedWorkflowList = [...oldWorkflowList];
+        updatedWorkflowList[workflow.id - 1].macro = updatedMacro;
 
+        return updatedWorkflowList;
+      });
       return {
         ...oldWorkflow,
         macro: updatedMacro,
       };
     });
-    setWorkflowList((oldWorkflowList) => {
-      const updatedWorkflowList = [...oldWorkflowList];
-      updatedWorkflowList[workflow.id - 1].macro = updatedMacro;
-
-      return updatedWorkflowList;
-    });
-    // Close the modal
     setModalOpen(false);
   };
-
+  useEffect(() => {
+    console.log("Workflow Macro IDs:");
+    workflow.macro.forEach((item) => {
+      console.log(item.id);
+    });
+  }, [workflow.macro]);
   return (
     <AnimatePresence>
       <DragDropContext onDragEnd={handleOnDragEnd}>
@@ -129,7 +132,7 @@ export default function DragAndDrop({
                         {...provided.dragHandleProps}
                         ref={provided.innerRef}
                         className={styles.item}
-                        key={id}
+                        key={`macro-${id}`} // Assign a unique key here
                       >
                         <span
                           style={{
