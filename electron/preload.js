@@ -89,17 +89,6 @@ contextBridge.exposeInMainWorld("electron", {
   receiveIPCMessage: (channel, listener) => {
     ipcRenderer.on(channel, (event, ...args) => listener(...args));
   },
-  getAppPath: async () => {
-    const userDataPath = await ipcRenderer.invoke("getAppPath");
-    return userDataPath;
-  },
-  pathJoin: (path1, path2) => {
-    const joinedPath = ipcRenderer.invoke("pathJoin", path1, path2);
-    return joinedPath;
-  },
-  loadWorkflows: async () => {
-    return await ipcRenderer.send("loadWorkflows");
-  },
 });
 
 // window.addEventListener("DOMContentLoaded", () => {

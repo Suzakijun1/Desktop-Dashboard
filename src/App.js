@@ -16,11 +16,7 @@ import Sidebar from "./components/Sidebar";
 import Clipboard from "./pages/ToolsItems/Clipboard";
 import Tools from "./pages/Tools.js";
 import "./styles/styles.css";
-import wf from "../workflows.json";
 import deepEqual from "deep-equal";
-import { stringify } from "uuid";
-import { parse, set } from "date-fns";
-import { id } from "date-fns/locale";
 
 export default function App({ electron, ipcRenderer, appPath }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -62,22 +58,6 @@ export default function App({ electron, ipcRenderer, appPath }) {
   const toggleLeftMenu = () => {
     setIsLeftMenuActive((prevIsLeftMenuActive) => !prevIsLeftMenuActive);
   };
-
-  useEffect(() => {
-    async function fetchData() {
-      // if (deepEqual(workflowList[workflow.id - 1], workflow)) return;
-
-      // workflowList[workflow.id - 1] = workflow;
-      const data = JSON.stringify(workflowList);
-
-      const configFilePath = "/workflows.json";
-      await electron.writeFile(configFilePath, data);
-      console.log("data inside useEffect", data);
-      console.log("writing to file", configFilePath);
-    }
-
-    fetchData();
-  }, [workflow, workflowList]);
 
   return (
     <div>

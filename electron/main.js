@@ -164,21 +164,6 @@ ipcMain.on("writeFile", async (_, filePath, data) => {
     console.error("Error saving file:", err);
   }
 });
-// ipcMain.on("writeFile", (_, filePath, data) => {
-//   const key = filePath.replace(/\//g, ".");
-//   storage.set(key, data);
-//   console.log("The file has been stored!" + data);
-// });
-// ipcMain.on("readFile", (_, filePath) => {
-//   const key = filePath.replace(/\//g, ".");
-//   const data = storage.get(key);
-//   if (data === undefined) {
-//     console.error("Error reading JSON file: File not found");
-//   } else {
-//     console.log("Loaded data:", data);
-//     // Use the loaded data as needed
-//   }
-// });
 
 ipcMain.on("readFile", async (event, filePath) => {
   const resolvedPath = app.getPath("userData");
