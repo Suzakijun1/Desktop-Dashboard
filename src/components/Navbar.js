@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import TestingMacroModal from "./testingmacrobutton";
 import Button from "../todolistComponents/Button";
 
 export default function Navbar({ electron, toggleLeftMenu }) {

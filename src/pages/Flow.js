@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import DragAndDrop from "../components/DragAndDrop";
-import FileOpenButton from "../components/FileOpenButton";
-import RunMacroButton from "../components/RunMacroButton";
+import DragAndDrop from "../components/FlowComponents/DragAndDrop";
+import FileOpenButton from "../components/FlowComponents/FileOpenButton";
+import RunMacroButton from "../components/FlowComponents/RunMacroButton";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import AddToMacroButton from "../components/AddToMacroButton";
+import AddToMacroButton from "../components/FlowComponents/AddToMacroButton";
 import styles from "../styles/modules/app.module.scss";
 import Navbar from "../components/Navbar";
 import Button from "../todolistComponents/Button";
-import DeleteModal from "../components/DeleteModal";
+import DeleteModal from "../components/FlowComponents/DeleteModal";
 
 export default function Flow({
   electron,

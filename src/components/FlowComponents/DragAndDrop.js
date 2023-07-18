@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import "./DragAndDrop.css";
 import { MdDelete, MdEdit } from "react-icons/md";
-import styles from "../styles/modules/todoItem.module.scss";
+import styles from "../../styles/modules/todoItem.module.scss";
 import { AnimatePresence, motion } from "framer-motion";
 import UpdateMacroButton from "./UpdateMacroButton";
 

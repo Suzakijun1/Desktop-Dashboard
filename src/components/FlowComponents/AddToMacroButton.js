@@ -4,8 +4,8 @@ import React, { useEffect, useState } from "react";
 import { MdOutlineClose } from "react-icons/md";
 import { AnimatePresence, motion } from "framer-motion";
 import toast from "react-hot-toast";
-import styles from "../styles/modules/modal.module.scss";
-import Button from "../todolistComponents/Button";
+import styles from "../../styles/modules/modal.module.scss";
+import Button from "../../todolistComponents/Button";
 import { v4 as uuidv4 } from "uuid";
 const dropIn = {
   hidden: {
