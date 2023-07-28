@@ -108,6 +108,11 @@ export default function Navbar({ electron, toggleLeftMenu }) {
             Email
           </Button>
         </Link>
+        <Link to="/notes">
+          <Button variant="primary" id="notes">
+            Notes
+          </Button>
+        </Link>
       </div>
     </>
   );

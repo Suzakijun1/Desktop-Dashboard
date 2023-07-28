@@ -17,6 +17,7 @@ import Clipboard from "./pages/ToolsItems/Clipboard";
 import Tools from "./pages/Tools.js";
 import "./styles/styles.css";
 import deepEqual from "deep-equal";
+import Notes from "./pages/Notes";
 
 export default function App({ electron, ipcRenderer, appPath }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -109,6 +110,7 @@ export default function App({ electron, ipcRenderer, appPath }) {
                     <Email electron={electron} ipcRenderer={ipcRenderer} />
                   }
                 />
+                <Route exact path="/notes" element={<Notes />} />
               </Routes>
             </div>
           </div>
