@@ -32,7 +32,14 @@ module.exports = {
           },
         },
       },
-
+      {
+        test: /\.svg$/,
+        use: [
+          {
+            loader: "file-loader",
+          },
+        ],
+      },
       {
         test: [/\.s[ac]ss$/i, /\.css$/i],
         use: [

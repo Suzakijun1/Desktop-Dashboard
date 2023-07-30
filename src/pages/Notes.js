@@ -1,88 +1,56 @@
-import React, { useState, useEffect } from "react";
-import { nanoid } from "nanoid";
-import NotesList from "./NoteItems/NotesList";
-import Search from "./NoteItems/Search";
-import Header from "./NoteItems/Header";
-// import "./NoteItems/notes.scss";
-import styles from "../styles/modules/todoItem.module.scss";
+import React, { useState } from "react";
+// import Navbar from "../../components/Navbar/navbar";
+import Sidebar from "./NoteItems/Sidebar/Sidebar";
+import "./Notes.css";
+import NewNote from "./NoteItems/NewNote/NewNote";
+import useNotesData from "./NoteItems/Assets/useNotesData";
+import Note from "./NoteItems/Note/Note";
+import Layout from "./NoteItems/Layout/Layout";
 
-import { AnimatePresence, motion } from "framer-motion";
+const Notes = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const { pinned, unpinned } = useNotesData();
 
-export default function Note() {
-  const [notes, setNotes] = useState([
-    {
-      id: nanoid(),
-      text: "This is my first note!",
-      date: "15/04/2021",
-    },
-    {
-      id: nanoid(),
-      text: "This is my second note!",
-      date: "21/04/2021",
-    },
-    {
-      id: nanoid(),
-      text: "This is my third note!",
-      date: "28/04/2021",
-    },
-    {
-      id: nanoid(),
-      text: "This is my new note!",
-      date: "30/04/2021",
-    },
-  ]);
+  const pinnedNotes = pinned.map((note) => <Note key={note.id} note={note} />);
 
-  const [searchText, setSearchText] = useState("");
-
-  useEffect(() => {
-    const savedNotes = JSON.parse(localStorage.getItem("react-notes-app-data"));
-
-    if (savedNotes) {
-      setNotes(savedNotes);
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("react-notes-app-data", JSON.stringify(notes));
-  }, [notes]);
-
-  const addNote = (text) => {
-    const date = new Date();
-    const newNote = {
-      id: nanoid(),
-      text: text,
-      date: date.toLocaleDateString(),
-    };
-    const newNotes = [...notes, newNote];
-    setNotes(newNotes);
-  };
-
-  const deleteNote = (id) => {
-    const newNotes = notes.filter((note) => note.id !== id);
-    setNotes(newNotes);
-  };
+  const otherNotes = unpinned.map((note) => <Note key={note.id} note={note} />);
 
   return (
-    <AnimatePresence>
-      <motion.div
-        className={styles.content__wrapper}
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.3 }}
-        style={{ width: "90%" }}
-      >
-        <h1>Notes</h1>
-        <div className="container">
-          <Search handleSearchNote={setSearchText} />
-          <NotesList
-            notes={notes.filter((note) =>
-              note.text.toLowerCase().includes(searchText)
-            )}
-            handleAddNote={addNote}
-            handleDeleteNote={deleteNote}
-          />
+    <div className="notes">
+      {/* <Navbar /> */}
+      <div className="notes-content">
+        {/* <Sidebar /> */}
+        <div className="notes-main">
+          <section>
+            <div>
+              <h2>PINNED</h2>
+              {pinnedNotes.length !== 0 ? (
+                <Layout>{pinnedNotes}</Layout>
+              ) : (
+                <p>No pinned notes found!</p>
+              )}
+            </div>
+
+            <div>
+              <h2>OTHERS</h2>
+              {otherNotes.length !== 0 ? (
+                <Layout>{otherNotes}</Layout>
+              ) : (
+                <p>No notes found!</p>
+              )}
+            </div>
+          </section>
+          <button
+            className="new-note-button"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            <i className="fa-solid fa-pencil"></i>
+          </button>
+          {isOpen && <NewNote setIsOpen={setIsOpen} />}
         </div>
-      </motion.div>
-    </AnimatePresence>
+      </div>
+    </div>
   );
-}
+};
+
+export default Notes;
