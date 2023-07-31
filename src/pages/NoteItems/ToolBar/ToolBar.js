@@ -25,7 +25,10 @@ const ToolBar = ({
           <i
             className="fa-solid fa-trash-can"
             title="delete note"
-            onClick={() => binNote()}
+            onClick={() => {
+              binNote();
+              console.log("delete note was clicked");
+            }}
           ></i>
         )}
         {!newNote.archived && !newNote.deleted && (

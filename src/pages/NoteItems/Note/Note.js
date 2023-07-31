@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./note.css";
 import NotePreview from "../NotePreview/notePreview";
 
-const Note = ({ note }) => {
+const Note = ({ note, binNote }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -26,7 +26,12 @@ const Note = ({ note }) => {
         )}
       </div>
       {isOpen && (
-        <NotePreview note={note} isOpen={isOpen} setIsOpen={setIsOpen} />
+        <NotePreview
+          note={note}
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          binNote={binNote}
+        />
       )}
     </div>
   );

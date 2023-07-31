@@ -2,13 +2,14 @@ import React, { useContext, useEffect, useState } from "react";
 import "./NewNote.css";
 import { useOutsideClick } from "../Assets/useOutsideClick";
 import ToolBar from "../ToolBar/ToolBar";
-
+import { v4 as uuidv4 } from "uuid";
 import { toast } from "react-toastify";
 
-const NewNote = ({ setIsOpen }) => {
+const NewNote = ({ setIsOpen, addNewNote }) => {
   const newNoteModalNode = useOutsideClick(() => setIsOpen(false));
 
   const newEmptyNote = {
+    id: uuidv4(), // Generate a unique ID for each new note
     title: "",
     content: "",
     label: [],
@@ -25,27 +26,18 @@ const NewNote = ({ setIsOpen }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setNewNote((prev) => ({ ...prev, [name]: value }));
+    console.log("changing new note");
   };
 
-  const addNewNote = () => {
-    if (newNote.content === "" && newNote.title === "") {
-      toast.error("Can't save an empty note!");
-    } else {
-      const storedNotes = JSON.parse(localStorage.getItem("notes")) || [];
-      const updatedNotes = [...storedNotes, newNote];
-      saveNotesToLocalStorage(updatedNotes);
-    }
-  };
-
-  useEffect(() => {
-    // Save the new note when it is not empty
-    addNewNote();
-    setIsOpen(false);
-    toast.success("New note is created!");
-  }, [newNote, setIsOpen]);
+  // useEffect(() => {
+  //   // Save the new note when it is not empty
+  //   addNewNote();
+  //   setIsOpen(false);
+  //   toast.success("New note is created!");
+  // }, [newNote, setIsOpen]);
 
   const closeModal = () => {
-    addNewNote();
+    addNewNote(newNote);
     setIsOpen(false);
     toast.success("New note is created!");
   };

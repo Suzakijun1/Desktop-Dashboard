@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./notePreview.css";
 import { toast } from "react-toastify";
 import ToolBar from "../ToolBar/ToolBar";
@@ -8,6 +8,7 @@ import { useOutsideClick } from "../Assets/useOutsideClick";
 const NotePreview = ({ note, setIsOpen }) => {
   const notePreviewModalNode = useOutsideClick(() => setIsOpen(false));
   const [notes, setNotes] = useState({
+    id: note.id,
     title: note.title,
     content: note.content,
     bg: note.bg,
@@ -17,31 +18,80 @@ const NotePreview = ({ note, setIsOpen }) => {
     pinned: note.pinned,
   });
 
+  // Update local state when the note prop changes
   useEffect(() => {
-    // Save the initial note data to local storage when component mounts
-    saveToLocalStorage(note.id, notes);
+    setNotes({
+      id: note.id,
+      title: note.title,
+      content: note.content,
+      bg: note.bg,
+      label: note.label,
+      archived: note.archived,
+      deleted: note.deleted,
+      pinned: note.pinned,
+    });
+  }, [note]);
+  // const [notes, setNotes] = useState([]);
+  // Load notes data from localStorage on component mount
+  useEffect(() => {
+    const savedNoteData = localStorage.getItem("notes");
+    if (savedNoteData) {
+      setNotes(JSON.parse(savedNoteData));
+    }
+  }, []);
+
+  // Save notes data to localStorage on every update
+  useEffect(() => {
+    localStorage.setItem("notes", JSON.stringify(notes));
+    console.log("Note Preview Use Effect");
   }, [note.id, notes]);
 
-  const saveToLocalStorage = (id, data) => {
-    try {
-      localStorage.setItem(`note_${id}`, JSON.stringify(data));
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const updateNote = (id, value) => {
-    setNotes((prevNote) => ({ ...prevNote, ...value }));
-  };
+  // Load notes data from localStorage on component mount
+  // useEffect(() => {
+  //   const savedNoteData = localStorage.getItem("notes");
+  //   if (savedNoteData) {
+  //     setNotes(JSON.parse(savedNoteData));
+  //   }
+  // }, [note.id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setNotes((prevNote) => ({ ...prevNote, [name]: value }));
+    setNotes((prevNotes) => {
+      const updatedNoteIndex = prevNotes.findIndex(
+        (noteItem) => noteItem.id === note.id
+      );
+      if (updatedNoteIndex !== -1) {
+        const updatedNote = {
+          ...prevNotes[updatedNoteIndex],
+          [name]: value,
+          editedAt: getCurrentDateTime(),
+        };
+        const updatedNotes = [...prevNotes];
+        updatedNotes[updatedNoteIndex] = updatedNote;
+        localStorage.setItem("notes", JSON.stringify(updatedNotes));
+        return updatedNotes;
+      }
+      return prevNotes;
+    });
   };
 
-  const setUpdatedNote = () => {
+  const updateNote = (id, value) => {
     try {
-      saveToLocalStorage(note.id, notes);
+      // Get the existing notes data from localStorage
+      const savedNoteData = localStorage.getItem("notes");
+      const notes = savedNoteData ? JSON.parse(savedNoteData) : {};
+
+      // Update the note with the given id
+      if (notes[id]) {
+        notes[id] = {
+          ...notes[id],
+          ...value,
+          editedAt: getCurrentDateTime(),
+        };
+
+        // Save the updated notes data back to localStorage
+        localStorage.setItem("notes", JSON.stringify(notes));
+      }
     } catch (err) {
       console.error(err);
     }
@@ -49,8 +99,16 @@ const NotePreview = ({ note, setIsOpen }) => {
 
   const deleteNote = (id) => {
     try {
-      for (let key in notes) {
-        localStorage.removeItem(`note_${id}_${key}`);
+      // Get the existing notes data from localStorage
+      const savedNoteData = localStorage.getItem("notes");
+      const notes = savedNoteData ? JSON.parse(savedNoteData) : {};
+
+      // Delete the note with the given id
+      if (notes[id]) {
+        delete notes[id];
+
+        // Save the updated notes data back to localStorage
+        localStorage.setItem("notes", JSON.stringify(notes));
       }
     } catch (err) {
       console.error(err);
@@ -63,28 +121,43 @@ const NotePreview = ({ note, setIsOpen }) => {
 
   const pinNote = () => {
     updateNote(note.id, { pinned: !note.pinned });
-    setUpdatedNote();
+
     setIsOpen(false);
   };
 
   const binNote = () => {
-    updateNote(note.id, { deleted: !note.deleted });
-    toast.success("Note Deleted!");
-    setUpdatedNote();
-    setIsOpen(false);
+    try {
+      // Get the existing notes data from localStorage
+      const savedNoteData = localStorage.getItem("notes");
+      let notes = savedNoteData ? JSON.parse(savedNoteData) : [];
+
+      // Filter out the note with the given id
+      notes = notes.filter((noteItem) => noteItem.id !== note.id);
+
+      // Save the updated notes data back to localStorage
+      localStorage.setItem("notes", JSON.stringify(notes));
+
+      // Here, you don't need to update the local state (notes) because it will be automatically updated
+      // when the effect hook runs due to changes in localStorage
+
+      toast.success("Note Deleted!");
+      setIsOpen(false);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const archiveNote = () => {
     updateNote(note.id, { archived: !note.archived });
     toast.success("Note Archived!");
-    setUpdatedNote();
+
     setIsOpen(false);
   };
 
   const unarchiveNote = () => {
     updateNote(note.id, { archived: !note.archived });
     toast.success("Note Unarchived");
-    setUpdatedNote();
+
     setIsOpen(false);
   };
 
@@ -137,6 +210,19 @@ const NotePreview = ({ note, setIsOpen }) => {
         JSON.stringify(updatedLabels)
       );
     }
+  };
+
+  const setUpdatedNote = () => {
+    const updatedNote = { ...note }; // Create a copy of the original note object
+    for (let key in notes) {
+      // Check if the notes object contains the key from the original note
+      if (key in updatedNote) {
+        if (notes[key].toString() !== updatedNote[key].toString()) {
+          updatedNote[key] = notes[key];
+        }
+      }
+    }
+    updateNote(note.id, updatedNote);
   };
 
   return (

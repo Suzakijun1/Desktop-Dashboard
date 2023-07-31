@@ -18,7 +18,7 @@ import Tools from "./pages/Tools.js";
 import "./styles/styles.css";
 import deepEqual from "deep-equal";
 import Notes from "./pages/Notes";
-
+import { ToastContainer } from "react-toastify";
 export default function App({ electron, ipcRenderer, appPath }) {
   const [modalOpen, setModalOpen] = useState(false);
   //Workflow List is the list of all workflows
@@ -100,6 +100,7 @@ export default function App({ electron, ipcRenderer, appPath }) {
                     )
                   }
                 />
+
                 <Route exact path="/todolist" element={<ToDoList />} />
                 <Route exact path="/tools" element={<Tools />} />
                 <Route exact path="/clipboard" element={<Clipboard />} />
@@ -114,6 +115,18 @@ export default function App({ electron, ipcRenderer, appPath }) {
               </Routes>
             </div>
           </div>
+          <ToastContainer
+            position="bottom-right"
+            autoClose={1000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
         </div>
       </MemoryRouter>
     </div>

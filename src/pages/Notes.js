@@ -9,11 +9,20 @@ import Layout from "./NoteItems/Layout/Layout";
 
 const Notes = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { pinned, unpinned } = useNotesData();
 
+  const { pinned, unpinned, addNewNote } = useNotesData();
   const pinnedNotes = pinned.map((note) => <Note key={note.id} note={note} />);
 
   const otherNotes = unpinned.map((note) => <Note key={note.id} note={note} />);
+  console.log("pinnedNotes:", pinnedNotes);
+  console.log("otherNotes:", otherNotes);
+  console.log("isOpen:", isOpen);
+
+  // Function to handle opening the NewNote component for editing
+  const handleEditNote = (note) => {
+    setNoteToEdit(note); // Set the note being edited in the state
+    setIsOpen(true); // Open the NewNote component
+  };
 
   return (
     <div className="notes">
@@ -25,7 +34,7 @@ const Notes = () => {
             <div>
               <h2>PINNED</h2>
               {pinnedNotes.length !== 0 ? (
-                <Layout>{pinnedNotes}</Layout>
+                <Layout onEditNote={handleEditNote}>{pinnedNotes}</Layout>
               ) : (
                 <p>No pinned notes found!</p>
               )}
@@ -34,7 +43,7 @@ const Notes = () => {
             <div>
               <h2>OTHERS</h2>
               {otherNotes.length !== 0 ? (
-                <Layout>{otherNotes}</Layout>
+                <Layout onEditNote={handleEditNote}>{otherNotes}</Layout>
               ) : (
                 <p>No notes found!</p>
               )}
@@ -46,7 +55,7 @@ const Notes = () => {
           >
             <i className="fa-solid fa-pencil"></i>
           </button>
-          {isOpen && <NewNote setIsOpen={setIsOpen} />}
+          {isOpen && <NewNote setIsOpen={setIsOpen} addNewNote={addNewNote} />}
         </div>
       </div>
     </div>
