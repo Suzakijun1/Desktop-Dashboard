@@ -7,56 +7,17 @@ import { useOutsideClick } from "../Assets/useOutsideClick";
 
 const NotePreview = ({ note, setIsOpen, updateNoteInParent }) => {
   const notePreviewModalNode = useOutsideClick(() => setIsOpen(false));
-  const [notes, setNotes] = useState({
-    id: note.id,
-    title: note.title,
-    content: note.content,
-    bg: note.bg,
-    label: note.label,
-    archived: note.archived,
-    deleted: note.deleted,
-    pinned: note.pinned,
-  });
+  const [notes, setNotes] = useState({ ...note }); // Initialize with the values from 'note' prop
 
   // Update local state when the note prop changes
   useEffect(() => {
-    setNotes({
-      id: note.id,
-      title: note.title,
-      content: note.content,
-      bg: note.bg,
-      label: note.label,
-      archived: note.archived,
-      deleted: note.deleted,
-      pinned: note.pinned,
-    });
+    setNotes({ ...note }); // Update the local state with the values from 'note' prop
   }, [note]);
-  // const [notes, setNotes] = useState([]);
-  // Load notes data from localStorage on component mount
-  useEffect(() => {
-    const savedNoteData = localStorage.getItem("notes");
-    if (savedNoteData) {
-      setNotes(JSON.parse(savedNoteData));
-    }
-  }, []);
 
   // Save notes data to localStorage on every update
   useEffect(() => {
     localStorage.setItem("notes", JSON.stringify(notes));
-    console.log("Note Preview Use Effect");
-    // const addNewNote = (newNote) => {
-    //   setNotes((prevNotes) => [...prevNotes, newNote]);
-    // };
-    // addNewNote();
-  }, [note.id, notes]);
-
-  // Load notes data from localStorage on component mount
-  // useEffect(() => {
-  //   const savedNoteData = localStorage.getItem("notes");
-  //   if (savedNoteData) {
-  //     setNotes(JSON.parse(savedNoteData));
-  //   }
-  // }, [note.id]);
+  }, [notes]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -69,28 +30,7 @@ const NotePreview = ({ note, setIsOpen, updateNoteInParent }) => {
     updateNoteInParent(updatedNote);
   };
 
-  const updateNote = (id, value) => {
-    try {
-      // Get the existing notes data from localStorage
-      const savedNoteData = localStorage.getItem("notes");
-      const notes = savedNoteData ? JSON.parse(savedNoteData) : {};
-
-      // Update the note with the given id
-      if (notes[id]) {
-        notes[id] = {
-          ...notes[id],
-          ...value,
-          editedAt: getCurrentDateTime(),
-        };
-
-        // Save the updated notes data back to localStorage
-        localStorage.setItem("notes", JSON.stringify(notes));
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
+  //might need this function in the future to delete a note permanently.
   const deleteNote = (id) => {
     try {
       // Get the existing notes data from localStorage
@@ -110,100 +50,75 @@ const NotePreview = ({ note, setIsOpen, updateNoteInParent }) => {
   };
 
   const changeBg = (bg) => {
-    // setNotes((prevNote) => ({ ...prevNote, bg }));
     updateNoteInParent({ ...note, bg });
   };
 
   const pinNote = () => {
-    updateNote(note.id, { pinned: !note.pinned });
+    updateNoteInParent({ ...note, pinned: !note.pinned });
 
     setIsOpen(false);
   };
 
   const binNote = () => {
     try {
-      // Get the existing notes data from localStorage
-      const savedNoteData = localStorage.getItem("notes");
-      let notes = savedNoteData ? JSON.parse(savedNoteData) : [];
-
-      // Filter out the note with the given id
-      // notes = notes.filter((noteItem) => noteItem.id !== note.id);
       // Mark the current note for deletion
       const updatedNote = {
         ...note,
         deleted: true,
       };
-      // Save the updated notes data back to localStorage
-      localStorage.setItem("notes", JSON.stringify([...notes, updatedNote]));
 
-      // Here, you don't need to update the local state (notes) because it will be automatically updated
-      // when the effect hook runs due to changes in localStorage
-
-      // localStorage.setItem("notes", JSON.stringify(updatedNote));
+      // Call the updateNoteInParent function with the updatedNote
       updateNoteInParent(updatedNote);
 
       toast.success("Note Deleted!");
-
       setIsOpen(false);
     } catch (err) {
       console.error(err);
     }
   };
-  // const binNote = () => {
-  //   try {
-  //     // Call the updateNoteInParent function with the note object to be removed
-  //     updateNoteInParent(null);
-  //     toast.success("Note Deleted!");
-  //     setIsOpen(false);
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // };
 
   const archiveNote = () => {
-    updateNote(note.id, { archived: !note.archived });
+    updateNoteInParent({ ...note, archived: !note.archived });
     toast.success("Note Archived!");
 
     setIsOpen(false);
   };
 
   const unarchiveNote = () => {
-    updateNote(note.id, { archived: !note.archived });
+    updateNoteInParent({ ...note, archived: !note.archived });
     toast.success("Note Unarchived");
 
     setIsOpen(false);
   };
 
   const restoreNote = () => {
-    updateNote(note.id, { deleted: !note.deleted });
+    updateNoteInParent({ ...note, deleted: !note.deleted });
     toast.success("Note Restored!");
     setIsOpen(false);
   };
 
   const deleteNoteForever = () => {
-    deleteNote(note.id);
+    updateNoteInParent({ ...note, deleted: true });
     toast.success("Note deleted forever!");
     setIsOpen(false);
   };
 
   const closeModal = () => {
-    setUpdatedNote();
+    // setUpdatedNote();
+    updateNoteInParent({ ...note, editedAt: getCurrentDateTime() });
     setIsOpen(false);
     toast.success("Note is updated!");
   };
 
   const deleteLabel = (labelName) => {
-    setNotes((prevNote) => ({
-      ...prevNote,
-      label: prevNote.label.filter((l) => l !== labelName),
-    }));
+    updateNoteInParent({
+      ...note,
+      label: note.label.filter((l) => l !== labelName),
+    });
 
     // Update localStorage for the changes
     const updatedLabels = notes.label.filter((l) => l !== labelName);
-    localStorage.setItem(
-      `note_${note.id}_label`,
-      JSON.stringify(updatedLabels)
-    );
+    localStorage.setItem(`notes`, JSON.stringify(updatedLabels));
   };
 
   const addNewLabel = (labelName) => {
@@ -211,17 +126,14 @@ const NotePreview = ({ note, setIsOpen, updateNoteInParent }) => {
       labelName.trim() !== "" &&
       !note.label.includes(labelName.trim().toLowerCase())
     ) {
-      setNotes((prevNote) => ({
-        ...prevNote,
-        label: [...prevNote.label, labelName.trim().toLowerCase()],
-      }));
+      updateNoteInParent({
+        ...note,
+        label: [...note.label, labelName.trim().toLowerCase()],
+      });
 
       // Update localStorage for the changes
       const updatedLabels = [...notes.label, labelName.trim().toLowerCase()];
-      localStorage.setItem(
-        `note_${note.id}_label`,
-        JSON.stringify(updatedLabels)
-      );
+      localStorage.setItem(`notes`, JSON.stringify(updatedLabels));
     }
   };
 
@@ -237,13 +149,14 @@ const NotePreview = ({ note, setIsOpen, updateNoteInParent }) => {
   //   }
   //   updateNote(note.id, updatedNote);
   // };
-  const setUpdatedNote = () => {
-    for (let key in notes) {
-      if (notes[key].toString() !== note[key].toString()) {
-        updateNote(note.id, { [key]: notes[key] });
-      }
-    }
-  };
+
+  // const setUpdatedNote = () => {
+  //   for (let key in notes) {
+  //     if (notes[key].toString() !== note[key].toString()) {
+  //       updateNote(note.id, { [key]: notes[key] });
+  //     }
+  //   }
+  // };
   return (
     <div className="new-note-modal-container">
       <div className={`new-note-modal ${notes.bg}`} ref={notePreviewModalNode}>

@@ -40,7 +40,12 @@ const Note = ({ note, binNote, setNotes }) => {
           .filter(Boolean) // Filter out null notes
     );
   };
-
+  // const updateNoteInParent = (updatedNote) => {
+  //   setNotes((prevNotes) => ({
+  //     ...prevNotes,
+  //     [updatedNote.id]: updatedNote,
+  //   }));
+  // };
   return (
     <div className="note-card-container">
       <div className={`note-card ${note?.bg}`} onClick={() => setIsOpen(true)}>
