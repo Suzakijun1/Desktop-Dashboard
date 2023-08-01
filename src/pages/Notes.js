@@ -10,10 +10,14 @@ import Layout from "./NoteItems/Layout/Layout";
 const Notes = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { pinned, unpinned, addNewNote } = useNotesData();
-  const pinnedNotes = pinned.map((note) => <Note key={note.id} note={note} />);
+  const { pinned, unpinned, addNewNote, setNotes } = useNotesData();
+  const pinnedNotes = pinned.map((note) => (
+    <Note key={note.id} note={note} setNotes={setNotes} />
+  ));
 
-  const otherNotes = unpinned.map((note) => <Note key={note.id} note={note} />);
+  const otherNotes = unpinned.map((note) => (
+    <Note key={note.id} note={note} setNotes={setNotes} />
+  ));
   console.log("pinnedNotes:", pinnedNotes);
   console.log("otherNotes:", otherNotes);
   console.log("isOpen:", isOpen);

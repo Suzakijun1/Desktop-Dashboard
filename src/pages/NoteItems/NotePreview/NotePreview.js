@@ -5,7 +5,7 @@ import ToolBar from "../ToolBar/ToolBar";
 import { getCurrentDateTime } from "../Assets/getCurrentDateTime";
 import { useOutsideClick } from "../Assets/useOutsideClick";
 
-const NotePreview = ({ note, setIsOpen }) => {
+const NotePreview = ({ note, setIsOpen, updateNoteInParent }) => {
   const notePreviewModalNode = useOutsideClick(() => setIsOpen(false));
   const [notes, setNotes] = useState({
     id: note.id,
@@ -44,6 +44,10 @@ const NotePreview = ({ note, setIsOpen }) => {
   useEffect(() => {
     localStorage.setItem("notes", JSON.stringify(notes));
     console.log("Note Preview Use Effect");
+    // const addNewNote = (newNote) => {
+    //   setNotes((prevNotes) => [...prevNotes, newNote]);
+    // };
+    // addNewNote();
   }, [note.id, notes]);
 
   // Load notes data from localStorage on component mount
@@ -56,23 +60,13 @@ const NotePreview = ({ note, setIsOpen }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setNotes((prevNotes) => {
-      const updatedNoteIndex = prevNotes.findIndex(
-        (noteItem) => noteItem.id === note.id
-      );
-      if (updatedNoteIndex !== -1) {
-        const updatedNote = {
-          ...prevNotes[updatedNoteIndex],
-          [name]: value,
-          editedAt: getCurrentDateTime(),
-        };
-        const updatedNotes = [...prevNotes];
-        updatedNotes[updatedNoteIndex] = updatedNote;
-        localStorage.setItem("notes", JSON.stringify(updatedNotes));
-        return updatedNotes;
-      }
-      return prevNotes;
-    });
+    const updatedNote = {
+      ...note,
+      [name]: value,
+      editedAt: getCurrentDateTime(),
+    };
+    // localStorage.setItem("notes", JSON.stringify(updatedNote));
+    updateNoteInParent(updatedNote);
   };
 
   const updateNote = (id, value) => {
@@ -116,7 +110,8 @@ const NotePreview = ({ note, setIsOpen }) => {
   };
 
   const changeBg = (bg) => {
-    setNotes((prevNote) => ({ ...prevNote, bg }));
+    // setNotes((prevNote) => ({ ...prevNote, bg }));
+    updateNoteInParent({ ...note, bg });
   };
 
   const pinNote = () => {
@@ -132,20 +127,38 @@ const NotePreview = ({ note, setIsOpen }) => {
       let notes = savedNoteData ? JSON.parse(savedNoteData) : [];
 
       // Filter out the note with the given id
-      notes = notes.filter((noteItem) => noteItem.id !== note.id);
-
+      // notes = notes.filter((noteItem) => noteItem.id !== note.id);
+      // Mark the current note for deletion
+      const updatedNote = {
+        ...note,
+        deleted: true,
+      };
       // Save the updated notes data back to localStorage
-      localStorage.setItem("notes", JSON.stringify(notes));
+      localStorage.setItem("notes", JSON.stringify([...notes, updatedNote]));
 
       // Here, you don't need to update the local state (notes) because it will be automatically updated
       // when the effect hook runs due to changes in localStorage
 
+      // localStorage.setItem("notes", JSON.stringify(updatedNote));
+      updateNoteInParent(updatedNote);
+
       toast.success("Note Deleted!");
+
       setIsOpen(false);
     } catch (err) {
       console.error(err);
     }
   };
+  // const binNote = () => {
+  //   try {
+  //     // Call the updateNoteInParent function with the note object to be removed
+  //     updateNoteInParent(null);
+  //     toast.success("Note Deleted!");
+  //     setIsOpen(false);
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
 
   const archiveNote = () => {
     updateNote(note.id, { archived: !note.archived });
@@ -212,19 +225,25 @@ const NotePreview = ({ note, setIsOpen }) => {
     }
   };
 
+  // const setUpdatedNote = () => {
+  //   const updatedNote = { ...note }; // Create a copy of the original note object
+  //   for (let key in notes) {
+  //     // Check if the notes object contains the key from the original note
+  //     if (key in updatedNote) {
+  //       if (notes[key].toString() !== updatedNote[key].toString()) {
+  //         updatedNote[key] = notes[key];
+  //       }
+  //     }
+  //   }
+  //   updateNote(note.id, updatedNote);
+  // };
   const setUpdatedNote = () => {
-    const updatedNote = { ...note }; // Create a copy of the original note object
     for (let key in notes) {
-      // Check if the notes object contains the key from the original note
-      if (key in updatedNote) {
-        if (notes[key].toString() !== updatedNote[key].toString()) {
-          updatedNote[key] = notes[key];
-        }
+      if (notes[key].toString() !== note[key].toString()) {
+        updateNote(note.id, { [key]: notes[key] });
       }
     }
-    updateNote(note.id, updatedNote);
   };
-
   return (
     <div className="new-note-modal-container">
       <div className={`new-note-modal ${notes.bg}`} ref={notePreviewModalNode}>
