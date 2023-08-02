@@ -4,7 +4,7 @@ import { useOutsideClick } from "../Assets/useOutsideClick";
 import ToolBar from "../ToolBar/ToolBar";
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "react-toastify";
-
+import { getCurrentDateTime } from "../Assets/getCurrentDateTime";
 const NewNote = ({ setIsOpen, addNewNote }) => {
   const newNoteModalNode = useOutsideClick(() => setIsOpen(false));
 
@@ -23,12 +23,24 @@ const NewNote = ({ setIsOpen, addNewNote }) => {
   };
   const [newNote, setNewNote] = useState(newEmptyNote);
 
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setNewNote((prev) => ({ ...prev, [name]: value }));
+  //   console.log("changing new note");
+  // };
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setNewNote((prev) => ({ ...prev, [name]: value }));
+
+    // Check if the note is being created for the first time and set the "createdAt" field
+    const updatedNote = {
+      ...newNote,
+      [name]: value,
+      createdAt: newNote.createdAt || getCurrentDateTime(), // If "createdAt" doesn't exist, set it to the current timestamp
+    };
+
+    setNewNote(updatedNote);
     console.log("changing new note");
   };
-
   // useEffect(() => {
   //   // Save the new note when it is not empty
   //   addNewNote();

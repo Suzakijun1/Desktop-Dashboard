@@ -10,7 +10,8 @@ import "@fontsource/poppins/600.css";
 import "@fontsource/poppins/700.css";
 import { Provider } from "react-redux";
 import { store } from "./todolistComponents/store/store";
-
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
 
