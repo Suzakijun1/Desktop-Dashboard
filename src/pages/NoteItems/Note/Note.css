@@ -33,6 +33,7 @@
   .note-card p {
     font-size: 0.875rem;
     line-height: 1.25rem;
+    word-wrap: break-word;
   }
   
   .note-label-container {
