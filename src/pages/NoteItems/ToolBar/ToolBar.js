@@ -1,5 +1,5 @@
 import React from "react";
-import "./toolBar.css";
+import "./toolbar.css";
 import ColorPalette from "./components/ColorPalette";
 import LabelContainer from "./components/LabelContainer";
 import Pin from "./components/Pin";

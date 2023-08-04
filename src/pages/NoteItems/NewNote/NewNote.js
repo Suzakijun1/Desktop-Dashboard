@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import "./NewNote.css";
+import "./newNote.css";
 import { useOutsideClick } from "../Assets/useOutsideClick";
 import ToolBar from "../ToolBar/ToolBar";
 import { v4 as uuidv4 } from "uuid";
@@ -49,9 +49,13 @@ const NewNote = ({ setIsOpen, addNewNote }) => {
   // }, [newNote, setIsOpen]);
 
   const closeModal = () => {
-    addNewNote(newNote);
-    setIsOpen(false);
-    toast.success("New note is created!");
+    if (newNote.content.trim() === "" && newNote.title.trim() === "") {
+      toast.error("Please add content or a title before saving the note!");
+    } else {
+      addNewNote(newNote);
+      setIsOpen(false);
+      toast.success("New note is created!");
+    }
   };
 
   const changeBg = (color) => {
