@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Button from "../todolistComponents/Button";
 import SidebarAddModal from "./SidebarAddModal";
+import SidebarNote from "../pages/NoteItems/Sidebar/Sidebar-notes";
 
 export default function Sidebar({
   electron,
@@ -10,6 +11,12 @@ export default function Sidebar({
   setWorkflowList,
 }) {
   const [modalOpen, setModalOpen] = useState(false);
+
+  const [activeSlide, setActiveSlide] = useState(1);
+  // Function to toggle between the slides
+  const toggleSlide = () => {
+    setActiveSlide(activeSlide === 1 ? 2 : 1);
+  };
 
   useEffect(() => {
     //Identifiers for the side bar
@@ -62,6 +69,72 @@ export default function Sidebar({
   //   storeMacroData(macroCountList);
   // }, [macroCount]);
   let timer;
+  //   return (
+  //     <div
+  //       id="mySidebar"
+  //       className="leftMenu"
+  //       style={{
+  //         display: "flex",
+  //         flexDirection: "column",
+  //         justifyContent: "space-between",
+  //         height: "85vh",
+  //       }}
+  //     >
+  //       <div style={{ display: "flex", flexDirection: "column" }}>
+  //         <div className="leftMenuHeader">
+  //           Saved Workflows{" "}
+  //           <i
+  //             className="fa-solid fa-right-left"
+  //             style={{ marginLeft: "15px" }}
+  //             onClick={toggleSlide}
+  //           ></i>
+  //         </div>
+  //         {workflowList.map((workflow, index) => (
+  //           <Button
+  //             variant="primary"
+  //             key={index}
+  //             onClick={() => {
+  //               setWorkflow(workflow);
+  //               if (timer) {
+  //                 clearTimeout(timer);
+  //                 timer = null;
+  //                 // Perform the action for double-click here
+  //                 workflow.macro.forEach((app) => {
+  //                   electron.openApp(app.route, app.arguments);
+  //                 });
+  //               } else {
+  //                 timer = setTimeout(() => {
+  //                   timer = null;
+  //                   // Perform the action for single-click here
+  //                   // e.g., display a message
+  //                   console.log("Single click");
+  //                 }, 250);
+  //               }
+  //             }}
+  //             style={{ marginTop: index === 0 ? "0" : "20px" }}
+  //           >
+  //             {workflow.name}
+  //           </Button>
+  //         ))}
+  //       </div>
+
+  //       <div style={{ display: "flex", flexDirection: "column" }}>
+  //         <Button variant="success" onClick={openModal}>
+  //           Add Item
+  //         </Button>
+  //       </div>
+
+  //       <SidebarAddModal
+  //         modalOpen={modalOpen}
+  //         setModalOpen={setModalOpen}
+  //         onSubmit={(name) => {
+  //           addNewItem(name);
+  //           setModalOpen(false);
+  //         }}
+  //       />
+  //     </div>
+  //   );
+  // }
   return (
     <div
       id="mySidebar"
@@ -73,39 +146,61 @@ export default function Sidebar({
         height: "85vh",
       }}
     >
-      <div style={{ display: "flex", flexDirection: "column" }}>
-        <div className="leftMenuHeader">Saved Workflows</div>
-        {workflowList.map((workflow, index) => (
-          <Button
-            variant="primary"
-            key={index}
-            onClick={() => {
-              setWorkflow(workflow);
-              if (timer) {
-                clearTimeout(timer);
-                timer = null;
-                // Perform the action for double-click here
-                workflow.macro.forEach((app) => {
-                  electron.openApp(app.route, app.arguments);
-                });
-              } else {
-                timer = setTimeout(() => {
+      {/* Conditional rendering for the sidebar based on activeSlide */}
+      {activeSlide === 1 ? (
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <div className="leftMenuHeader">
+            Saved Workflows{" "}
+            <button
+              style={{
+                marginLeft: "15px",
+                cursor: "pointer",
+                color: "#645ff0",
+                backgroundColor: "#1b1d23",
+                border: "none",
+                fontSize: "18px",
+              }}
+              onClick={toggleSlide}
+            >
+              {/* Font Awesome Icon */}
+              <i className="fa-solid fa-right-left"></i>
+            </button>
+          </div>
+          {workflowList.map((workflow, index) => (
+            <Button
+              variant="primary"
+              key={index}
+              onClick={() => {
+                setWorkflow(workflow);
+                if (timer) {
+                  clearTimeout(timer);
                   timer = null;
-                  // Perform the action for single-click here
-                  // e.g., display a message
-                  console.log("Single click");
-                }, 250);
-              }
-            }}
-            style={{ marginTop: index === 0 ? "0" : "20px" }}
-          >
-            {workflow.name}
-          </Button>
-        ))}
-      </div>
+                  // Perform the action for double-click here
+                  workflow.macro.forEach((app) => {
+                    electron.openApp(app.route, app.arguments);
+                  });
+                } else {
+                  timer = setTimeout(() => {
+                    timer = null;
+                    // Perform the action for single-click here
+                    // e.g., display a message
+                    console.log("Single click");
+                  }, 250);
+                }
+              }}
+              style={{ marginTop: index === 0 ? "0" : "20px" }}
+            >
+              {workflow.name}
+            </Button>
+          ))}
+        </div>
+      ) : (
+        // Render the new sidebar content here when activeSlide is 2
+        <SidebarNote />
+      )}
 
       <div style={{ display: "flex", flexDirection: "column" }}>
-        <Button variant="success" onClick={openModal}>
+        <Button variant="success" onClick={toggleSlide}>
           Add Item
         </Button>
       </div>

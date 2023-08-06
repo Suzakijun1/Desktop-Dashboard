@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 // import Navbar from "../../components/Navbar/navbar";
-import Sidebar from "./NoteItems/Sidebar/Sidebar";
+// import Sidebar from "./NoteItems/Sidebar/Sidebar";
 import "./Notes.css";
 import NewNote from "./NoteItems/NewNote/NewNote";
 import useNotesData from "./NoteItems/Assets/useNotesData";
