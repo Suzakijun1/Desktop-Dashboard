@@ -129,7 +129,7 @@ html, body{
 
 .leftMenu {
     position: relative;
-    width: 240px;
+    width: 220px;
     left: 0;
     /* height: 100%; */
     flex-grow: 0;

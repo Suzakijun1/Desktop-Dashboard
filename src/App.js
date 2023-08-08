@@ -18,6 +18,8 @@ import Tools from "./pages/Tools.js";
 import "./styles/styles.css";
 import deepEqual from "deep-equal";
 import Notes from "./pages/Notes";
+import Archive from "./pages/NoteItems/Sidebar/Archive";
+import Bin from "./pages/NoteItems/Sidebar/Bin/Bin";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 export default function App({ electron, ipcRenderer, appPath }) {
@@ -125,6 +127,8 @@ export default function App({ electron, ipcRenderer, appPath }) {
                   }
                 />
                 <Route exact path="/notes" element={<Notes />} />
+                <Route exact path="/archive" element={<Archive />} />
+                <Route exact path="/bin" element={<Bin />} />
               </Routes>
             </div>
           </div>
