@@ -10,13 +10,24 @@ import Layout from "./NoteItems/Layout/Layout";
 const Notes = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { pinned, unpinned, addNewNote, setNotes } = useNotesData();
+  const { pinned, unpinned, addNewNote, setNotes, updateNoteInParent } =
+    useNotesData();
   const pinnedNotes = pinned.map((note) => (
-    <Note key={note.id} note={note} setNotes={setNotes} />
+    <Note
+      key={note.id}
+      note={note}
+      setNotes={setNotes}
+      updateNoteInParent={updateNoteInParent}
+    />
   ));
 
   const otherNotes = unpinned.map((note) => (
-    <Note key={note.id} note={note} setNotes={setNotes} />
+    <Note
+      key={note.id}
+      note={note}
+      setNotes={setNotes}
+      updateNoteInParent={updateNoteInParent}
+    />
   ));
   console.log("pinnedNotes:", pinnedNotes);
   console.log("otherNotes:", otherNotes);
@@ -38,7 +49,9 @@ const Notes = () => {
             <div>
               <h2>PINNED</h2>
               {pinnedNotes.length !== 0 ? (
-                <Layout onEditNote={handleEditNote}>{pinnedNotes}</Layout>
+                <Layout onEditNote={handleEditNote} setNotes={setNotes}>
+                  {pinnedNotes}
+                </Layout>
               ) : (
                 <p>No pinned notes found!</p>
               )}

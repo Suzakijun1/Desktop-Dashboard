@@ -5,41 +5,43 @@ import NotePreview from "../NotePreview/NotePreview";
 const Note = ({ note, binNote, setNotes }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  // const updateNoteInParent = (updatedNote) => {
-  //   console.log("Note Updated");
-  //   console.log(updatedNote);
-  //   setNotes((prevNotes) => {
-  //     return prevNotes.map((note) => {
-  //       if (note.id === updatedNote.id) {
-  //         return updatedNote;
-  //       } else {
-  //         return note;
-  //       }
-  //     });
-  //   });
-  // };
   const updateNoteInParent = (updatedNote) => {
     console.log("Note Updated");
     console.log(updatedNote);
-    setNotes(
-      (prevNotes) =>
-        prevNotes
-          .map((note) => {
-            if (note.id === updatedNote.id) {
-              if (updatedNote.deleted) {
-                // If the note is marked for deletion, return null to filter it out
-                return null;
-              } else {
-                // Otherwise, update the note
-                return updatedNote;
-              }
-            } else {
-              return note;
-            }
-          })
-          .filter(Boolean) // Filter out null notes
-    );
+    setNotes((prevNotes) => {
+      return prevNotes.map((note) => {
+        if (note.id === updatedNote.id) {
+          return updatedNote;
+        } else {
+          return note;
+        }
+      });
+    });
   };
+
+  // const updateNoteInParent = (updatedNote) => {
+  //   console.log("Note Updated");
+  //   console.log(updatedNote);
+  //   setNotes(
+  //     (prevNotes) =>
+  //       prevNotes
+  //         .map((note) => {
+  //           if (note.id === updatedNote.id) {
+  //             if (updatedNote.deleted) {
+  //               // If the note is marked for deletion, return null to filter it out
+  //               return null;
+  //             } else {
+  //               // Otherwise, update the note
+  //               return updatedNote;
+  //             }
+  //           } else {
+  //             return note;
+  //           }
+  //         })
+  //         .filter(Boolean) // Filter out null notes
+  //   );
+  // };
+
   // const updateNoteInParent = (updatedNote) => {
   //   setNotes((prevNotes) => ({
   //     ...prevNotes,
@@ -73,6 +75,7 @@ const Note = ({ note, binNote, setNotes }) => {
           setIsOpen={setIsOpen}
           binNote={binNote}
           updateNoteInParent={updateNoteInParent}
+          setNotes={setNotes}
         />
       )}
     </div>

@@ -43,6 +43,13 @@ const NotePreview = ({ note, setIsOpen, updateNoteInParent }) => {
 
         // Save the updated notes data back to localStorage
         localStorage.setItem("notes", JSON.stringify(notes));
+
+        // Remove the note from local state as well
+        setNotes((prevNotes) => {
+          const updatedNotes = { ...prevNotes };
+          delete updatedNotes[id];
+          return updatedNotes;
+        });
       }
     } catch (err) {
       console.error(err);
@@ -97,10 +104,34 @@ const NotePreview = ({ note, setIsOpen, updateNoteInParent }) => {
     setIsOpen(false);
   };
 
+  // const deleteNoteForever = () => {
+  //   deleteNote(note.id);
+  //   toast.success("Note deleted forever!");
+  //   setIsOpen(false);
+  // };
   const deleteNoteForever = () => {
-    updateNoteInParent({ ...note, deleted: true });
-    toast.success("Note deleted forever!");
-    setIsOpen(false);
+    try {
+      console.log("deleteNoteForever function called"); // Debugging
+      console.log("Current note:", note); // Debugging
+
+      // Remove the deleted note from localStorage
+      const savedNoteData = localStorage.getItem("notes");
+      const notes = savedNoteData ? JSON.parse(savedNoteData) : {};
+      delete notes[note.id];
+
+      localStorage.setItem("notes", JSON.stringify(notes));
+      updateNoteInParent({ notes });
+      console.log("Updated notes:", notes); // Debugging
+      // Call the updateNoteInParent function to update the parent component's state
+      // setNotes((prevNotes) => {
+      //   return prevNotes.filter((prevNote) => prevNote.id !== note.id);
+      // });
+      // console.log(PrevNotes);
+      toast.success("Note deleted forever!");
+      setIsOpen(false);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const closeModal = () => {

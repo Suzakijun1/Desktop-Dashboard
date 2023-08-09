@@ -8,10 +8,10 @@ import Layout from "../Layout/Layout";
 
 const Archive = () => {
   document.title = "Note Zone | Archive";
-  const { archived } = useNotesData();
+  const { archived, setNotes } = useNotesData();
 
   const archivedNotes = archived.map((note) => (
-    <Note key={note.id} note={note} />
+    <Note key={note.id} note={note} setNotes={setNotes} />
   ));
   return (
     <div className="archive">

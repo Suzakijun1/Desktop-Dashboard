@@ -6,10 +6,10 @@ import Layout from "../../Layout/Layout";
 
 const Bin = () => {
   document.title = "Note Zone | Bin";
-  const { deleted } = useNotesData();
+  const { deleted, setNotes } = useNotesData();
 
   const deletedNotes = deleted?.map((note) => (
-    <Note key={note.id} note={note} />
+    <Note key={note.id} note={note} setNotes={setNotes} />
   ));
 
   return (
