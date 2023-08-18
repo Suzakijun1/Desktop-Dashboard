@@ -5,20 +5,46 @@ import NotePreview from "../NotePreview/NotePreview";
 const Note = ({ note, binNote, setNotes }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const updateNoteInParent = (updatedNote) => {
-    console.log("Note Updated");
-    console.log(updatedNote);
+  // const updateNoteInParent = (updatedNote) => {
+  //   console.log("Note Updated");
+  //   console.log(updatedNote);
+  //   setNotes((prevNotes) => {
+  //     return prevNotes.map((note) => {
+  //       if (note.id === updatedNote.id) {
+  //         return updatedNote;
+  //       } else {
+  //         return note;
+  //       }
+  //     });
+  //   });
+  // };
+  const updateNoteInParent = (updatedNote, deleteNote = false) => {
     setNotes((prevNotes) => {
-      return prevNotes.map((note) => {
-        if (note.id === updatedNote.id) {
-          return updatedNote;
-        } else {
-          return note;
-        }
-      });
+      let updatedNotes;
+
+      if (deleteNote) {
+        // Delete the note from localStorage
+        const savedNoteData = localStorage.getItem("notes");
+        const notes = savedNoteData ? JSON.parse(savedNoteData) : {};
+        delete notes[updatedNote.id];
+        localStorage.setItem("notes", JSON.stringify(notes));
+
+        // Remove the note from local state
+        updatedNotes = prevNotes.filter((note) => note.id !== updatedNote.id);
+      } else {
+        // Update the note in local state
+        updatedNotes = prevNotes.map((note) => {
+          if (note.id === updatedNote.id) {
+            return updatedNote;
+          } else {
+            return note;
+          }
+        });
+      }
+
+      return updatedNotes;
     });
   };
-
   // const updateNoteInParent = (updatedNote) => {
   //   console.log("Note Updated");
   //   console.log(updatedNote);
